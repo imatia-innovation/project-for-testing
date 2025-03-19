@@ -1,16 +1,6 @@
 import { test, expect } from '@playwright/test';
 import login from '../functions/login';
-import User from '../interfaces/User';
-
-const admin: User = {
-    username: process.env.USER_ADMIN_NAME!,
-    password: process.env.USER_ADMIN_PASS!,
-};
-
-const demo: User = {
-    username: process.env.USER_DEMO_NAME!,
-    password: process.env.USER_DEMO_PASS!,
-};
+import { admin, demo } from '../constants';
 
 const itemList = ['Envíos', 'Análisis', 'Devoluciones', 'Destinos', 'Expediciones', 'Informes', 'Reglas'];
 

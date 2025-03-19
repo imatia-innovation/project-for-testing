@@ -1,24 +1,29 @@
 {
-  "name": "packar",
-  "version": "1.0.0",
-  "description": "testing project for packar platform",
-  "main": "index.js",
-  "scripts": {
-    "test": "npx playwright test",
-    "test:ui": "npx playwright test --ui",
-    "report": "npx playwright show-report"
-  },
-  "keywords": [
-    "testing"
-  ],
-  "author": "Kadievka Salcedo",
-  "license": "ISC",
-  "devDependencies": {
-    "@playwright/test": "^1.51.0",
-    "@types/node": "^22.13.10"
-  },
-  "dependencies": {
-    "@jest/globals": "^29.7.0",
-    "dotenv": "^16.4.7"
-  }
+    "name": "packar",
+    "version": "1.0.0",
+    "description": "testing project for packar platform",
+    "main": "index.js",
+    "scripts": {
+        "test": "npx playwright test",
+        "test:ui": "npx playwright test --ui",
+        "report": "npx playwright show-report",
+        "format": "prettier --write \"**/*.{js,ts,json,html,css}\""
+    },
+    "keywords": [
+        "testing"
+    ],
+    "author": "Kadievka Salcedo",
+    "license": "ISC",
+    "devDependencies": {
+        "@playwright/test": "^1.51.0",
+        "@types/node": "^22.13.10",
+        "eslint-config-prettier": "^10.1.1",
+        "eslint-plugin-prettier": "^5.2.3",
+        "prettier": "^3.5.3"
+    },
+    "dependencies": {
+        "@jest/globals": "^29.7.0",
+        "axios": "^1.8.3",
+        "dotenv": "^16.4.7"
+    }
 }

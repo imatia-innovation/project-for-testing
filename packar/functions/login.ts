@@ -1,7 +1,6 @@
-import { Page } from "@playwright/test";
-import User from "../interfaces/User";
-
-const baserUrl = process.env.BASE_URL;
+import { Page } from '@playwright/test';
+import User from '../interfaces/User';
+import { baserUrl } from '../constants';
 
 export default async function login(page: Page, user: User) {
     await page.goto(baserUrl + '/app/login');
@@ -16,5 +15,5 @@ export default async function login(page: Page, user: User) {
 
     await page.getByText('Iniciar sesión').click();
 
-    await page.waitForURL('/app/main/home');
+    await page.waitForURL(baserUrl + '/app/main/home');
 }

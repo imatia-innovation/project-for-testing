@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-
-const baserUrl = process.env.BASE_URL;
+import { baserUrl } from '../constants';
 
 test.afterEach(async ({ page }) => {
     page.close();
@@ -50,6 +49,6 @@ test('should go to login Page, and make login successfully', async ({ page }) =>
 
     await page.getByText('Iniciar sesión').click();
 
-    await page.waitForURL('/app/main/home');
+    await page.waitForURL(baserUrl + '/app/main/home');
     expect(page.url()).toContain('/app/main/home');
 });
