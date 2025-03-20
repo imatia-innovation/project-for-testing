@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import User from './interfaces/User';
 
 export const admin: User = {

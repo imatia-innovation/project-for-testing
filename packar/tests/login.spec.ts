@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { baserUrl } from '../constants';
+import { admin, baserUrl } from '../constants';
 
 test.afterEach(async ({ page }) => {
     page.close();
@@ -41,11 +41,11 @@ test('should go to login Page, and make login successfully', async ({ page }) =>
 
     const userSelector = page.getByLabel('Nombre de usuario');
     await userSelector.click();
-    await userSelector.fill(process.env.USER_ADMIN_NAME!);
+    await userSelector.fill(admin.username);
 
     const passwordInput = page.getByLabel('Contraseña');
     await passwordInput.click();
-    await passwordInput.fill(process.env.USER_ADMIN_PASS!);
+    await passwordInput.fill(admin.password);
 
     await page.getByText('Iniciar sesión').click();
 
