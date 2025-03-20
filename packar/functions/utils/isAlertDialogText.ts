@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 
-export default async function alertdialogExist(page: Page, text: string): Promise<boolean> {
+export default async function isAlertDialogText(page: Page, text: string): Promise<boolean> {
     const alertLocator: Locator = page.getByRole('alertdialog');
 
     let alertExist = Boolean(await alertLocator.count());

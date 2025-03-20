@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
-import assertElementsByText from './assertElementsByText';
-import Calculator from '../classes/Calculator';
+import assertList from '../utils/assertList';
+import Calculator from '../../classes/Calculator';
 
 export default async function selectCondition(
     page: Page,
@@ -11,14 +11,14 @@ export default async function selectCondition(
 ) {
     const property = page.getByLabel('Propiedad *');
     await property.click();
-    assertElementsByText(page, propertyOptions);
+    await assertList(page, propertyOptions);
 
     const propertyLocator = page.getByText(propertyOptions[calculator.combination.i]);
     await propertyLocator.last().click();
 
     const operator = page.getByLabel('Operador *');
     await operator.click();
-    assertElementsByText(page, operatorOptions);
+    await assertList(page, operatorOptions);
 
     const operationLocators = page.getByText(operatorOptions[calculator.combination.j]);
     await operationLocators.last().click();

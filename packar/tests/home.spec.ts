@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import login from '../functions/login';
 import { admin, demo } from '../constants';
+import login from '../functions/steps/login';
 
 const itemList = ['Envíos', 'Análisis', 'Devoluciones', 'Destinos', 'Expediciones', 'Informes', 'Reglas'];
 

@@ -1,17 +1,17 @@
 import { Locator, Page } from '@playwright/test';
 
-function getId(text: string): string {
+function getFirstNumberFromString(text: string): string {
     const match = text.trim().match(/^(\d+)/);
     return match ? match[1] : '';
 }
 
-function getMaxId(ids: string[]): string {
+function getMaxNumber(ids: string[]): string {
     const numbers: number[] = ids.map((id) => Number(id));
     const max: number = Math.max(...numbers);
     return max.toString();
 }
 
-export default async function getMaxPriority(page: Page): Promise<string> {
+export default async function getMaxColumnNumericValue(page: Page): Promise<string> {
     const result: Locator[] = await page.getByRole('row').all();
 
     let ids = [''];
@@ -21,11 +21,11 @@ export default async function getMaxPriority(page: Page): Promise<string> {
         const textContent: null | string = await element.textContent();
 
         if (textContent) {
-            const id: string | undefined = getId(textContent.trim());
+            const id: string = getFirstNumberFromString(textContent.trim());
 
             ids.push(id);
         }
     }
 
-    return getMaxId(ids);
+    return getMaxNumber(ids);
 }

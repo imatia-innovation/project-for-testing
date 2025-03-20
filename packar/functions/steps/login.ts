@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
-import User from '../interfaces/User';
-import { baserUrl } from '../constants';
+import { baserUrl } from '../../constants';
+import User from '../../interfaces/User';
 
 export default async function login(page: Page, user: User) {
     await page.goto(baserUrl + '/app/login');

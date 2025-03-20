@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
-import login from '../functions/login';
+import login from '../functions/steps/login';
 import { admin, baserUrl } from '../constants';
-import assertElementsByText from '../functions/assertElementsByText';
-import alertdialogExist from '../functions/elementExistByText';
-import selectCondition from '../functions/selectCondition';
+import assertList from '../functions/utils/assertList';
+import isAlertDialogText from '../functions/utils/isAlertDialogText';
+import selectCondition from '../functions/steps/selectCondition';
 import Calculator from '../classes/Calculator';
-import getMaxPriority from '../functions/getMaxPriority';
+import getMaxColumnNumericValue from '../functions/utils/getMaxColumnNumericValue';
 import RuleService from '../core/RuleService';
 
 const ruleService = new RuleService();
@@ -15,10 +15,12 @@ const columns = [
     'Nombre',
     'Código postal origen',
     'Código postal destino',
-    'Dimensiones (LxWxH)',
+    'Alto (cm)',
+    'Ancho (cm)',
+    'Largo (cm)',
     'Peso (Kg)',
-    'Proveedor',
     'Empresa',
+    'Proveedor',
     'Servicio',
 ];
 
@@ -60,7 +62,7 @@ test(`should make login with admin user and go to the Rules Section and sort by 
     await page.waitForURL(baserUrl + '/app/main/rules');
     expect(page.url()).toContain(baserUrl + '/app/main/rules');
 
-    assertElementsByText(page, columns);
+    await assertList(page, columns);
 
     const createNewRuleLocator = page.getByText('Nuevo');
     expect(createNewRuleLocator).not.toBeNull();
@@ -79,7 +81,7 @@ test(`should make login with admin user and go to the Rules Section and sort by 
 
     page.waitForLoadState('load');
 
-    lastPriorityValue = await getMaxPriority(page);
+    lastPriorityValue = await getMaxColumnNumericValue(page);
 });
 
 test(`should make login with admin user and see an error when try to use the same last priority value`, async ({
@@ -93,7 +95,7 @@ test(`should make login with admin user and see an error when try to use the sam
     await page.waitForURL(baserUrl + '/app/main/rules');
     expect(page.url()).toContain(baserUrl + '/app/main/rules');
 
-    assertElementsByText(page, columns);
+    await assertList(page, columns);
 
     const createNewRuleLocator = page.locator('button').getByText('Nuevo');
     await createNewRuleLocator.click();
@@ -101,7 +103,7 @@ test(`should make login with admin user and see an error when try to use the sam
     let formTitleLocator = page.getByText('Reglas: Nuevo');
     expect(formTitleLocator).not.toBeNull();
 
-    assertElementsByText(page, formSections);
+    await assertList(page, formSections);
 
     const saveButtonLocator = page.locator('button').getByText('Guardar');
     expect(saveButtonLocator).not.toBeNull();
@@ -137,7 +139,7 @@ test(`should make login with admin user and see an error when try to use the sam
     const saveButton = page.getByText('Guardar');
     await saveButton.click();
 
-    const priorityInUse = await alertdialogExist(page, 'Ya existe una regla con esa prioridad.');
+    const priorityInUse = await isAlertDialogText(page, 'Ya existe una regla con esa prioridad.');
     expect(priorityInUse).toBeTruthy();
 });
 
@@ -150,7 +152,7 @@ test(`should make login with admin user and open the form to create new rule`, a
     await page.waitForURL(baserUrl + '/app/main/rules');
     expect(page.url()).toContain(baserUrl + '/app/main/rules');
 
-    assertElementsByText(page, columns);
+    await assertList(page, columns);
 
     const createNewRuleLocator = page.locator('button').getByText('Nuevo');
     await createNewRuleLocator.click();
@@ -158,7 +160,7 @@ test(`should make login with admin user and open the form to create new rule`, a
     let formTitleLocator = page.getByText('Reglas: Nuevo');
     expect(formTitleLocator).not.toBeNull();
 
-    assertElementsByText(page, formSections);
+    await assertList(page, formSections);
 
     const saveButtonLocator = page.locator('button').getByText('Guardar');
     expect(saveButtonLocator).not.toBeNull();
@@ -196,7 +198,7 @@ test(`should make login with admin user and open the form to create new rule`, a
     const saveButton = page.getByText('Guardar');
     await saveButton.click();
 
-    let priorityInUse = await alertdialogExist(page, 'Ya existe una regla con esa prioridad.');
+    let priorityInUse = await isAlertDialogText(page, 'Ya existe una regla con esa prioridad.');
 
     while (priorityInUse) {
         const okButton = page.getByText('Ok');
@@ -211,10 +213,10 @@ test(`should make login with admin user and open the form to create new rule`, a
         const saveButton = page.getByText('Guardar');
         await saveButton.click();
 
-        priorityInUse = await alertdialogExist(page, 'Ya existe una regla con esa prioridad.');
+        priorityInUse = await isAlertDialogText(page, 'Ya existe una regla con esa prioridad.');
     }
 
-    let conditionsInUse: boolean = await alertdialogExist(page, 'Ya existe una regla con esas condiciones.');
+    let conditionsInUse: boolean = await isAlertDialogText(page, 'Ya existe una regla con esas condiciones.');
 
     while (conditionsInUse) {
         const okButton = page.getByText('Ok');
@@ -225,7 +227,7 @@ test(`should make login with admin user and open the form to create new rule`, a
         const saveButton = page.getByText('Guardar');
         await saveButton.click();
 
-        conditionsInUse = await alertdialogExist(page, 'Ya existe una regla con esas condiciones.');
+        conditionsInUse = await isAlertDialogText(page, 'Ya existe una regla con esas condiciones.');
     }
 
     expect(conditionsInUse).toBeFalsy();
