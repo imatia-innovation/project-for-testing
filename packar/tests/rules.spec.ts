@@ -1,16 +1,24 @@
 import { test, expect } from '@playwright/test';
-import login from '../functions/steps/login';
-import { admin, baserUrl } from '../constants';
-import assertList from '../functions/utils/assertList';
 import isAlertDialogText from '../functions/utils/isAlertDialogText';
-import selectCondition from '../functions/steps/selectCondition';
 import Calculator from '../classes/Calculator';
-import getMaxColumnNumericValue from '../functions/utils/getMaxColumnNumericValue';
 import RuleService from '../core/RuleService';
+import {
+    conditionRoutine,
+    openNewRuleForm,
+    priorityRoutine as setPriorityRoutine,
+    selectAnotherCondition,
+    selectCondition,
+    selectProvider,
+    getLastPriorityRoutine,
+    navigateToRulesPageRoutine,
+    assertRuleCreated,
+    deleteRule,
+} from '../functions/steps/createRuleForm';
+import CreateRuleFormTest from '../classes/CreateRuleFormTest';
 
 const ruleService = new RuleService();
 
-const columns = [
+const columns: string[] = [
     'Prioridad',
     'Nombre',
     'Código postal origen',
@@ -24,12 +32,11 @@ const columns = [
     'Servicio',
 ];
 
-const formSections = ['Información', 'Nueva condición', 'Condiciones'];
+const formSections: string[] = ['Información', 'Nueva condición', 'Condiciones'];
 
-const propertyOptions = [
+const propertyOptions: string[] = [
     'Alto (cm)',
     'Ancho (cm)',
-    'Alto (cm)',
     'Código postal destino',
     'Código postal origen',
     'Empresa',
@@ -37,7 +44,7 @@ const propertyOptions = [
     'Peso',
 ];
 
-const operatorOptions = [
+const operatorOptions: string[] = [
     'Contiene',
     'Distinto de',
     'Igual a',
@@ -47,72 +54,122 @@ const operatorOptions = [
     'Menor que',
 ];
 
-const calculator = new Calculator(propertyOptions, operatorOptions);
+const combinationsFor100: Calculator = new Calculator(propertyOptions, operatorOptions, '100');
+
+const combinationsFor2000: Calculator = new Calculator(propertyOptions, operatorOptions, '2000');
+
+const combinationsFor2335682: Calculator = new Calculator(propertyOptions, operatorOptions, '2335682');
+
+const combinationAbcdefg = new Calculator(propertyOptions, operatorOptions, 'Abcdefg');
 
 let lastPriorityValue = '1';
+
+const rule1 = new CreateRuleFormTest(
+    'Regla auto test 1',
+    { name: 'GLS', service: 'Estándar 24H' },
+    combinationsFor100,
+    { i: 0, j: 0 },
+    combinationsFor100,
+    'CONTAINS 100'
+);
+const rule2 = new CreateRuleFormTest(
+    'Regla auto test 2',
+    { name: 'GLS', service: 'Estándar devoluciones en tienda' },
+    combinationsFor2000,
+    { i: 0, j: 0 },
+    combinationsFor100,
+    'CONTAINS 2000'
+);
+const rule3 = new CreateRuleFormTest(
+    'Regla auto test 3',
+    { name: 'SEUR', service: 'SEUR FRIO 13:30' },
+    combinationsFor2000,
+    { i: 1, j: 1 },
+    combinationsFor100,
+    '!= 2000'
+);
+const rule4 = new CreateRuleFormTest(
+    'Regla auto test 4',
+    { name: 'NARVAL', service: 'REFRIGERADO' },
+    combinationsFor2335682,
+    { i: 2, j: 2 },
+    combinationsFor100,
+    '2335682'
+);
+const rule5 = new CreateRuleFormTest(
+    'Regla auto test 5',
+    { name: 'NARVAL', service: 'CONGELADO' },
+    combinationsFor2335682,
+    { i: 3, j: 3 },
+    combinationsFor100,
+    '>= 2335682'
+);
+const rule6 = new CreateRuleFormTest(
+    'Regla auto test 6',
+    { name: 'NARVAL', service: 'MIXTO' },
+    combinationAbcdefg,
+    { i: 4, j: 4 },
+    combinationsFor100,
+    '> Abcdefg'
+);
+const rule7 = new CreateRuleFormTest(
+    'Regla auto test 7',
+    { name: 'NARVAL', service: 'SECO' },
+    combinationsFor2000,
+    { i: 5, j: 5 },
+    combinationsFor100,
+    '<= 2000'
+);
+const rule8 = new CreateRuleFormTest(
+    'Regla auto test 8',
+    { name: 'STEF', service: 'Fresco o Seco' },
+    combinationsFor2000,
+    { i: 6, j: 6 },
+    combinationsFor100,
+    '< 2000'
+);
+const rule9 = new CreateRuleFormTest(
+    'Regla auto test 9',
+    { name: 'STEF', service: 'Congelado' },
+    combinationsFor2000,
+    { i: 6, j: 6 },
+    combinationsFor100,
+    '< 2000'
+);
+const rule10 = new CreateRuleFormTest(
+    'Regla auto test 10',
+    { name: 'STEF', service: 'Congelado' },
+    combinationsFor2000,
+    { i: 6, j: 6 },
+    combinationsFor100,
+    '< 2000'
+);
+
+const rulesParameters: CreateRuleFormTest[] = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10];
+
+test.beforeAll('delete tests rules created in the past', async () => {
+    rulesParameters.forEach(async (rule) => {
+        await deleteRule(rule.name, ruleService);
+    });
+});
 
 test(`should make login with admin user and go to the Rules Section and sort by Priority descendant order`, async ({
     page,
 }) => {
-    await login(page, admin);
+    await navigateToRulesPageRoutine(page, columns);
 
-    const rulesLocator = page.getByText('Reglas');
-    await rulesLocator.first().click();
-
-    await page.waitForURL(baserUrl + '/app/main/rules');
-    expect(page.url()).toContain(baserUrl + '/app/main/rules');
-
-    await assertList(page, columns);
-
-    const createNewRuleLocator = page.getByText('Nuevo');
-    expect(createNewRuleLocator).not.toBeNull();
-
-    //Select 100 in te pagination
-    const paginationSelectOption = page.getByRole('listbox');
-    await paginationSelectOption.click();
-
-    const optionLast = page.getByRole('option').last();
-    await optionLast.click();
-
-    //Sort by Priority descendant
-    const priorityLocator = page.getByText('Prioridad');
-    await priorityLocator.first().click();
-    await priorityLocator.first().click();
-
-    page.waitForLoadState('load');
-
-    lastPriorityValue = await getMaxColumnNumericValue(page);
+    lastPriorityValue = await getLastPriorityRoutine(page);
 });
 
 test(`should make login with admin user and see an error when try to use the same last priority value`, async ({
     page,
 }) => {
-    await login(page, admin);
+    await navigateToRulesPageRoutine(page, columns);
 
-    const rulesLocator = page.getByText('Reglas');
-    await rulesLocator.first().click();
-
-    await page.waitForURL(baserUrl + '/app/main/rules');
-    expect(page.url()).toContain(baserUrl + '/app/main/rules');
-
-    await assertList(page, columns);
-
-    const createNewRuleLocator = page.locator('button').getByText('Nuevo');
-    await createNewRuleLocator.click();
-
-    let formTitleLocator = page.getByText('Reglas: Nuevo');
-    expect(formTitleLocator).not.toBeNull();
-
-    await assertList(page, formSections);
-
-    const saveButtonLocator = page.locator('button').getByText('Guardar');
-    expect(saveButtonLocator).not.toBeNull();
-
-    const cancelButtonLocator = page.locator('button').getByText('Cancelar');
-    expect(cancelButtonLocator).not.toBeNull();
+    await openNewRuleForm(page, columns, formSections);
 
     // Start fill form
-    // test.slow();
+    test.slow();
 
     const uniqueRuleName: string = 'Regla test ' + new Date().getTime().toString();
 
@@ -120,17 +177,9 @@ test(`should make login with admin user and see an error when try to use the sam
     await name.click();
     await name.fill(uniqueRuleName);
 
-    const provider = page.getByLabel('Proveedor *');
-    await provider.click();
-    const glsProviderLocators = page.getByText('GLS');
-    await glsProviderLocators.last().click();
+    await selectProvider(page, { name: 'GLS', service: 'Estándar 24H' });
 
-    const service = page.getByLabel('Tipo de servicio *');
-    await service.click();
-    const standard24ServiceLocators = page.getByText('Estándar 24H');
-    await standard24ServiceLocators.last().click();
-
-    await selectCondition(page, propertyOptions, operatorOptions, calculator, '100');
+    await selectAnotherCondition(page, propertyOptions, operatorOptions, combinationsFor100);
 
     const priorityLocators = page.getByLabel('Prioridad *');
     await priorityLocators.click();
@@ -143,105 +192,39 @@ test(`should make login with admin user and see an error when try to use the sam
     expect(priorityInUse).toBeTruthy();
 });
 
-test(`should make login with admin user and open the form to create new rule`, async ({ page }) => {
-    await login(page, admin);
+rulesParameters.forEach((rule) => {
+    test(`should validate a rule with parameters: ${rule.name}, ${propertyOptions[rule.combination.i]} ${operatorOptions[rule.combination.j]} ${rule.combinationMain.value}`, async ({
+        page,
+    }) => {
+        await navigateToRulesPageRoutine(page, columns);
 
-    const rulesLocator = page.getByText('Reglas');
-    await rulesLocator.first().click();
+        lastPriorityValue = await getLastPriorityRoutine(page);
 
-    await page.waitForURL(baserUrl + '/app/main/rules');
-    expect(page.url()).toContain(baserUrl + '/app/main/rules');
+        await openNewRuleForm(page, columns, formSections);
 
-    await assertList(page, columns);
+        // Start fill form
+        test.slow();
 
-    const createNewRuleLocator = page.locator('button').getByText('Nuevo');
-    await createNewRuleLocator.click();
+        const name = page.getByLabel('Nombre *');
+        await name.click();
+        await name.fill(rule.name);
 
-    let formTitleLocator = page.getByText('Reglas: Nuevo');
-    expect(formTitleLocator).not.toBeNull();
+        await selectProvider(page, rule.provider);
 
-    await assertList(page, formSections);
+        await selectCondition(page, propertyOptions, operatorOptions, rule.combinationMain, rule.combination);
 
-    const saveButtonLocator = page.locator('button').getByText('Guardar');
-    expect(saveButtonLocator).not.toBeNull();
+        lastPriorityValue = await setPriorityRoutine(page, lastPriorityValue);
 
-    const cancelButtonLocator = page.locator('button').getByText('Cancelar');
-    expect(cancelButtonLocator).not.toBeNull();
+        await conditionRoutine(page, propertyOptions, operatorOptions, rule.combinationSecondary);
 
-    // Start fill form
-    test.slow();
+        await page.reload({
+            waitUntil: 'load',
+        });
 
-    const uniqueRuleName: string = 'Regla test ' + new Date().getTime().toString();
+        lastPriorityValue = await getLastPriorityRoutine(page);
 
-    const name = page.getByLabel('Nombre *');
-    await name.click();
-    await name.fill(uniqueRuleName);
+        expect(await page.getByText(rule.expectedText).count()).not.toBe(0);
 
-    const provider = page.getByLabel('Proveedor *');
-    await provider.click();
-    const glsProviderLocators = page.getByText('GLS');
-    await glsProviderLocators.last().click();
-
-    const service = page.getByLabel('Tipo de servicio *');
-    await service.click();
-    const standard24ServiceLocators = page.getByText('Estándar 24H');
-    await standard24ServiceLocators.last().click();
-
-    await selectCondition(page, propertyOptions, operatorOptions, calculator, '100');
-
-    let priority: number = Number(lastPriorityValue) + 1;
-
-    const priorityLocators = page.getByLabel('Prioridad *');
-    await priorityLocators.click();
-    await priorityLocators.fill(priority.toString());
-
-    const saveButton = page.getByText('Guardar');
-    await saveButton.click();
-
-    let priorityInUse = await isAlertDialogText(page, 'Ya existe una regla con esa prioridad.');
-
-    while (priorityInUse) {
-        const okButton = page.getByText('Ok');
-        await okButton.click();
-
-        priority = priority + 1;
-
-        const priorityLocators = page.getByLabel('Prioridad *');
-        await priorityLocators.click();
-        await priorityLocators.fill(priority.toString());
-
-        const saveButton = page.getByText('Guardar');
-        await saveButton.click();
-
-        priorityInUse = await isAlertDialogText(page, 'Ya existe una regla con esa prioridad.');
-    }
-
-    let conditionsInUse: boolean = await isAlertDialogText(page, 'Ya existe una regla con esas condiciones.');
-
-    while (conditionsInUse) {
-        const okButton = page.getByText('Ok');
-        await okButton.click();
-
-        await selectCondition(page, propertyOptions, operatorOptions, calculator, '100');
-
-        const saveButton = page.getByText('Guardar');
-        await saveButton.click();
-
-        conditionsInUse = await isAlertDialogText(page, 'Ya existe una regla con esas condiciones.');
-    }
-
-    expect(conditionsInUse).toBeFalsy();
-
-    await page.reload({
-        waitUntil: 'load',
+        await assertRuleCreated(page, rule.name);
     });
-
-    const ruleCreated = await page.getByText(uniqueRuleName).first().innerHTML();
-
-    expect(ruleCreated).toBeTruthy();
-
-    // Delete rule using the core service
-    const response = await ruleService.deleteRule(admin.username, admin.password, uniqueRuleName);
-    expect(response?.data.status).toEqual('OK');
-    expect(response?.data.message).toEqual(`Rule deleted successfully: ${uniqueRuleName}`);
 });
