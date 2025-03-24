@@ -24,7 +24,7 @@ export async function navigateToRulesPageRoutine(page: Page, columns: string[]) 
     expect(createNewRuleLocator).not.toBe(0);
 }
 
-export async function getLastPriorityRoutine(page: Page) {
+export async function getLastPriorityRoutine(page: Page, lastPriorityValue: string, index: number) {
     //Select 100 in te pagination
     const paginationSelectOption = page.getByRole('listbox');
     await paginationSelectOption.click();
@@ -34,15 +34,24 @@ export async function getLastPriorityRoutine(page: Page) {
 
     //Sort by Priority descendant
     const priorityLocator = page.getByText('Prioridad');
-    await priorityLocator.first().click();
-    await priorityLocator.first().click();
 
-    page.waitForLoadState('load');
+    let maxN = '1';
+    if (index === 0) {
+        await priorityLocator.first().click();
+        await page.waitForLoadState('load');
+        maxN = await getMaxColumnNumericValue(page, lastPriorityValue);
+    } else {
+        maxN = lastPriorityValue;
+        if (!(index % 2 == 0)) {
+            await priorityLocator.first().click();
+            await page.waitForLoadState('load');
+        }
+    }
 
-    return await getMaxColumnNumericValue(page);
+    return maxN;
 }
 
-export async function openNewRuleForm(page: Page, columns: string[], formSections: string[]) {
+export async function openNewRuleForm(page: Page, formSections: string[]) {
     const createNewRuleLocator = page.locator('button').getByText('Nuevo');
     await createNewRuleLocator.click();
 
@@ -91,7 +100,9 @@ export async function priorityRoutine(page: Page, lastPriorityValue: string): Pr
     let priority: number = Number(lastPriorityValue) + 1;
 
     const priorityLocators = page.getByLabel('Prioridad *');
-    await priorityLocators.click();
+
+    //await priorityLocators.click();
+
     await priorityLocators.fill(priority.toString());
 
     const saveButton = page.getByText('Guardar');
@@ -106,7 +117,7 @@ export async function priorityRoutine(page: Page, lastPriorityValue: string): Pr
         priority = priority + 1;
 
         const priorityLocators = page.getByLabel('Prioridad *');
-        await priorityLocators.click();
+        //await priorityLocators.click();
         await priorityLocators.fill(priority.toString());
 
         const saveButton = page.getByText('Guardar');

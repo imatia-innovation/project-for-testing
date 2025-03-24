@@ -19,10 +19,11 @@ import CreateRuleFormTest from '../classes/CreateRuleFormTest';
 const ruleService = new RuleService();
 
 const columns: string[] = [
+    'Reglas de asignación',
     'Prioridad',
     'Nombre',
-    'Código postal origen',
-    'Código postal destino',
+    'CP origen',
+    'CP destino',
     'Alto (cm)',
     'Ancho (cm)',
     'Largo (cm)',
@@ -145,33 +146,40 @@ const rule10 = new CreateRuleFormTest(
     '< 2000'
 );
 
+const ruleThatFails = new CreateRuleFormTest(
+    'Debería Fallar',
+    { name: 'STEF', service: 'Congelado' },
+    combinationsFor2000,
+    { i: 6, j: 6 },
+    combinationsFor100,
+    '< 2000'
+);
+
 const rulesParameters: CreateRuleFormTest[] = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10];
 
 test.beforeAll('delete tests rules created in the past', async () => {
     rulesParameters.forEach(async (rule) => {
         await deleteRule(rule.name, ruleService);
     });
+
+    await deleteRule(ruleThatFails.name, ruleService);
 });
 
-test(`should make login with admin user and go to the Rules Section and sort by Priority descendant order`, async ({
-    page,
-}) => {
+test(`should go to the Rules Section and sort by Priority descendant order`, async ({ page }) => {
     await navigateToRulesPageRoutine(page, columns);
 
-    lastPriorityValue = await getLastPriorityRoutine(page);
+    lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, 0);
 });
 
-test(`should make login with admin user and see an error when try to use the same last priority value`, async ({
-    page,
-}) => {
+test(`should see an error when try to use the same last priority value`, async ({ page }) => {
     await navigateToRulesPageRoutine(page, columns);
 
-    await openNewRuleForm(page, columns, formSections);
+    await openNewRuleForm(page, formSections);
 
     // Start fill form
     test.slow();
 
-    const uniqueRuleName: string = 'Regla test ' + new Date().getTime().toString();
+    const uniqueRuleName: string = 'Regla test va a fallar';
 
     const name = page.getByLabel('Nombre *');
     await name.click();
@@ -192,15 +200,69 @@ test(`should make login with admin user and see an error when try to use the sam
     expect(priorityInUse).toBeTruthy();
 });
 
-rulesParameters.forEach((rule) => {
+test(`should see an error when try to save a rule without fill the inputs`, async ({ page }) => {
+    await navigateToRulesPageRoutine(page, columns);
+
+    await openNewRuleForm(page, formSections);
+
+    // Start fill form
+    test.slow();
+
+    const saveButton = page.getByText('Guardar');
+    await saveButton.click();
+
+    const priorityInUse = await isAlertDialogText(
+        page,
+        'Los siguientes campos no son válidos: Proveedor, Nombre, Prioridad'
+    );
+    expect(priorityInUse).toBeTruthy();
+});
+
+test.skip(`should get an error message`, async ({ page }) => {
+    await navigateToRulesPageRoutine(page, columns);
+
+    //lastPriorityValue = await getLastPriorityRoutine(page);
+
+    await openNewRuleForm(page, formSections);
+
+    const saveButton = page.getByText('Guardar');
+    await saveButton.click();
+
+    const requiredError = await isAlertDialogText(
+        page,
+        'Los siguientes campos no son válidos: Proveedor, Nombre, Prioridad'
+    );
+    expect(requiredError).toBeTruthy();
+
+    let okButton = page.getByText('Ok');
+    await okButton.click();
+
+    // Start fill form
+    test.slow();
+
+    const name = page.getByLabel('Nombre *');
+    await name.click();
+    await name.fill('Debería fallar');
+
+    await selectProvider(page, { name: 'STEF', service: 'Congelado' });
+
+    lastPriorityValue = await setPriorityRoutine(page, lastPriorityValue);
+
+    await saveButton.click();
+
+    let invalidCondition: boolean = await isAlertDialogText(page, 'Tiene que agregar una condición válida');
+    expect(invalidCondition).toBeFalsy();
+});
+
+rulesParameters.forEach((rule, index) => {
     test(`should validate a rule with parameters: ${rule.name}, ${propertyOptions[rule.combination.i]} ${operatorOptions[rule.combination.j]} ${rule.combinationMain.value}`, async ({
         page,
     }) => {
         await navigateToRulesPageRoutine(page, columns);
 
-        lastPriorityValue = await getLastPriorityRoutine(page);
+        lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, index);
 
-        await openNewRuleForm(page, columns, formSections);
+        await openNewRuleForm(page, formSections);
 
         // Start fill form
         test.slow();
@@ -221,7 +283,7 @@ rulesParameters.forEach((rule) => {
             waitUntil: 'load',
         });
 
-        lastPriorityValue = await getLastPriorityRoutine(page);
+        lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, index + 1);
 
         expect(await page.getByText(rule.expectedText).count()).not.toBe(0);
 

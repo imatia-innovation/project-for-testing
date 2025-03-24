@@ -11,7 +11,7 @@ function getMaxNumber(ids: string[]): string {
     return max.toString();
 }
 
-export default async function getMaxColumnNumericValue(page: Page): Promise<string> {
+export default async function getMaxColumnNumericValue(page: Page, lastPriorityValue: string): Promise<string> {
     const result: Locator[] = await page.getByRole('row').all();
 
     let ids = [''];
@@ -22,10 +22,10 @@ export default async function getMaxColumnNumericValue(page: Page): Promise<stri
 
         if (textContent) {
             const id: string = getFirstNumberFromString(textContent.trim());
-
             ids.push(id);
         }
     }
 
-    return getMaxNumber(ids);
+    const maxN: string = getMaxNumber(ids);
+    return Number(lastPriorityValue) > Number(maxN) ? lastPriorityValue : maxN;
 }
