@@ -96,7 +96,7 @@ export async function selectProvider(page: Page, provider: Provider) {
     await serviceLocators.last().click();
 }
 
-export async function priorityRoutine(page: Page, lastPriorityValue: string): Promise<string> {
+export async function setPriorityRoutine(page: Page, lastPriorityValue: string): Promise<string> {
     let priority: number = Number(lastPriorityValue) + 1;
 
     const priorityLocators = page.getByLabel('Prioridad *');

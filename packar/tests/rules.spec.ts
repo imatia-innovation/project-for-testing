@@ -5,7 +5,7 @@ import RuleService from '../core/RuleService';
 import {
     conditionRoutine,
     openNewRuleForm,
-    priorityRoutine as setPriorityRoutine,
+    setPriorityRoutine as setPriorityRoutine,
     selectAnotherCondition,
     selectCondition,
     selectProvider,
