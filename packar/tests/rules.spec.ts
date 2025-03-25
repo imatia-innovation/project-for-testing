@@ -155,6 +155,14 @@ const ruleThatFails = new CreateRuleFormTest(
     '< 2000'
 );
 
+const ruleNoConditions = {
+    name: 'Regla auto test sin condiciones', 
+    provider: {
+        name: 'STEF',
+        service: 'Congelado',
+    }
+};
+
 const rulesParameters: CreateRuleFormTest[] = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10];
 
 test.beforeAll('delete tests rules created in the past', async () => {
@@ -163,6 +171,8 @@ test.beforeAll('delete tests rules created in the past', async () => {
     });
 
     await deleteRule(ruleThatFails.name, ruleService);
+
+    await deleteRule(ruleNoConditions.name, ruleService);
 });
 
 test(`should go to the Rules Section and sort by Priority descendant order`, async ({ page }) => {
@@ -218,10 +228,12 @@ test(`should see an error when try to save a rule without fill the inputs`, asyn
     expect(priorityInUse).toBeTruthy();
 });
 
-test.skip(`should get an error message`, async ({ page }) => {
+test(`should create an rule without conditions if it does not exist and if exist, watch an error message`, async ({
+    page,
+}) => {
     await navigateToRulesPageRoutine(page, columns);
 
-    //lastPriorityValue = await getLastPriorityRoutine(page);
+    lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, 0);
 
     await openNewRuleForm(page, formSections);
 
@@ -234,7 +246,7 @@ test.skip(`should get an error message`, async ({ page }) => {
     );
     expect(requiredError).toBeTruthy();
 
-    let okButton = page.getByText('Ok');
+    const okButton = page.getByText('Ok');
     await okButton.click();
 
     // Start fill form
@@ -242,16 +254,36 @@ test.skip(`should get an error message`, async ({ page }) => {
 
     const name = page.getByLabel('Nombre *');
     await name.click();
-    await name.fill('Debería fallar');
+    await name.fill(ruleNoConditions.name);
 
-    await selectProvider(page, { name: 'STEF', service: 'Congelado' });
+    await selectProvider(page, ruleNoConditions.provider);
 
     lastPriorityValue = await setPriorityRoutine(page, lastPriorityValue);
 
-    await saveButton.click();
+    let conditionsInUse: boolean = await isAlertDialogText(page, 'Ya existe una regla con esas condiciones.');
 
-    let invalidCondition: boolean = await isAlertDialogText(page, 'Tiene que agregar una condición válida');
-    expect(invalidCondition).toBeFalsy();
+    if (conditionsInUse) {
+        // close modal, close form and watch table
+
+        const okBtn = page.getByText('Ok');
+        await okBtn.click();
+
+        const cancelBtn = page.getByText('Cancelar');
+        await cancelBtn.click();
+
+        await page.reload({
+            waitUntil: 'load',
+        });
+
+        lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, 1);
+
+        expect(await page.getByText(ruleNoConditions.name).count()).toBe(0);
+    } else {
+        // created rule
+
+        expect(await page.getByText(ruleNoConditions.name).count()).not.toBe(0);
+        await assertRuleCreated(page, ruleNoConditions.name);
+    }
 });
 
 rulesParameters.forEach((rule, index) => {
