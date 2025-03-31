@@ -4,7 +4,7 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
     testDir: './tests',
     fullyParallel: true,
-    retries: 2,
+    retries: 0,
     workers: 1,
     reporter: 'line',
     use: {

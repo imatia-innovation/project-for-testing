@@ -1,5 +1,5 @@
 import { expect, Page } from '@playwright/test';
-import { admin, baserUrl } from '../../constants';
+import { admin } from '../../constants';
 import assertList from '../utils/assertList';
 import login from './login';
 import isAlertDialogText from '../utils/isAlertDialogText';
@@ -8,15 +8,16 @@ import RuleService from '../../core/RuleService';
 import getMaxColumnNumericValue from '../utils/getMaxColumnNumericValue';
 import Combination from '../../interfaces/Combination';
 import Provider from '../../interfaces/Provider';
+import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
+import { clickOnText } from '../utils/clickOnText';
+import { labelChangesByProvider } from './providerSelectOption';
 
 export async function navigateToRulesPageRoutine(page: Page, columns: string[]) {
     await login(page, admin);
 
-    const rulesLocator = page.getByText('Reglas');
-    await rulesLocator.first().click();
+    await clickOnText(page, 'Reglas');
 
-    await page.waitForURL(baserUrl + '/app/main/rules');
-    expect(page.url()).toContain(baserUrl + '/app/main/rules');
+    await waitUntilUrlLoads(page, '/app/main/rules');
 
     await assertList(page, columns);
 
@@ -65,21 +66,6 @@ export async function openNewRuleForm(page: Page, formSections: string[]) {
 
     const cancelButtonLocator = page.locator('button').getByText('Cancelar');
     expect(cancelButtonLocator).not.toBeNull();
-}
-
-function labelChangesByProvider(provider: string) {
-    switch (provider) {
-        case 'GLS':
-            return 'Tipo de servicio *';
-        case 'NARVAL':
-            return 'Mercancía *';
-        case 'SEUR':
-            return 'Tipo de servicio *';
-        case 'STEF':
-            return 'Categoría de Frío *';
-    }
-
-    return 'Tipo de servicio *';
 }
 
 export async function selectProvider(page: Page, provider: Provider) {

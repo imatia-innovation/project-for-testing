@@ -13,7 +13,7 @@ import {
     navigateToRulesPageRoutine,
     assertRuleCreated,
     deleteRule,
-} from '../functions/steps/createRuleForm';
+} from '../functions/steps/rulesSteps';
 import CreateRuleFormTest from '../classes/CreateRuleFormTest';
 
 const ruleService = new RuleService();
@@ -156,11 +156,11 @@ const ruleThatFails = new CreateRuleFormTest(
 );
 
 const ruleNoConditions = {
-    name: 'Regla auto test sin condiciones', 
+    name: 'Regla auto test sin condiciones',
     provider: {
         name: 'STEF',
         service: 'Congelado',
-    }
+    },
 };
 
 const rulesParameters: CreateRuleFormTest[] = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10];

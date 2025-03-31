@@ -1,9 +1,8 @@
-import { expect, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
+import assertByText from './assertByText';
 
 export default async function assertList(page: Page, array: string[]) {
     for (let index = 0; index < array.length; index++) {
-        const locator = page.getByText(array[index]);
-        const result = await locator.count();
-        expect(result).not.toBe(0);
+        await assertByText(page, array[index]);
     }
 }
