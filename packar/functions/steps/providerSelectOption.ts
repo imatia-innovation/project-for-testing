@@ -1,6 +1,3 @@
-import { Page } from '@playwright/test';
-import Provider from '../../interfaces/Provider';
-
 export function labelChangesByProvider(provider: string) {
     switch (provider) {
         case 'GLS':
@@ -11,6 +8,8 @@ export function labelChangesByProvider(provider: string) {
             return 'Tipo de servicio *';
         case 'STEF':
             return 'Categoría de Frío *';
+        case 'CORREOS':
+            return 'Tipo de servicio *';
     }
 
     return 'Tipo de servicio *';
@@ -26,7 +25,9 @@ export function labelChangesByProviderOrder(provider: string) {
             return 'Tipo de servicio';
         case 'STEF':
             return 'Categoría de Frío';
+        case 'CORREOS':
+            return 'Tipo de servicio';
     }
 
-    return 'Tipo de servicio *';
+    return 'Tipo de servicio';
 }

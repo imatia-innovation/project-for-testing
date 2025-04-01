@@ -9,6 +9,7 @@ export default defineConfig({
     reporter: 'line',
     use: {
         trace: 'on-first-retry',
+        viewport: { width: 1850, height: 900 },
     },
     projects: [
         {

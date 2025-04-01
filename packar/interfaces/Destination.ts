@@ -1,6 +1,6 @@
 export default interface Destination {
     favorite?: string;
-    name: string;
+    name?: string;
     mail?: string;
     phone?: string;
     phoneSecondary?: string;

@@ -8,18 +8,11 @@ interface ProviderServices {
 export const providerServices: ProviderServices[] = [
     {
         name: 'GLS',
-        services: [
-            'Estándar 24H',
-            'Estándar devoluciones en tienda'
-        ],
+        services: ['Estándar 24H', 'Estándar devoluciones en tienda'],
     },
     {
         name: 'NARVAL',
-        services: [
-            'REFRIGERADO',
-            'CONGELADO',
-            'MIXTO',
-            'SECO'],
+        services: ['REFRIGERADO', 'CONGELADO', 'MIXTO', 'SECO'],
     },
     {
         name: 'SEUR',
@@ -27,26 +20,24 @@ export const providerServices: ProviderServices[] = [
             'SEUR FRIO 13:30',
             'SEUR 48 Estándar (Baleares, Ceuta, Melilla, Madeira)',
             'Entrega Particular Estándar',
-            'Entrega en Sábado'
+            'Entrega en Sábado',
         ],
     },
     {
         name: 'STEF',
-        services: [
-            'Fresco o Seco',
-            'Congelado'],
+        services: ['Fresco o Seco', 'Congelado'],
     },
     {
         name: 'CORREOS',
         services: [
-            'PAQUETE ESTÁNDAR DOMICILIO',
-            'PAQUETE ESTÁNDAR OFICINA',
-            'PAQUETE ESTÁNDAR CITYPAQ',
-            'PAQUETE LIGERO',
-            'PAQUETE RETORNO',
-            'PAQUETE RETORNO PREMIUM',
-            'PAQUETE PREMIUM OFICINA',
-            'PAQUETE PREMIUM DOMICILIO',
+            ' PAQUETE ESTÁNDAR DOMICILIO ',
+            ' PAQUETE ESTÁNDAR OFICINA ',
+            ' PAQUETE ESTÁNDAR CITYPAQ ',
+            ' PAQUETE LIGERO ',
+            ' PAQUETE RETORNO ',
+            ' PAQUETE RETORNO PREMIUM ',
+            ' PAQUETE PREMIUM OFICINA ',
+            ' PAQUETE PREMIUM DOMICILIO ',
         ],
     },
 ];
@@ -58,6 +49,6 @@ export function getProviderService(name: string, index: number = 0): Provider | 
         return {
             name,
             service: providerService.services[index],
-        }
+        };
     }
 }

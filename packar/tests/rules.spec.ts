@@ -18,7 +18,7 @@ import CreateRuleFormTest from '../classes/CreateRuleFormTest';
 
 const ruleService = new RuleService();
 
-const columns: string[] = [
+const COLUMNS: string[] = [
     'Reglas de asignación',
     'Prioridad',
     'Nombre',
@@ -33,9 +33,9 @@ const columns: string[] = [
     'Servicio',
 ];
 
-const formSections: string[] = ['Información', 'Nueva condición', 'Condiciones'];
+const FOMR_SECTIONS: string[] = ['Información', 'Nueva condición', 'Condiciones'];
 
-const propertyOptions: string[] = [
+const PROPERTY_OPTIONS: string[] = [
     'Alto (cm)',
     'Ancho (cm)',
     'Código postal destino',
@@ -45,7 +45,7 @@ const propertyOptions: string[] = [
     'Peso',
 ];
 
-const operatorOptions: string[] = [
+const OPERATOR_OPTIONS: string[] = [
     'Contiene',
     'Distinto de',
     'Igual a',
@@ -55,13 +55,13 @@ const operatorOptions: string[] = [
     'Menor que',
 ];
 
-const combinationsFor100: Calculator = new Calculator(propertyOptions, operatorOptions, '100');
+const combinationsFor100: Calculator = new Calculator(PROPERTY_OPTIONS, OPERATOR_OPTIONS, '100');
 
-const combinationsFor2000: Calculator = new Calculator(propertyOptions, operatorOptions, '2000');
+const combinationsFor2000: Calculator = new Calculator(PROPERTY_OPTIONS, OPERATOR_OPTIONS, '2000');
 
-const combinationsFor2335682: Calculator = new Calculator(propertyOptions, operatorOptions, '2335682');
+const combinationsFor2335682: Calculator = new Calculator(PROPERTY_OPTIONS, OPERATOR_OPTIONS, '2335682');
 
-const combinationAbcdefg = new Calculator(propertyOptions, operatorOptions, 'Abcdefg');
+const combinationAbcdefg = new Calculator(PROPERTY_OPTIONS, OPERATOR_OPTIONS, 'Abcdefg');
 
 let lastPriorityValue = '1';
 
@@ -176,15 +176,15 @@ test.beforeAll('delete tests rules created in the past', async () => {
 });
 
 test(`should go to the Rules Section and sort by Priority descendant order`, async ({ page }) => {
-    await navigateToRulesPageRoutine(page, columns);
+    await navigateToRulesPageRoutine(page, COLUMNS);
 
     lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, 0);
 });
 
 test(`should see an error when try to use the same last priority value`, async ({ page }) => {
-    await navigateToRulesPageRoutine(page, columns);
+    await navigateToRulesPageRoutine(page, COLUMNS);
 
-    await openNewRuleForm(page, formSections);
+    await openNewRuleForm(page, FOMR_SECTIONS);
 
     // Start fill form
     test.slow();
@@ -197,7 +197,7 @@ test(`should see an error when try to use the same last priority value`, async (
 
     await selectProvider(page, { name: 'GLS', service: 'Estándar 24H' });
 
-    await selectAnotherCondition(page, propertyOptions, operatorOptions, combinationsFor100);
+    await selectAnotherCondition(page, PROPERTY_OPTIONS, OPERATOR_OPTIONS, combinationsFor100);
 
     const priorityLocators = page.getByLabel('Prioridad *');
     await priorityLocators.click();
@@ -211,9 +211,9 @@ test(`should see an error when try to use the same last priority value`, async (
 });
 
 test(`should see an error when try to save a rule without fill the inputs`, async ({ page }) => {
-    await navigateToRulesPageRoutine(page, columns);
+    await navigateToRulesPageRoutine(page, COLUMNS);
 
-    await openNewRuleForm(page, formSections);
+    await openNewRuleForm(page, FOMR_SECTIONS);
 
     // Start fill form
     test.slow();
@@ -231,11 +231,11 @@ test(`should see an error when try to save a rule without fill the inputs`, asyn
 test(`should create an rule without conditions if it does not exist and if exist, watch an error message`, async ({
     page,
 }) => {
-    await navigateToRulesPageRoutine(page, columns);
+    await navigateToRulesPageRoutine(page, COLUMNS);
 
     lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, 0);
 
-    await openNewRuleForm(page, formSections);
+    await openNewRuleForm(page, FOMR_SECTIONS);
 
     const saveButton = page.getByText('Guardar');
     await saveButton.click();
@@ -287,14 +287,14 @@ test(`should create an rule without conditions if it does not exist and if exist
 });
 
 rulesParameters.forEach((rule, index) => {
-    test(`should validate a rule with parameters: ${rule.name}, ${propertyOptions[rule.combination.i]} ${operatorOptions[rule.combination.j]} ${rule.combinationMain.value}`, async ({
+    test(`should validate a rule with parameters: ${rule.name}, ${PROPERTY_OPTIONS[rule.combination.i]} ${OPERATOR_OPTIONS[rule.combination.j]} ${rule.combinationMain.value}`, async ({
         page,
     }) => {
-        await navigateToRulesPageRoutine(page, columns);
+        await navigateToRulesPageRoutine(page, COLUMNS);
 
         lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, index);
 
-        await openNewRuleForm(page, formSections);
+        await openNewRuleForm(page, FOMR_SECTIONS);
 
         // Start fill form
         test.slow();
@@ -305,11 +305,11 @@ rulesParameters.forEach((rule, index) => {
 
         await selectProvider(page, rule.provider);
 
-        await selectCondition(page, propertyOptions, operatorOptions, rule.combinationMain, rule.combination);
+        await selectCondition(page, PROPERTY_OPTIONS, OPERATOR_OPTIONS, rule.combinationMain, rule.combination);
 
         lastPriorityValue = await setPriorityRoutine(page, lastPriorityValue);
 
-        await conditionRoutine(page, propertyOptions, operatorOptions, rule.combinationSecondary);
+        await conditionRoutine(page, PROPERTY_OPTIONS, OPERATOR_OPTIONS, rule.combinationSecondary);
 
         await page.reload({
             waitUntil: 'load',

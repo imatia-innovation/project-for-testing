@@ -35,6 +35,7 @@ export async function clickOnButton(page: Page, text: string, n: number = 0): Pr
     const { indexes, buttonLocators } = await locateTheButtonIndex(page, text);
 
     let buttonLocator = indexes.length === 1 ? buttonLocators.nth(indexes[0]) : buttonLocators.nth(indexes[n]);
+
     await buttonLocator.click();
 
     return buttonLocators;

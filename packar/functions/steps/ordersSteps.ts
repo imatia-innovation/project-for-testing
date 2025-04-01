@@ -1,16 +1,17 @@
-import { Page, expect } from '@playwright/test';
-import { admin } from '../../constants';
+import { Locator, Page, expect } from '@playwright/test';
+import { admin, baserUrl } from '../../constants';
 import assertList from '../utils/assertList';
 import login from './login';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
-import { clickOnButton, clickOnElementById, clickOnText, locateTheButtonIndex } from '../utils/clickOnText';
+import { clickOnButton, clickOnElementById, clickOnText } from '../utils/clickOnText';
 import Provider from '../../interfaces/Provider';
 import { labelChangesByProviderOrder } from './providerSelectOption';
 import { getById } from '../utils/getById';
-import Dimension from '../../interfaces/Dimension';
+import Dimension, { CompleteOrderDimension } from '../../interfaces/Dimension';
 import { getByLabelAndFill } from '../utils/getByLabelAndFill';
 import assertByText from '../utils/assertByText';
 import Destination from '../../interfaces/Destination';
+import { formatDate } from '../utils/formatDate';
 
 export async function navigateToOrdersPageRoutine(page: Page, columns: string[]) {
     await login(page, admin);
@@ -75,11 +76,7 @@ export async function fillDateInput(page: Page, order: number, id: string, date:
     const inputLocator = getById(page, id);
     const value = await inputLocator.inputValue();
 
-    const day: number = date.getDate();
-    const month: number = date.getMonth() + 1;
-    const formatDate = `${day.toString().length === 1 ? '0' + day : day}/${month.toString().length === 1 ? '0' + month : month}/${date.getFullYear()}`;
-    
-    expect(value).toEqual(formatDate);
+    expect(value).toEqual(formatDate(date));
 }
 
 export async function selectProvider(page: Page, provider: Provider) {
@@ -117,6 +114,24 @@ export async function selectBox(page: Page, { length, width, height, weight }: D
     await assertByText(page, `${weight} Kg`);
 }
 
+export async function selectCompleteOrder(page: Page, { boxQty, weight }: CompleteOrderDimension) {
+    await clickOnButton(page, 'Pedido Completo');
+
+    await getByLabelAndFill(page, 'Número de Cajas', boxQty.toString());
+
+    await getByLabelAndFill(page, 'Peso (Kg)', weight.toString());
+
+    await clickOnButton(page, ' Asignar Bulto ');
+
+    const weightSplitted = (weight / boxQty).toFixed(2);
+
+    await assertByText(page, 'BOX');
+
+    await assertByText(page, 'Pedido Completo');
+
+    await assertByText(page, `${weightSplitted} Kg`);
+}
+
 export async function selectPallet(
     page: Page,
     type: string,
@@ -124,6 +139,8 @@ export async function selectPallet(
     packagesQty: number
 ) {
     await clickOnButton(page, 'Palets');
+
+    await clickOnButton(page, type);
 
     switch (type) {
         case 'Europalet':
@@ -142,10 +159,6 @@ export async function selectPallet(
             break;
 
         case 'Isopalet':
-            await getByLabelAndFill(page, 'Largo (cm)', length.toString());
-
-            await getByLabelAndFill(page, 'Ancho (cm)', width.toString());
-
             await getByLabelAndFill(page, 'Alto (cm)', height.toString());
 
             await getByLabelAndFill(page, 'Peso (Kg)', weight.toString());
@@ -203,16 +216,63 @@ export async function selectEnvelope(page: Page, { length, width, height, weight
     await assertByText(page, `${weight} Kg`);
 }
 
-export async function fillDestinationOrders(page: Page, destinationInfo: Destination) {
-    if (destinationInfo.favorite) {
+export async function fillDestinationOrders(page: Page, destination: Destination) {
+    if (destination.favorite) {
         // Auto filled inputs are: mail, phone, address, zipCode, population and country
-
         await clickOnElementById(page, 'destination');
-
-        await clickOnText(page, destinationInfo.favorite);
+        await clickOnText(page, destination.favorite);
 
         const remarkLocator = await clickOnElementById(page, 'remarks');
-        await remarkLocator.fill(destinationInfo.remarks);
+        await remarkLocator.fill(destination.remarks);
     } else {
+        console.log('AQUI ESTOY 1');
+
+        await getByLabelAndFill(page, 'Nombre de Dirección *', destination.name!);
+
+        let phoneLabel = 'Teléfono *';
+
+        if (destination.mail) {
+            await getByLabelAndFill(page, 'Mail *', destination.mail);
+            phoneLabel = 'Teléfono';
+        }
+
+        if (destination.phone) {
+            await getByLabelAndFill(page, phoneLabel, destination.phone);
+        }
+
+        if (destination.phoneSecondary)
+            await getByLabelAndFill(page, 'Teléfono Secundario', destination.phoneSecondary);
+
+        // 'Dirección *'
+        const streetLocator = await clickOnElementById(page, 'street');
+        await streetLocator.fill(destination.address!);
+
+        await getByLabelAndFill(page, 'Codigo postal *', destination.zipCode!);
+
+        await getByLabelAndFill(page, 'Población *', destination.population!);
+
+        if (!destination.country) {
+            await clickOnElementById(page, 'country');
+            await clickOnText(page, 'Spain');
+        }
+
+        if (destination.country && destination.country != 'Spain') {
+            await clickOnElementById(page, 'country');
+            await clickOnText(page, destination.country);
+        }
+
+        await getByLabelAndFill(page, 'Observaciones', destination.remarks);
+
+        console.log('AQUI ESTOY 2');
     }
+}
+
+export async function navigateToOrderDetailPage(page: Page, orderId: string) {
+    await page.goto(baserUrl + `/app/main/order/${orderId}?isdetail=true`);
+
+    await page.waitForURL(baserUrl + `/app/main/order/${orderId}?isdetail=true`);
+}
+
+export async function assertOrderDetailPageData(page: Page) {
+    await assertByText(page, `Nº REFERENCIA CLIENTE: `);
 }

@@ -4,3 +4,8 @@ export default interface Dimension {
     height: number;
     weight: number;
 }
+
+export interface CompleteOrderDimension {
+    boxQty: number;
+    weight: number;
+}
