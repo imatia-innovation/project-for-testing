@@ -225,8 +225,6 @@ export async function fillDestinationOrders(page: Page, destination: Destination
         const remarkLocator = await clickOnElementById(page, 'remarks');
         await remarkLocator.fill(destination.remarks);
     } else {
-        console.log('AQUI ESTOY 1');
-
         await getByLabelAndFill(page, 'Nombre de Dirección *', destination.name!);
 
         let phoneLabel = 'Teléfono *';
@@ -262,8 +260,6 @@ export async function fillDestinationOrders(page: Page, destination: Destination
         }
 
         await getByLabelAndFill(page, 'Observaciones', destination.remarks);
-
-        console.log('AQUI ESTOY 2');
     }
 }
 
@@ -275,4 +271,53 @@ export async function navigateToOrderDetailPage(page: Page, orderId: string) {
 
 export async function assertOrderDetailPageData(page: Page) {
     await assertByText(page, `Nº REFERENCIA CLIENTE: `);
+}
+
+export async function locateRow(page: Page, reference: string) {
+    const rowsLocators: Locator = page.getByRole('row');
+
+    const rowsLocatorsArray: Locator[] = await rowsLocators.all();
+
+    let rows = [];
+
+    for (let index = 0; index < rowsLocatorsArray.length; index++) {
+        const rowLocator: Locator = rowsLocatorsArray[index];
+
+        const innerText: null | string = await rowLocator.innerText();
+
+        if (innerText) {
+            const rowTexts: string[] = innerText.replace(/\t\n/g, '').split(/\n/g);
+            const rowText: string = rowTexts.join(',');
+            rows.push(rowText);
+        }
+    }
+
+    let index = 0;
+    const row = rows.find((row, i) => {
+        index = i;
+        return row.includes(reference);
+    });
+
+    return { rowsLocators, index, rowLocator: rowsLocators.nth(index), rowText: row };
+}
+
+export async function checkRow(page: Page, reference: string, attribute: string, value: string) {
+    const { rowLocator } = await locateRow(page, reference);
+
+    const checkboxOnRow = rowLocator.locator(`[${attribute}='${value}']`).first();
+
+    await checkboxOnRow.click();
+}
+
+export async function checkHeaderRow(page: Page) {
+    const checkboxOnRow = page.getByRole('columnheader').first();
+
+    await checkboxOnRow.click();
+}
+
+export async function assertTextInRow(page: Page, reference: string, text: string) {
+    const { rowText } = await locateRow(page, reference);
+
+    expect(rowText).not.toBeUndefined();
+    expect(rowText!.includes(text)).toBeTruthy();
 }

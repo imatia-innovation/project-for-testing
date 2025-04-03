@@ -28,6 +28,8 @@ export async function locateTheButtonIndex(page: Page, text: string) {
         }
     }
 
+    //console.log("locateTheButtonIndex", {text, buttonLocatorsText, indexes})
+
     return { indexes, buttonLocators };
 }
 

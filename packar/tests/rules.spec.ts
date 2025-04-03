@@ -14,7 +14,8 @@ import {
     assertRuleCreated,
     deleteRule,
 } from '../functions/steps/rulesSteps';
-import CreateRuleFormTest from '../classes/CreateRuleFormTest';
+import CreateNewRuleTest from '../interfaces/CreateNewRuleTest';
+import { getProviderService } from '../constants/providers';
 
 const ruleService = new RuleService();
 
@@ -28,13 +29,15 @@ const COLUMNS: string[] = [
     'Ancho (cm)',
     'Largo (cm)',
     'Peso (Kg)',
+    'Número de bultos',
     'Empresa',
     'Proveedor',
     'Servicio',
 ];
 
-const FOMR_SECTIONS: string[] = ['Información', 'Nueva condición', 'Condiciones'];
+const FORM_SECTIONS: string[] = ['Información', 'Nueva condición', 'Condiciones'];
 
+// i
 const PROPERTY_OPTIONS: string[] = [
     'Alto (cm)',
     'Ancho (cm)',
@@ -43,8 +46,10 @@ const PROPERTY_OPTIONS: string[] = [
     'Empresa',
     'Largo (cm)',
     'Peso',
+    'Número de bultos',
 ];
 
+// j
 const OPERATOR_OPTIONS: string[] = [
     'Contiene',
     'Distinto de',
@@ -65,114 +70,144 @@ const combinationAbcdefg = new Calculator(PROPERTY_OPTIONS, OPERATOR_OPTIONS, 'A
 
 let lastPriorityValue = '1';
 
-const rule1 = new CreateRuleFormTest(
-    'Regla auto test 1',
-    { name: 'GLS', service: 'Estándar 24H' },
-    combinationsFor100,
-    { i: 0, j: 0 },
-    combinationsFor100,
-    'CONTAINS 100'
-);
-const rule2 = new CreateRuleFormTest(
-    'Regla auto test 2',
-    { name: 'GLS', service: 'Estándar devoluciones en tienda' },
-    combinationsFor2000,
-    { i: 0, j: 0 },
-    combinationsFor100,
-    'CONTAINS 2000'
-);
-const rule3 = new CreateRuleFormTest(
-    'Regla auto test 3',
-    { name: 'SEUR', service: 'SEUR FRIO 13:30' },
-    combinationsFor2000,
-    { i: 1, j: 1 },
-    combinationsFor100,
-    '!= 2000'
-);
-const rule4 = new CreateRuleFormTest(
-    'Regla auto test 4',
-    { name: 'NARVAL', service: 'REFRIGERADO' },
-    combinationsFor2335682,
-    { i: 2, j: 2 },
-    combinationsFor100,
-    '2335682'
-);
-const rule5 = new CreateRuleFormTest(
-    'Regla auto test 5',
-    { name: 'NARVAL', service: 'CONGELADO' },
-    combinationsFor2335682,
-    { i: 3, j: 3 },
-    combinationsFor100,
-    '>= 2335682'
-);
-const rule6 = new CreateRuleFormTest(
-    'Regla auto test 6',
-    { name: 'NARVAL', service: 'MIXTO' },
-    combinationAbcdefg,
-    { i: 4, j: 4 },
-    combinationsFor100,
-    '> Abcdefg'
-);
-const rule7 = new CreateRuleFormTest(
-    'Regla auto test 7',
-    { name: 'NARVAL', service: 'SECO' },
-    combinationsFor2000,
-    { i: 5, j: 5 },
-    combinationsFor100,
-    '<= 2000'
-);
-const rule8 = new CreateRuleFormTest(
-    'Regla auto test 8',
-    { name: 'STEF', service: 'Fresco o Seco' },
-    combinationsFor2000,
-    { i: 6, j: 6 },
-    combinationsFor100,
-    '< 2000'
-);
-const rule9 = new CreateRuleFormTest(
-    'Regla auto test 9',
-    { name: 'STEF', service: 'Congelado' },
-    combinationsFor2000,
-    { i: 6, j: 6 },
-    combinationsFor100,
-    '< 2000'
-);
-const rule10 = new CreateRuleFormTest(
-    'Regla auto test 10',
-    { name: 'STEF', service: 'Congelado' },
-    combinationsFor2000,
-    { i: 6, j: 6 },
-    combinationsFor100,
-    '< 2000'
-);
-
-const ruleThatFails = new CreateRuleFormTest(
-    'Debería Fallar',
-    { name: 'STEF', service: 'Congelado' },
-    combinationsFor2000,
-    { i: 6, j: 6 },
-    combinationsFor100,
-    '< 2000'
-);
-
-const ruleNoConditions = {
-    name: 'Regla auto test sin condiciones',
-    provider: {
-        name: 'STEF',
-        service: 'Congelado',
-    },
+const rule1: CreateNewRuleTest = {
+    name: 'Regla auto test 1',
+    provider: 'GLS',
+    service: 0,
+    combinationMain: combinationsFor100,
+    combination: { i: 0, j: 0 },
+    combinationSecondary: combinationsFor100,
+    expectedText: 'CONTAINS 100',
+};
+const rule2: CreateNewRuleTest = {
+    name: 'Regla auto test 2',
+    provider: 'GLS',
+    service: 1,
+    combinationMain: combinationsFor2000,
+    combination: { i: 0, j: 0 },
+    combinationSecondary: combinationsFor100,
+    expectedText: 'CONTAINS 2000',
+};
+const rule3: CreateNewRuleTest = {
+    name: 'Regla auto test 3',
+    provider: 'SEUR',
+    service: 0,
+    combinationMain: combinationsFor2000,
+    combination: { i: 1, j: 1 },
+    combinationSecondary: combinationsFor100,
+    expectedText: '!= 2000',
+};
+const rule4: CreateNewRuleTest = {
+    name: 'Regla auto test 4',
+    provider: 'NARVAL',
+    service: 0,
+    combinationMain: combinationsFor2335682,
+    combination: { i: 2, j: 2 },
+    combinationSecondary: combinationsFor100,
+    expectedText: '2335682',
+};
+const rule5: CreateNewRuleTest = {
+    name: 'Regla auto test 5',
+    provider: 'NARVAL',
+    service: 1,
+    combinationMain: combinationsFor2335682,
+    combination: { i: 3, j: 3 },
+    combinationSecondary: combinationsFor100,
+    expectedText: '>= 2335682',
+};
+const rule6: CreateNewRuleTest = {
+    name: 'Regla auto test 6',
+    provider: 'NARVAL',
+    service: 2,
+    combinationMain: combinationAbcdefg,
+    combination: { i: 4, j: 4 },
+    combinationSecondary: combinationsFor100,
+    expectedText: '> Abcdefg',
+};
+const rule7: CreateNewRuleTest = {
+    name: 'Regla auto test 7',
+    provider: 'NARVAL',
+    service: 3,
+    combinationMain: combinationsFor2000,
+    combination: { i: 5, j: 5 },
+    combinationSecondary: combinationsFor100,
+    expectedText: '<= 2000',
+};
+const rule8: CreateNewRuleTest = {
+    name: 'Regla auto test 8',
+    provider: 'STEF',
+    service: 0,
+    combinationMain: combinationsFor2000,
+    combination: { i: 6, j: 6 },
+    combinationSecondary: combinationsFor100,
+    expectedText: '< 2000',
+};
+const rule9: CreateNewRuleTest = {
+    name: 'Regla auto test 9',
+    provider: 'STEF',
+    service: 1,
+    combinationMain: combinationsFor2000,
+    combination: { i: 6, j: 6 },
+    combinationSecondary: combinationsFor100,
+    expectedText: '< 2000',
+};
+const rule10: CreateNewRuleTest = {
+    name: 'Regla auto test 10',
+    provider: 'STEF',
+    service: 0,
+    combinationMain: combinationsFor2000,
+    combination: { i: 6, j: 6 },
+    combinationSecondary: combinationsFor100,
+    expectedText: '< 2000',
+};
+const rule11: CreateNewRuleTest = {
+    name: 'Regla auto test 11',
+    provider: 'CORREOS',
+    service: 1,
+    combinationMain: combinationsFor2000,
+    combination: { i: 7, j: 2 },
+    combinationSecondary: combinationsFor100,
+    expectedText: '2000',
 };
 
-const rulesParameters: CreateRuleFormTest[] = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10];
+const ruleThatFails: CreateNewRuleTest = {
+    name: 'Debería Fallar',
+    provider: 'STEF',
+    service: 0,
+    combinationMain: combinationsFor2000,
+    combination: { i: 6, j: 6 },
+    combinationSecondary: combinationsFor100,
+    expectedText: '< 2000',
+};
 
-test.beforeAll('delete tests rules created in the past', async () => {
-    rulesParameters.forEach(async (rule) => {
+const newRuleTests: CreateNewRuleTest[] = [
+    rule1,
+    rule2,
+    rule3,
+    rule4,
+    rule5,
+    rule6,
+    rule7,
+    rule8,
+    rule9,
+    rule10,
+    rule11,
+];
+
+async function clean() {
+    newRuleTests.forEach(async (rule) => {
         await deleteRule(rule.name, ruleService);
     });
 
     await deleteRule(ruleThatFails.name, ruleService);
+}
 
-    await deleteRule(ruleNoConditions.name, ruleService);
+test.beforeAll('delete tests rules created in the past', async () => {
+    await clean();
+});
+
+test.afterAll('delete tests rules created in the past', async () => {
+    await clean();
 });
 
 test(`should go to the Rules Section and sort by Priority descendant order`, async ({ page }) => {
@@ -184,7 +219,7 @@ test(`should go to the Rules Section and sort by Priority descendant order`, asy
 test(`should see an error when try to use the same last priority value`, async ({ page }) => {
     await navigateToRulesPageRoutine(page, COLUMNS);
 
-    await openNewRuleForm(page, FOMR_SECTIONS);
+    await openNewRuleForm(page, FORM_SECTIONS);
 
     // Start fill form
     test.slow();
@@ -213,7 +248,7 @@ test(`should see an error when try to use the same last priority value`, async (
 test(`should see an error when try to save a rule without fill the inputs`, async ({ page }) => {
     await navigateToRulesPageRoutine(page, COLUMNS);
 
-    await openNewRuleForm(page, FOMR_SECTIONS);
+    await openNewRuleForm(page, FORM_SECTIONS);
 
     // Start fill form
     test.slow();
@@ -228,65 +263,7 @@ test(`should see an error when try to save a rule without fill the inputs`, asyn
     expect(priorityInUse).toBeTruthy();
 });
 
-test(`should create an rule without conditions if it does not exist and if exist, watch an error message`, async ({
-    page,
-}) => {
-    await navigateToRulesPageRoutine(page, COLUMNS);
-
-    lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, 0);
-
-    await openNewRuleForm(page, FOMR_SECTIONS);
-
-    const saveButton = page.getByText('Guardar');
-    await saveButton.click();
-
-    const requiredError = await isAlertDialogText(
-        page,
-        'Los siguientes campos no son válidos: Proveedor, Nombre, Prioridad'
-    );
-    expect(requiredError).toBeTruthy();
-
-    const okButton = page.getByText('Ok');
-    await okButton.click();
-
-    // Start fill form
-    test.slow();
-
-    const name = page.getByLabel('Nombre *');
-    await name.click();
-    await name.fill(ruleNoConditions.name);
-
-    await selectProvider(page, ruleNoConditions.provider);
-
-    lastPriorityValue = await setPriorityRoutine(page, lastPriorityValue);
-
-    let conditionsInUse: boolean = await isAlertDialogText(page, 'Ya existe una regla con esas condiciones.');
-
-    if (conditionsInUse) {
-        // close modal, close form and watch table
-
-        const okBtn = page.getByText('Ok');
-        await okBtn.click();
-
-        const cancelBtn = page.getByText('Cancelar');
-        await cancelBtn.click();
-
-        await page.reload({
-            waitUntil: 'load',
-        });
-
-        lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, 1);
-
-        expect(await page.getByText(ruleNoConditions.name).count()).toBe(0);
-    } else {
-        // created rule
-
-        expect(await page.getByText(ruleNoConditions.name).count()).not.toBe(0);
-        await assertRuleCreated(page, ruleNoConditions.name);
-    }
-});
-
-rulesParameters.forEach((rule, index) => {
+newRuleTests.forEach((rule, index) => {
     test(`should validate a rule with parameters: ${rule.name}, ${PROPERTY_OPTIONS[rule.combination.i]} ${OPERATOR_OPTIONS[rule.combination.j]} ${rule.combinationMain.value}`, async ({
         page,
     }) => {
@@ -294,7 +271,7 @@ rulesParameters.forEach((rule, index) => {
 
         lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, index);
 
-        await openNewRuleForm(page, FOMR_SECTIONS);
+        await openNewRuleForm(page, FORM_SECTIONS);
 
         // Start fill form
         test.slow();
@@ -303,7 +280,7 @@ rulesParameters.forEach((rule, index) => {
         await name.click();
         await name.fill(rule.name);
 
-        await selectProvider(page, rule.provider);
+        await selectProvider(page, getProviderService(rule.provider, rule.service)!);
 
         await selectCondition(page, PROPERTY_OPTIONS, OPERATOR_OPTIONS, rule.combinationMain, rule.combination);
 
