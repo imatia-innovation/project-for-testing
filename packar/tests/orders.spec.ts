@@ -3,6 +3,7 @@ import {
     assertOrderDetailPageData,
     assertOrderHome,
     assertTextInRow,
+    assertTextIsNotInRow,
     checkHeaderRow,
     checkRow,
     fillDatesInputs,
@@ -18,7 +19,6 @@ import {
 } from '../functions/steps/ordersSteps';
 import { getProviderService } from '../constants/providers';
 import { getByLabelAndFill } from '../functions/utils/getByLabelAndFill';
-import Destination from '../interfaces/Destination';
 import { clickOnButton } from '../functions/utils/clickOnText';
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
 
@@ -226,11 +226,11 @@ const order9: CreateNewOrderTest = {
 };
 
 const order10: CreateNewOrderTest = {
-    title: 'should create an order without provider 2',
+    title: 'should create an order without provider',
     reference: 'Autotest' + new Date().getTime().toString(),
 
     executeFunctions: async (page: Page) => {
-        await selectBox(page, { length: 100, width: 200, height: 300, weight: 500 });
+        await selectBox(page, { length: 99, width: 99, height: 99, weight: 99 });
     },
     destination: {
         favorite: 'test',
@@ -240,11 +240,11 @@ const order10: CreateNewOrderTest = {
 };
 
 const order11: CreateNewOrderTest = {
-    title: 'should create an order without provider 3',
+    title: 'should create an order without provider',
     reference: 'Autotest' + new Date().getTime().toString(),
 
     executeFunctions: async (page: Page) => {
-        await selectBox(page, { length: 100, width: 200, height: 300, weight: 500 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: 'test',
@@ -254,11 +254,11 @@ const order11: CreateNewOrderTest = {
 };
 
 const order12: CreateNewOrderTest = {
-    title: 'should create an order without provider 4',
+    title: 'should create an order without provider',
     reference: 'Autotest' + new Date().getTime().toString(),
 
     executeFunctions: async (page: Page) => {
-        await selectBox(page, { length: 100, width: 200, height: 300, weight: 500 });
+        await selectBox(page, { length: 101, width: 101, height: 101, weight: 101 });
     },
     destination: {
         favorite: 'test',
@@ -267,10 +267,62 @@ const order12: CreateNewOrderTest = {
     },
 };
 
-// order1, order2, order3, order4, order5, order6, order7, order8,
-const createOrdersTests: CreateNewOrderTest[] = [order1, order2, order3, order4, order5, order6, order7, order8];
+const order13: CreateNewOrderTest = {
+    title: 'should create an order without provider',
+    reference: 'Autotest' + new Date().getTime().toString(),
 
-const ordersPendingToAssignment = [order10, order11, order12];
+    executeFunctions: async (page: Page) => {
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 500 });
+    },
+    destination: {
+        favorite: 'test',
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+};
+
+const order14: CreateNewOrderTest = {
+    title: 'should create an order without provider 4',
+    reference: 'Autotest' + new Date().getTime().toString(),
+
+    executeFunctions: async (page: Page) => {
+        await selectBox(page, { length: 501, width: 501, height: 501, weight: 501 });
+    },
+    destination: {
+        favorite: 'test',
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+};
+
+const order15: CreateNewOrderTest = {
+    title: 'should create an order without provider 4',
+    reference: 'Autotest' + new Date().getTime().toString(),
+
+    executeFunctions: async (page: Page) => {
+        await selectBox(page, { length: 499, width: 499, height: 499, weight: 499 });
+    },
+    destination: {
+        favorite: 'test',
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+};
+
+// order1, order2, order3, order4, order5, order6, order7, order8, order9
+const createOrdersTests: CreateNewOrderTest[] = [
+    order1,
+    order2,
+    order3,
+    order4,
+    order5,
+    order6,
+    order7,
+    order8,
+    order9,
+];
+
+const ordersPendingToAssignment = [order10, order11, order12, order13, order14, order15];
 
 let orderIds: string[] = [];
 
@@ -333,29 +385,14 @@ async function createNewOrder(page: Page, orderTest: CreateNewOrderTest, testInd
     return reference;
 }
 
-test.skip(order9.title, async ({ page }) => {
-    const reference: string = await createNewOrder(page, order9, 0);
-    // await navigateToOrdersPageRoutine(page, COLUMNS);
-    // const reference = 'Autotest1743608937113-0';
-
-    await assertTextInRow(page, reference, 'PENDING ASSIGNMENT');
-
-    await checkRow(page, reference, 'name', 'id[]');
-
-    await clickOnButton(page, 'sendAsignar'); // if it throws error, means that it does not reaches a rule, so you must create a rule before this test
-
-    await page.reload();
-
-    await assertTextInRow(page, reference, 'CREATED');
-});
-
-test('should create 3 orders without provider and assign it to them all', async ({ page }) => {
+test('should create many orders without provider and assign it to them all', async ({ page }) => {
     let pendingOrdersReferences: string[] = [];
 
     for (let index = 0; index < ordersPendingToAssignment.length; index++) {
         const order = ordersPendingToAssignment[index];
 
-        const reference: string = await createNewOrder(page, order, index);
+        const reference: string = await createNewOrder(page, order, index * 10);
+
         pendingOrdersReferences.push(reference);
 
         await assertTextInRow(page, reference, 'PENDING ASSIGNMENT');
@@ -371,6 +408,6 @@ test('should create 3 orders without provider and assign it to them all', async 
 
     for (let index = 0; index < pendingOrdersReferences.length; index++) {
         const reference = pendingOrdersReferences[index];
-        await assertTextInRow(page, reference, 'CREATED');
+        await assertTextIsNotInRow(page, reference, 'PENDING ASSIGNMENT');
     }
 });

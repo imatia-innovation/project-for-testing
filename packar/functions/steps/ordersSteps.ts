@@ -321,3 +321,10 @@ export async function assertTextInRow(page: Page, reference: string, text: strin
     expect(rowText).not.toBeUndefined();
     expect(rowText!.includes(text)).toBeTruthy();
 }
+
+export async function assertTextIsNotInRow(page: Page, reference: string, text: string) {
+    const { rowText } = await locateRow(page, reference);
+
+    expect(rowText).not.toBeUndefined();
+    expect(rowText!.includes(text)).not.toBeTruthy();
+}
