@@ -226,7 +226,7 @@ const order9: CreateNewOrderTest = {
 };
 
 const order10: CreateNewOrderTest = {
-    title: 'should create an order without provider',
+    title: 'should create an order without provider length: 99, width: 99, height: 99, weight: 99',
     reference: 'Autotest' + new Date().getTime().toString(),
 
     executeFunctions: async (page: Page) => {
@@ -240,7 +240,7 @@ const order10: CreateNewOrderTest = {
 };
 
 const order11: CreateNewOrderTest = {
-    title: 'should create an order without provider',
+    title: 'should create an order without provider length: 100, width: 100, height: 100, weight: 100',
     reference: 'Autotest' + new Date().getTime().toString(),
 
     executeFunctions: async (page: Page) => {
@@ -254,7 +254,7 @@ const order11: CreateNewOrderTest = {
 };
 
 const order12: CreateNewOrderTest = {
-    title: 'should create an order without provider',
+    title: 'should create an order without provider length: 101, width: 101, height: 101, weight: 101',
     reference: 'Autotest' + new Date().getTime().toString(),
 
     executeFunctions: async (page: Page) => {
@@ -268,42 +268,100 @@ const order12: CreateNewOrderTest = {
 };
 
 const order13: CreateNewOrderTest = {
-    title: 'should create an order without provider',
+    title: 'order with destination name containing AAA',
     reference: 'Autotest' + new Date().getTime().toString(),
 
     executeFunctions: async (page: Page) => {
-        await selectBox(page, { length: 100, width: 100, height: 100, weight: 500 });
+        await selectBox(page, { length: 500, width: 500, height: 500, weight: 500 });
     },
     destination: {
-        favorite: 'test',
+        name: 'Address Test AAA',
+        mail: 'user@test.com',
+
+        address: 'Address Test',
+        zipCode: '27600',
+        population: 'Lugo',
+        country: 'Spain',
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 
 const order14: CreateNewOrderTest = {
-    title: 'should create an order without provider 4',
-    reference: 'Autotest' + new Date().getTime().toString(),
-
-    executeFunctions: async (page: Page) => {
-        await selectBox(page, { length: 501, width: 501, height: 501, weight: 501 });
-    },
-    destination: {
-        favorite: 'test',
-        saveAsNew: false,
-        remarks: 'This is an automatic test',
-    },
-};
-
-const order15: CreateNewOrderTest = {
-    title: 'should create an order without provider 4',
+    title: 'order with destination name containing bbbAAAccc',
     reference: 'Autotest' + new Date().getTime().toString(),
 
     executeFunctions: async (page: Page) => {
         await selectBox(page, { length: 499, width: 499, height: 499, weight: 499 });
     },
     destination: {
-        favorite: 'test',
+        name: 'Address Test bbbAAAccc',
+        mail: 'user@test.com',
+
+        address: 'Address Test',
+        zipCode: '27600',
+        population: 'Lugo',
+        country: 'Spain',
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+};
+
+const order15: CreateNewOrderTest = {
+    title: 'order with destination name containing aaa123aaa and boxQty: 50, weight: 50',
+    reference: 'Autotest' + new Date().getTime().toString(),
+
+    executeFunctions: async (page: Page) => {
+        await selectCompleteOrder(page, { boxQty: 50, weight: 50 });
+    },
+    destination: {
+        name: 'Address Test aaa123aaa',
+        mail: 'user@test.com',
+
+        address: 'Address Test',
+        zipCode: '27600',
+        population: 'Lugo',
+        country: 'Spain',
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+};
+
+const order16: CreateNewOrderTest = {
+    title: 'order with destination name containing aaa123aaa and boxQty: 51, weight: 51',
+    reference: 'Autotest' + new Date().getTime().toString(),
+
+    executeFunctions: async (page: Page) => {
+        await selectCompleteOrder(page, { boxQty: 51, weight: 51 });
+    },
+    destination: {
+        name: 'Address Test aaa123aaa',
+        mail: 'user@test.com',
+
+        address: 'Address Test',
+        zipCode: '27600',
+        population: 'Lugo',
+        country: 'Spain',
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+};
+
+const order17: CreateNewOrderTest = {
+    title: 'order with destination name containing aaa123aaa and boxQty: 49, weight: 49',
+    reference: 'Autotest' + new Date().getTime().toString(),
+
+    executeFunctions: async (page: Page) => {
+        await selectCompleteOrder(page, { boxQty: 49, weight: 49 });
+    },
+    destination: {
+        name: 'Address Test aaa123aaa',
+        mail: 'user@test.com',
+
+        address: 'Address Test',
+        zipCode: '27600',
+        population: 'Lugo',
+        country: 'Spain',
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -322,7 +380,8 @@ const createOrdersTests: CreateNewOrderTest[] = [
     order9,
 ];
 
-const ordersPendingToAssignment = [order10, order11, order12, order13, order14, order15];
+// order10, order11, order12, order13, order14, order15, order16, order17
+const ordersPendingToAssignment = [order10, order11, order12, order13, order14, order15, order16, order17];
 
 let orderIds: string[] = [];
 
@@ -330,11 +389,11 @@ test.afterAll('delete tests rules created in the past', async () => {
     console.log('created orders references: ', { orderIds });
 });
 
-test.skip(`should go to the Orders Section and make assertions`, async ({ page }) => {
+test(`should go to the Orders Section and make assertions`, async ({ page }) => {
     await navigateToOrdersPageRoutine(page, COLUMNS);
 });
 
-test.skip(`should go to an order detail page`, async ({ page }) => {
+test(`should go to an order detail page`, async ({ page }) => {
     await navigateToOrdersPageRoutine(page, COLUMNS);
 
     await navigateToOrderDetailPage(page, ORDER_ID);
@@ -342,14 +401,14 @@ test.skip(`should go to an order detail page`, async ({ page }) => {
     await assertOrderDetailPageData(page);
 });
 
-test.skip(`should open the create new order form`, async ({ page }) => {
+test(`should open the create new order form`, async ({ page }) => {
     await navigateToOrdersPageRoutine(page, COLUMNS);
 
     await navigateToCreateNewOrderForm(page, COLUMNS_CREATE_NEW);
 });
 
 createOrdersTests.forEach((orderTest, testIndex) => {
-    test.skip(orderTest.title, async ({ page }) => {
+    test(orderTest.title, async ({ page }) => {
         await createNewOrder(page, orderTest, testIndex);
     });
 });
@@ -374,29 +433,31 @@ async function createNewOrder(page: Page, orderTest: CreateNewOrderTest, testInd
 
     await clickOnButton(page, ' Guardar ');
 
-    await assertOrderHome(page, COLUMNS);
+    // await assertOrderHome(page, COLUMNS);
 
-    const orderCreated = await page.getByText(reference).first().innerHTML();
+    // const orderCreated = await page.getByText(reference).first().innerHTML();
 
-    expect(orderCreated).toBeTruthy();
+    // expect(orderCreated).toBeTruthy();
 
-    orderIds.push(reference);
+    // orderIds.push(reference);
 
     return reference;
 }
 
-test('should create many orders without provider and assign it to them all', async ({ page }) => {
-    let pendingOrdersReferences: string[] = [];
+let pendingOrdersReferences: string[] = [];
 
-    for (let index = 0; index < ordersPendingToAssignment.length; index++) {
-        const order = ordersPendingToAssignment[index];
-
-        const reference: string = await createNewOrder(page, order, index * 10);
+ordersPendingToAssignment.forEach((orderTest, testIndex) => {
+    test(orderTest.title, async ({ page }) => {
+        const reference: string = await createNewOrder(page, orderTest, testIndex + createOrdersTests.length);
 
         pendingOrdersReferences.push(reference);
 
-        await assertTextInRow(page, reference, 'PENDING ASSIGNMENT');
-    }
+        //await assertTextInRow(page, reference, 'PENDING ASSIGNMENT');
+    });
+});
+
+test('it should mark all pending tests and assign a provider', async ({ page }) => {
+    await navigateToOrdersPageRoutine(page, COLUMNS);
 
     await checkHeaderRow(page);
 

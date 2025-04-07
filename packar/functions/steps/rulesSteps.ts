@@ -10,6 +10,8 @@ import Combination from '../../interfaces/Combination';
 import Provider from '../../interfaces/Provider';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import { clickOnText } from '../utils/clickOnText';
+import { getByAttribute } from '../utils/getByAttribute';
+import { getById } from '../utils/getById';
 import { labelChangesByProvider } from './providerSelectOption';
 
 export async function navigateToRulesPageRoutine(page: Page, columns: string[]) {
@@ -27,7 +29,7 @@ export async function navigateToRulesPageRoutine(page: Page, columns: string[]) 
 
 export async function getLastPriorityRoutine(page: Page, lastPriorityValue: string, index: number) {
     //Select 100 in te pagination
-    const paginationSelectOption = page.getByRole('listbox');
+    const paginationSelectOption = page.getByRole('combobox');
     await paginationSelectOption.click();
 
     const optionLast = page.getByRole('option').last();
@@ -69,15 +71,14 @@ export async function openNewRuleForm(page: Page, formSections: string[]) {
 }
 
 export async function selectProvider(page: Page, provider: Provider) {
-    const providerLabel = page.getByLabel('Proveedor *');
+    const providerLabel = getByAttribute(page, 'attr', 'courier');
     await providerLabel.click();
     const providerLocators = page.getByText(provider.name);
     await providerLocators.last().click();
 
-    const label: string = labelChangesByProvider(provider.name);
-
-    const service = page.getByLabel(label);
+    const service = getByAttribute(page, 'attr', 'service_type');
     await service.click();
+
     const serviceLocators = page.getByText(provider.service);
     await serviceLocators.last().click();
 }
@@ -85,11 +86,11 @@ export async function selectProvider(page: Page, provider: Provider) {
 export async function setPriorityRoutine(page: Page, lastPriorityValue: string): Promise<string> {
     let priority: number = Number(lastPriorityValue) + 1;
 
-    const priorityLocators = page.getByLabel('Prioridad *');
+    const priorityLocator = getById(page, 'priority');
 
     //await priorityLocators.click();
 
-    await priorityLocators.fill(priority.toString());
+    await priorityLocator.fill(priority.toString());
 
     const saveButton = page.getByText('Guardar');
     await saveButton.click();
@@ -102,7 +103,7 @@ export async function setPriorityRoutine(page: Page, lastPriorityValue: string):
 
         priority = priority + 1;
 
-        const priorityLocators = page.getByLabel('Prioridad *');
+        const priorityLocators = getById(page, 'priority');
         //await priorityLocators.click();
         await priorityLocators.fill(priority.toString());
 
@@ -154,21 +155,21 @@ export async function selectAnotherCondition(
     operatorOptions: string[],
     calculator: Calculator
 ) {
-    const property = page.getByLabel('Propiedad *');
+    const property = getByAttribute(page, 'attr', 'property');
     await property.click();
     await assertList(page, propertyOptions);
 
     const propertyLocator = page.getByText(propertyOptions[calculator.combination.i]);
     await propertyLocator.last().click();
 
-    const operator = page.getByLabel('Operador *');
+    const operator = getByAttribute(page, 'attr', 'operator');
     await operator.click();
     await assertList(page, operatorOptions);
 
     const operationLocators = page.getByText(operatorOptions[calculator.combination.j]);
     await operationLocators.last().click();
 
-    const value = page.getByLabel('Valor *');
+    const value = getById(page, 'value');
     await value.click();
     await value.fill(calculator.value);
 
@@ -185,21 +186,21 @@ export async function selectCondition(
     calculator: Calculator,
     combination: Combination
 ) {
-    const property = page.getByLabel('Propiedad *');
+    const property = getByAttribute(page, 'attr', 'property');
     await property.click();
     await assertList(page, propertyOptions);
 
     const propertyLocator = page.getByText(propertyOptions[combination.i]);
     await propertyLocator.last().click();
 
-    const operator = page.getByLabel('Operador *');
+    const operator = getByAttribute(page, 'attr', 'operator');
     await operator.click();
     await assertList(page, operatorOptions);
 
     const operationLocators = page.getByText(operatorOptions[combination.j]);
     await operationLocators.last().click();
 
-    const value = page.getByLabel('Valor *');
+    const value = getById(page, 'value');
     await value.click();
     await value.fill(calculator.value);
 

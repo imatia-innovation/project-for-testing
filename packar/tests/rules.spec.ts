@@ -16,6 +16,8 @@ import {
 } from '../functions/steps/rulesSteps';
 import CreateNewRuleTest from '../interfaces/CreateNewRuleTest';
 import { getProviderService } from '../constants/providers';
+import { getById } from '../functions/utils/getById';
+import { getByAttribute } from '../functions/utils/getByAttribute';
 
 const ruleService = new RuleService();
 
@@ -216,7 +218,8 @@ test(`should go to the Rules Section and sort by Priority descendant order`, asy
     lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, 0);
 });
 
-test(`should see an error when try to use the same last priority value`, async ({ page }) => {
+// Antes de activar esta regla, debemos tener previamente una regla con prioridad 1
+test.skip(`should see an error when try to use the same last priority value`, async ({ page }) => {
     await navigateToRulesPageRoutine(page, COLUMNS);
 
     await openNewRuleForm(page, FORM_SECTIONS);
@@ -226,7 +229,7 @@ test(`should see an error when try to use the same last priority value`, async (
 
     const uniqueRuleName: string = 'Regla test va a fallar';
 
-    const name = page.getByLabel('Nombre *');
+    const name = getById(page, 'name');
     await name.click();
     await name.fill(uniqueRuleName);
 
@@ -234,7 +237,7 @@ test(`should see an error when try to use the same last priority value`, async (
 
     await selectAnotherCondition(page, PROPERTY_OPTIONS, OPERATOR_OPTIONS, combinationsFor100);
 
-    const priorityLocators = page.getByLabel('Prioridad *');
+    const priorityLocators = getById(page, 'priority');
     await priorityLocators.click();
     await priorityLocators.fill(lastPriorityValue);
 
@@ -245,7 +248,8 @@ test(`should see an error when try to use the same last priority value`, async (
     expect(priorityInUse).toBeTruthy();
 });
 
-test(`should see an error when try to save a rule without fill the inputs`, async ({ page }) => {
+// Antes de activar esta regla, debemos tener previamente una regla sin condiciones
+test.skip(`should see an error when try to save a rule without fill the inputs`, async ({ page }) => {
     await navigateToRulesPageRoutine(page, COLUMNS);
 
     await openNewRuleForm(page, FORM_SECTIONS);
@@ -276,7 +280,7 @@ newRuleTests.forEach((rule, index) => {
         // Start fill form
         test.slow();
 
-        const name = page.getByLabel('Nombre *');
+        const name = getById(page, 'name');
         await name.click();
         await name.fill(rule.name);
 
@@ -299,3 +303,5 @@ newRuleTests.forEach((rule, index) => {
         await assertRuleCreated(page, rule.name);
     });
 });
+
+// borrar una y borrar todas utilizando el check y eliminar del front

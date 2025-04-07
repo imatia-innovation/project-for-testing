@@ -12,6 +12,8 @@ import { getByLabelAndFill } from '../utils/getByLabelAndFill';
 import assertByText from '../utils/assertByText';
 import Destination from '../../interfaces/Destination';
 import { formatDate } from '../utils/formatDate';
+import { getByAttribute } from '../utils/getByAttribute';
+import { getByIdAndFill } from '../utils/getByIdAndFill';
 
 export async function navigateToOrdersPageRoutine(page: Page, columns: string[]) {
     await login(page, admin);
@@ -80,16 +82,15 @@ export async function fillDateInput(page: Page, order: number, id: string, date:
 }
 
 export async function selectProvider(page: Page, provider: Provider) {
-    const providerLabel = page.getByLabel('Transportista');
+    const providerLabel = getByAttribute(page, 'key', 'courier_id');
     await providerLabel.click();
 
     const providerLocators = page.getByText(provider.name);
     await providerLocators.last().click();
 
-    const label: string = labelChangesByProviderOrder(provider.name);
-
-    const service = page.getByLabel(label);
+    const service = getByAttribute(page, 'service', 'courierShipmentTypeUser').nth(1);
     await service.click();
+
     const serviceLocators = page.getByText(provider.service);
     await serviceLocators.last().click();
 }
@@ -225,29 +226,26 @@ export async function fillDestinationOrders(page: Page, destination: Destination
         const remarkLocator = await clickOnElementById(page, 'remarks');
         await remarkLocator.fill(destination.remarks);
     } else {
-        await getByLabelAndFill(page, 'Nombre de Dirección *', destination.name!);
-
-        let phoneLabel = 'Teléfono *';
+        await getByIdAndFill(page, 'addressName', destination.name!);
 
         if (destination.mail) {
-            await getByLabelAndFill(page, 'Mail *', destination.mail);
-            phoneLabel = 'Teléfono';
+            await getByIdAndFill(page, 'email', destination.mail);
         }
 
         if (destination.phone) {
-            await getByLabelAndFill(page, phoneLabel, destination.phone);
+            await getByIdAndFill(page, 'phone1', destination.phone);
         }
 
-        if (destination.phoneSecondary)
-            await getByLabelAndFill(page, 'Teléfono Secundario', destination.phoneSecondary);
+        if (destination.phoneSecondary) {
+            await getByIdAndFill(page, 'phone2', destination.phoneSecondary);
+        }
 
         // 'Dirección *'
-        const streetLocator = await clickOnElementById(page, 'street');
-        await streetLocator.fill(destination.address!);
+        await getByIdAndFill(page, 'street', destination.address!);
 
-        await getByLabelAndFill(page, 'Codigo postal *', destination.zipCode!);
+        await getByIdAndFill(page, 'zipCode', destination.zipCode!);
 
-        await getByLabelAndFill(page, 'Población *', destination.population!);
+        await getByIdAndFill(page, 'city', destination.population!);
 
         if (!destination.country) {
             await clickOnElementById(page, 'country');
@@ -259,7 +257,7 @@ export async function fillDestinationOrders(page: Page, destination: Destination
             await clickOnText(page, destination.country);
         }
 
-        await getByLabelAndFill(page, 'Observaciones', destination.remarks);
+        await getByIdAndFill(page, 'remarks', destination.remarks);
     }
 }
 
@@ -278,12 +276,16 @@ export async function locateRow(page: Page, reference: string) {
 
     const rowsLocatorsArray: Locator[] = await rowsLocators.all();
 
+    console.log('AQUI ESTOY 6.1', { rowsLocatorsArray });
+
     let rows = [];
 
     for (let index = 0; index < rowsLocatorsArray.length; index++) {
         const rowLocator: Locator = rowsLocatorsArray[index];
 
         const innerText: null | string = await rowLocator.innerText();
+
+        console.log('AQUI ESTOY 6.2', { innerText, reference });
 
         if (innerText) {
             const rowTexts: string[] = innerText.replace(/\t\n/g, '').split(/\n/g);
@@ -317,6 +319,8 @@ export async function checkHeaderRow(page: Page) {
 
 export async function assertTextInRow(page: Page, reference: string, text: string) {
     const { rowText } = await locateRow(page, reference);
+
+    console.log('AQUI ESTOY 6', { text, rowText });
 
     expect(rowText).not.toBeUndefined();
     expect(rowText!.includes(text)).toBeTruthy();
