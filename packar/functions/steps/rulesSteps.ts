@@ -12,9 +12,10 @@ import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import { clickOnText } from '../utils/clickOnText';
 import { getByAttribute } from '../utils/getByAttribute';
 import { getById } from '../utils/getById';
-import { labelChangesByProvider } from './providerSelectOption';
+import logger from '../utils/logger';
 
 export async function navigateToRulesPageRoutine(page: Page, columns: string[]) {
+    logger.info('Start rulesSteps.ts navigateToRulesPageRoutine');
     await login(page, admin);
 
     await clickOnText(page, 'Reglas');
@@ -23,8 +24,15 @@ export async function navigateToRulesPageRoutine(page: Page, columns: string[]) 
 
     await assertList(page, columns);
 
-    const createNewRuleLocator = await page.locator('button').getByText('Nuevo').count();
+    const createNewRuleLocator = await page.locator('button').getByText('Nueva regla').count();
     expect(createNewRuleLocator).not.toBe(0);
+
+    const deleteRuleLocator = await page.locator('button').getByText('Eliminar').count();
+    expect(deleteRuleLocator).not.toBe(0);
+
+    const refreshLocator = await page.locator('button').getByText('Refrescar').count();
+    expect(refreshLocator).not.toBe(0);
+    logger.info('Finish rulesSteps.ts navigateToRulesPageRoutine');
 }
 
 export async function getLastPriorityRoutine(page: Page, lastPriorityValue: string, index: number) {
@@ -55,7 +63,7 @@ export async function getLastPriorityRoutine(page: Page, lastPriorityValue: stri
 }
 
 export async function openNewRuleForm(page: Page, formSections: string[]) {
-    const createNewRuleLocator = page.locator('button').getByText('Nuevo');
+    const createNewRuleLocator = page.locator('button').getByText('Nueva regla');
     await createNewRuleLocator.click();
 
     let formTitleLocator = page.getByText('Reglas: Nuevo');
@@ -71,12 +79,12 @@ export async function openNewRuleForm(page: Page, formSections: string[]) {
 }
 
 export async function selectProvider(page: Page, provider: Provider) {
-    const providerLabel = getByAttribute(page, 'attr', 'courier');
+    const providerLabel = getByAttribute(page, 'attr', 'courier_id');
     await providerLabel.click();
     const providerLocators = page.getByText(provider.name);
     await providerLocators.last().click();
 
-    const service = getByAttribute(page, 'attr', 'service_type');
+    const service = getByAttribute(page, 'attr', 'courier_shipment_type_id');
     await service.click();
 
     const serviceLocators = page.getByText(provider.service);
@@ -155,14 +163,14 @@ export async function selectAnotherCondition(
     operatorOptions: string[],
     calculator: Calculator
 ) {
-    const property = getByAttribute(page, 'attr', 'property');
+    const property = getByAttribute(page, 'attr', 'property_id');
     await property.click();
     await assertList(page, propertyOptions);
 
     const propertyLocator = page.getByText(propertyOptions[calculator.combination.i]);
     await propertyLocator.last().click();
 
-    const operator = getByAttribute(page, 'attr', 'operator');
+    const operator = getByAttribute(page, 'attr', 'operator_id');
     await operator.click();
     await assertList(page, operatorOptions);
 

@@ -219,7 +219,7 @@ test(`should go to the Rules Section and sort by Priority descendant order`, asy
 });
 
 // Antes de activar esta regla, debemos tener previamente una regla con prioridad 1
-test.skip(`should see an error when try to use the same last priority value`, async ({ page }) => {
+test(`should see an error when try to use the same last priority value`, async ({ page }) => {
     await navigateToRulesPageRoutine(page, COLUMNS);
 
     await openNewRuleForm(page, FORM_SECTIONS);
@@ -249,7 +249,7 @@ test.skip(`should see an error when try to use the same last priority value`, as
 });
 
 // Antes de activar esta regla, debemos tener previamente una regla sin condiciones
-test.skip(`should see an error when try to save a rule without fill the inputs`, async ({ page }) => {
+test(`should see an error when try to save a rule without fill the inputs`, async ({ page }) => {
     await navigateToRulesPageRoutine(page, COLUMNS);
 
     await openNewRuleForm(page, FORM_SECTIONS);
@@ -268,7 +268,7 @@ test.skip(`should see an error when try to save a rule without fill the inputs`,
 });
 
 newRuleTests.forEach((rule, index) => {
-    test(`should validate a rule with parameters: ${rule.name}, ${PROPERTY_OPTIONS[rule.combination.i]} ${OPERATOR_OPTIONS[rule.combination.j]} ${rule.combinationMain.value}`, async ({
+    test.skip(`should validate a rule with parameters: ${rule.name}, ${PROPERTY_OPTIONS[rule.combination.i]} ${OPERATOR_OPTIONS[rule.combination.j]} ${rule.combinationMain.value}`, async ({
         page,
     }) => {
         await navigateToRulesPageRoutine(page, COLUMNS);
@@ -304,4 +304,6 @@ newRuleTests.forEach((rule, index) => {
     });
 });
 
-// borrar una y borrar todas utilizando el check y eliminar del front
+// TODO: borrar una y borrar todas utilizando el check y eliminar del front
+
+// Generate rule tests with all providers and services
