@@ -18,6 +18,8 @@ import CreateNewRuleTest from '../interfaces/CreateNewRuleTest';
 import { getProviderService } from '../constants/providers';
 import { getById } from '../functions/utils/getById';
 import { getByAttribute } from '../functions/utils/getByAttribute';
+import { getByIdAndFill } from '../functions/utils/getByIdAndFill';
+import logger from '../functions/utils/logger';
 
 const ruleService = new RuleService();
 
@@ -79,7 +81,7 @@ const rule1: CreateNewRuleTest = {
     combinationMain: combinationsFor100,
     combination: { i: 0, j: 0 },
     combinationSecondary: combinationsFor100,
-    expectedText: 'CONTAINS 100',
+    expectedText: '100',
 };
 const rule2: CreateNewRuleTest = {
     name: 'Regla auto test 2',
@@ -88,7 +90,7 @@ const rule2: CreateNewRuleTest = {
     combinationMain: combinationsFor2000,
     combination: { i: 0, j: 0 },
     combinationSecondary: combinationsFor100,
-    expectedText: 'CONTAINS 2000',
+    expectedText: '2000',
 };
 const rule3: CreateNewRuleTest = {
     name: 'Regla auto test 3',
@@ -208,9 +210,9 @@ test.beforeAll('delete tests rules created in the past', async () => {
     await clean();
 });
 
-test.afterAll('delete tests rules created in the past', async () => {
-    await clean();
-});
+// test.afterAll('delete tests rules created in the past', async () => {
+//     await clean();
+// });
 
 test(`should go to the Rules Section and sort by Priority descendant order`, async ({ page }) => {
     await navigateToRulesPageRoutine(page, COLUMNS);
@@ -259,6 +261,7 @@ test(`should see an error when try to save a rule without fill the inputs`, asyn
 
     const saveButton = page.getByText('Guardar');
     await saveButton.click();
+    await saveButton.click();
 
     const priorityInUse = await isAlertDialogText(
         page,
@@ -268,7 +271,7 @@ test(`should see an error when try to save a rule without fill the inputs`, asyn
 });
 
 newRuleTests.forEach((rule, index) => {
-    test.skip(`should validate a rule with parameters: ${rule.name}, ${PROPERTY_OPTIONS[rule.combination.i]} ${OPERATOR_OPTIONS[rule.combination.j]} ${rule.combinationMain.value}`, async ({
+    test(`should validate a rule with parameters: ${rule.name}, ${PROPERTY_OPTIONS[rule.combination.i]} ${OPERATOR_OPTIONS[rule.combination.j]} ${rule.combinationMain.value}`, async ({
         page,
     }) => {
         await navigateToRulesPageRoutine(page, COLUMNS);
@@ -280,9 +283,7 @@ newRuleTests.forEach((rule, index) => {
         // Start fill form
         test.slow();
 
-        const name = getById(page, 'name');
-        await name.click();
-        await name.fill(rule.name);
+        await getByIdAndFill(page, 'name', rule.name);
 
         await selectProvider(page, getProviderService(rule.provider, rule.service)!);
 
@@ -297,6 +298,8 @@ newRuleTests.forEach((rule, index) => {
         });
 
         lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, index + 1);
+
+        logger.info('  rules.spec.ts:302', { expectedText: rule.expectedText });
 
         expect(await page.getByText(rule.expectedText).count()).not.toBe(0);
 

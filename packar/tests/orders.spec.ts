@@ -236,8 +236,8 @@ const order12: CreateNewOrderTest = {
 
 const createOrdersTests: CreateNewOrderTest[] = [
     order1,
-    // order3, // va a fallar hasta que corrijan el bug
     order2,
+    order3, // va a fallar hasta que corrijan el bug
     order4,
     order5,
     order6,

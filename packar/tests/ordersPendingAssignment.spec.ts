@@ -1,23 +1,17 @@
-import test, { expect, Page } from '@playwright/test';
+import test, { Page } from '@playwright/test';
 import {
-    assertOrderHome,
     assertTextInRow,
     assertTextIsNotInRow,
     checkHeaderRow,
     createNewOrder,
-    fillDestinationOrders,
-    navigateToCreateNewOrderForm,
     navigateToOrdersPageRoutine,
     ORDERS_IDS,
     selectBox,
     selectCompleteOrder,
-    selectProvider,
 } from '../functions/steps/ordersSteps';
 import { clickOnButton } from '../functions/utils/clickOnText';
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
 import logger from '../functions/utils/logger';
-import { getProviderService } from '../constants/providers';
-import { getByLabelAndFill } from '../functions/utils/getByLabelAndFill';
 
 // Pending to assignment
 const order1: CreateNewOrderTest = {

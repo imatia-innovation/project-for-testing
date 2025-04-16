@@ -36,6 +36,7 @@ export async function navigateToRulesPageRoutine(page: Page, columns: string[]) 
 }
 
 export async function getLastPriorityRoutine(page: Page, lastPriorityValue: string, index: number) {
+    logger.info('Start rulesSteps.ts getLastPriorityRoutine', { lastPriorityValue, index });
     //Select 100 in te pagination
     const paginationSelectOption = page.getByRole('combobox');
     await paginationSelectOption.click();
@@ -58,11 +59,12 @@ export async function getLastPriorityRoutine(page: Page, lastPriorityValue: stri
             await page.waitForLoadState('load');
         }
     }
-
+    logger.info('Finish rulesSteps.ts getLastPriorityRoutine', { maxN });
     return maxN;
 }
 
 export async function openNewRuleForm(page: Page, formSections: string[]) {
+    logger.info('Start rulesSteps.ts openNewRuleForm');
     const createNewRuleLocator = page.locator('button').getByText('Nueva regla');
     await createNewRuleLocator.click();
 
@@ -76,9 +78,11 @@ export async function openNewRuleForm(page: Page, formSections: string[]) {
 
     const cancelButtonLocator = page.locator('button').getByText('Cancelar');
     expect(cancelButtonLocator).not.toBeNull();
+    logger.info('Finish rulesSteps.ts openNewRuleForm');
 }
 
 export async function selectProvider(page: Page, provider: Provider) {
+    logger.info('Start rulesSteps.ts selectProvider', { provider });
     const providerLabel = getByAttribute(page, 'attr', 'courier_id');
     await providerLabel.click();
     const providerLocators = page.getByText(provider.name);
@@ -89,9 +93,11 @@ export async function selectProvider(page: Page, provider: Provider) {
 
     const serviceLocators = page.getByText(provider.service);
     await serviceLocators.last().click();
+    logger.info('Finish rulesSteps.ts selectProvider');
 }
 
 export async function setPriorityRoutine(page: Page, lastPriorityValue: string): Promise<string> {
+    logger.info('Start rulesSteps.ts setPriorityRoutine', { lastPriorityValue });
     let priority: number = Number(lastPriorityValue) + 1;
 
     const priorityLocator = getById(page, 'priority');
@@ -122,6 +128,9 @@ export async function setPriorityRoutine(page: Page, lastPriorityValue: string):
     }
 
     expect(priorityInUse).toBeFalsy();
+
+    logger.info('Finish rulesSteps.ts setPriorityRoutine', { priority });
+
     return priority.toString();
 }
 
@@ -131,6 +140,7 @@ export async function conditionRoutine(
     operatorOptions: string[],
     calculator: Calculator
 ) {
+    logger.info('Start rulesSteps.ts conditionRoutine');
     let conditionsInUse: boolean = await isAlertDialogText(page, 'Ya existe una regla con esas condiciones.');
 
     while (conditionsInUse) {
@@ -145,12 +155,15 @@ export async function conditionRoutine(
         conditionsInUse = await isAlertDialogText(page, 'Ya existe una regla con esas condiciones.');
     }
 
+    logger.info('Finish rulesSteps.ts conditionRoutine');
     expect(conditionsInUse).toBeFalsy();
 }
 
 export async function assertRuleCreated(page: Page, uniqueRuleName: string) {
+    logger.info('Start rulesSteps.ts assertRuleCreated', { uniqueRuleName });
     const ruleCreated = await page.getByText(uniqueRuleName).first().innerHTML();
     expect(ruleCreated).toBeTruthy();
+    logger.info('Finish rulesSteps.ts assertRuleCreated');
 }
 
 export async function deleteRule(uniqueRuleName: string, ruleService: RuleService) {
@@ -194,14 +207,17 @@ export async function selectCondition(
     calculator: Calculator,
     combination: Combination
 ) {
-    const property = getByAttribute(page, 'attr', 'property');
+    logger.info('Start rulesSteps.ts selectCondition', {
+        condition: propertyOptions[combination.i] + operatorOptions[combination.j],
+    });
+    const property = getByAttribute(page, 'attr', 'property_id');
     await property.click();
     await assertList(page, propertyOptions);
 
     const propertyLocator = page.getByText(propertyOptions[combination.i]);
     await propertyLocator.last().click();
 
-    const operator = getByAttribute(page, 'attr', 'operator');
+    const operator = getByAttribute(page, 'attr', 'operator_id');
     await operator.click();
     await assertList(page, operatorOptions);
 
@@ -215,5 +231,8 @@ export async function selectCondition(
     const addCondition = page.getByText('Añadir condición');
     await addCondition.click();
 
+    logger.info('Finish rulesSteps.ts selectCondition', {
+        condition: propertyOptions[combination.i] + operatorOptions[combination.j],
+    });
     return calculator.setCombinationUsed(combination);
 }
