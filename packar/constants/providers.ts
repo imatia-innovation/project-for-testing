@@ -1,11 +1,11 @@
 import Provider from '../interfaces/Provider';
 
-interface ProviderServices {
+export interface ProviderServices {
     name: string;
     services: string[];
 }
 
-export const providerServices: ProviderServices[] = [
+export const PROVIDER_SERVICES: ProviderServices[] = [
     {
         name: 'GLS',
         services: ['Estándar 24H', 'Estándar devoluciones en tienda'],
@@ -68,7 +68,7 @@ export function labelChangesByProvider(provider: string) {
 }
 
 export function getProviderService(name: string, index: number = 0): Provider | undefined {
-    const providerService = providerServices.find((providerService) => providerService.name === name);
+    const providerService = PROVIDER_SERVICES.find((providerService) => providerService.name === name);
 
     if (providerService) {
         return {

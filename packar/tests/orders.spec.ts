@@ -14,6 +14,7 @@ import {
 } from '../functions/steps/ordersSteps';
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
 import logger from '../functions/utils/logger';
+import { OrderProviderMapper } from '../classes/OrderProviderMapper';
 
 const ORDER_ID = '140';
 
@@ -220,7 +221,7 @@ const order11: CreateNewOrderTest = {
     },
 };
 const order12: CreateNewOrderTest = {
-    title: 'should fill the create new order form with provider STEF COngelado',
+    title: 'should fill the create new order form with provider STEF Congelado',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'STEF',
     service: 1,
@@ -234,7 +235,7 @@ const order12: CreateNewOrderTest = {
     },
 };
 
-const createOrdersTests: CreateNewOrderTest[] = [
+let createOrdersTests: CreateNewOrderTest[] = [
     order1,
     order2,
     order3, // va a fallar hasta que corrijan el bug
@@ -248,6 +249,9 @@ const createOrdersTests: CreateNewOrderTest[] = [
     order11,
     order12,
 ];
+
+const providerMapper = new OrderProviderMapper();
+createOrdersTests = providerMapper.createOrders(createOrdersTests);
 
 test.afterAll('run clean code', async () => {
     logger.info('orders.spec.ts.ts afterAll created orders references: ', { ORDERS_IDS });

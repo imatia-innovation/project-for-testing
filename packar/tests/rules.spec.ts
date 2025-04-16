@@ -17,9 +17,9 @@ import {
 import CreateNewRuleTest from '../interfaces/CreateNewRuleTest';
 import { getProviderService } from '../constants/providers';
 import { getById } from '../functions/utils/getById';
-import { getByAttribute } from '../functions/utils/getByAttribute';
 import { getByIdAndFill } from '../functions/utils/getByIdAndFill';
 import logger from '../functions/utils/logger';
+import { RuleProviderMapper } from '../classes/RuleProviderMapper';
 
 const ruleService = new RuleService();
 
@@ -42,7 +42,7 @@ const COLUMNS: string[] = [
 const FORM_SECTIONS: string[] = ['Información', 'Nueva condición', 'Condiciones'];
 
 // i
-const PROPERTY_OPTIONS: string[] = [
+export const PROPERTY_OPTIONS: string[] = [
     'Alto (cm)',
     'Ancho (cm)',
     'Código postal destino',
@@ -54,7 +54,7 @@ const PROPERTY_OPTIONS: string[] = [
 ];
 
 // j
-const OPERATOR_OPTIONS: string[] = [
+export const OPERATOR_OPTIONS: string[] = [
     'Contiene',
     'Distinto de',
     'Igual a',
@@ -184,19 +184,10 @@ const ruleThatFails: CreateNewRuleTest = {
     expectedText: '< 2000',
 };
 
-const newRuleTests: CreateNewRuleTest[] = [
-    rule1,
-    rule2,
-    rule3,
-    rule4,
-    rule5,
-    rule6,
-    rule7,
-    rule8,
-    rule9,
-    rule10,
-    rule11,
-];
+let newRuleTests: CreateNewRuleTest[] = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10, rule11];
+
+const providerMapper = new RuleProviderMapper();
+newRuleTests = providerMapper.createRules(newRuleTests);
 
 async function clean() {
     newRuleTests.forEach(async (rule) => {
@@ -206,13 +197,13 @@ async function clean() {
     await deleteRule(ruleThatFails.name, ruleService);
 }
 
-test.beforeAll('delete tests rules created in the past', async () => {
+test.beforeEach('delete tests rules created in the past', async () => {
     await clean();
 });
 
-// test.afterAll('delete tests rules created in the past', async () => {
-//     await clean();
-// });
+test.afterAll('delete tests rules created in the past', async () => {
+    await clean();
+});
 
 test(`should go to the Rules Section and sort by Priority descendant order`, async ({ page }) => {
     await navigateToRulesPageRoutine(page, COLUMNS);
