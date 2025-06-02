@@ -9,9 +9,10 @@ import {
     selectBox,
     selectCompleteOrder,
 } from '../functions/steps/ordersSteps';
-import { clickOnButton } from '../functions/utils/clickOnText';
+import { clickOnButton, clickOnText } from '../functions/utils/clickOnText';
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
 import logger from '../functions/utils/logger';
+import { ORDER_STATUS } from '../constants/orderStatus';
 
 // Pending to assignment
 const order1: CreateNewOrderTest = {
@@ -270,16 +271,16 @@ ordersPendingToAssignment.forEach((orderTest, testIndex) => {
 
         pendingOrdersReferences.push(reference);
 
-        await assertTextInRow(page, reference, 'PENDING ASSIGNMENT');
+        await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ASSIGNMENT);
     });
 });
 
-test.skip('it should mark all pending tests and assign a provider', async ({ page }) => {
+test.only('it should mark all pending tests and assign a provider', async ({ page }) => {
     await navigateToOrdersPageRoutine(page);
 
     await checkHeaderRow(page);
 
-    await clickOnButton(page, 'sendAsignar'); // if it throws error, means that it does not reaches a rule, so you must create a rule before this test
+    await clickOnText(page, 'Asignar'); // if it throws error, means that it does not reaches a rule, so you must create a rule before this test
 
     test.slow();
 
@@ -287,6 +288,6 @@ test.skip('it should mark all pending tests and assign a provider', async ({ pag
 
     for (let index = 0; index < pendingOrdersReferences.length; index++) {
         const reference = pendingOrdersReferences[index];
-        await assertTextIsNotInRow(page, reference, 'PENDING ASSIGNMENT');
+        await assertTextIsNotInRow(page, reference, ORDER_STATUS.PENDING_ASSIGNMENT);
     }
 });

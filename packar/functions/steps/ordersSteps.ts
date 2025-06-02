@@ -390,10 +390,12 @@ export async function checkHeaderRow(page: Page) {
 }
 
 export async function assertTextInRow(page: Page, reference: string, text: string) {
+    logger.info('Start assertTextInRow, text: ', text);
     const { rowText } = await locateRow(page, reference);
 
     expect(rowText).not.toBeUndefined();
     expect(rowText!.includes(text)).toBeTruthy();
+    logger.info('Finish assertTextInRow');
 }
 
 export async function assertTextIsNotInRow(page: Page, reference: string, text: string) {
