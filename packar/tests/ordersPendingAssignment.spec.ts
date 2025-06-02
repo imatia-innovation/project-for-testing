@@ -20,7 +20,7 @@ const order1: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 99, width: 99, height: 99, weight: 99 });
     },
     destination: {
@@ -34,7 +34,7 @@ const order2: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
@@ -48,7 +48,7 @@ const order3: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 101, width: 101, height: 101, weight: 101 });
     },
     destination: {
@@ -62,7 +62,7 @@ const order4: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 500, width: 500, height: 500, weight: 500 });
     },
     destination: {
@@ -82,7 +82,7 @@ const order5: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 499, width: 499, height: 499, weight: 499 });
     },
     destination: {
@@ -102,7 +102,7 @@ const order6: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectCompleteOrder(page, { boxQty: 50, weight: 50 });
     },
     destination: {
@@ -122,7 +122,7 @@ const order7: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectCompleteOrder(page, { boxQty: 51, weight: 51 });
     },
     destination: {
@@ -142,7 +142,7 @@ const order8: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectCompleteOrder(page, { boxQty: 49, weight: 49 });
     },
     destination: {
@@ -162,7 +162,7 @@ const order9: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
@@ -176,7 +176,7 @@ const order10: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 2, width: 2, height: 2, weight: 2 });
     },
     destination: {
@@ -190,7 +190,7 @@ const order11: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 3, width: 3, height: 3, weight: 3 });
     },
     destination: {
@@ -204,7 +204,7 @@ const order12: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 4, width: 4, height: 4, weight: 4 });
     },
     destination: {
@@ -218,7 +218,7 @@ const order13: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 5, width: 5, height: 5, weight: 5 });
     },
     destination: {
@@ -232,7 +232,7 @@ const order14: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 6, width: 6, height: 6, weight: 6 });
     },
     destination: {

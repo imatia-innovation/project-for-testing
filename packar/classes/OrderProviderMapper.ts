@@ -48,7 +48,7 @@ export class OrderProviderMapper {
             reference: 'Autotest' + new Date().getTime().toString(),
             provider: combination.provider,
             service: combination.service,
-            executeFunctions: async (page: Page) => {
+            selectPackage: async (page: Page) => {
                 await selectBox(page, { length: index, width: index, height: index, weight: index });
             },
             destination: {

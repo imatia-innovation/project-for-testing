@@ -3,7 +3,7 @@ import { admin, baserUrl } from '../../constants';
 import assertList from '../utils/assertList';
 import login from './login';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
-import { clickOnButton, clickOnElementById, clickOnText } from '../utils/clickOnText';
+import { clickOnButton, clickOnElementById, clickOnText, clickOnTextNth } from '../utils/clickOnText';
 import Provider from '../../interfaces/Provider';
 import { getById } from '../utils/getById';
 import Dimension, { CompleteOrderDimension } from '../../interfaces/Dimension';
@@ -16,6 +16,7 @@ import { getByIdAndFill } from '../utils/getByIdAndFill';
 import logger from '../utils/logger';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import { getProviderService } from '../../constants/providers';
+import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 
 const LABELS_AND_COLUMNS: string[] = [
     'Buscar envíos',
@@ -63,9 +64,17 @@ export async function createNewOrder(page: Page, orderTest: CreateNewOrderTest, 
 
     await getByLabelAndFill(page, 'Ref Cliente', reference);
 
+    if (orderTest.assignmentMethod) {
+        await selectAssignmentMethod(page, orderTest.assignmentMethod);
+    }
+
     if (orderTest.provider) await selectProvider(page, getProviderService(orderTest.provider, orderTest.service)!);
 
-    await orderTest.executeFunctions(page);
+    if (orderTest.limitPrice) {
+        await setLimitPrice(page, orderTest.limitPrice);
+    }
+
+    await orderTest.selectPackage(page);
 
     await fillDestinationOrders(page, orderTest.destination);
 
@@ -80,6 +89,21 @@ export async function createNewOrder(page: Page, orderTest: CreateNewOrderTest, 
     ORDERS_IDS.push(reference);
 
     return reference;
+}
+
+async function selectAssignmentMethod(page: Page, orderAssignmentMethod: string) {
+    logger.info('Start ordersSteps.ts selectAssignmentMethod', { orderAssignmentMethod });
+    await clickOnText(page, 'Método de asignación');
+    orderAssignmentMethod === ASSIGNMENT_METHOD.FIRST_OFFER
+        ? await clickOnTextNth(page, orderAssignmentMethod, 1)
+        : await clickOnText(page, orderAssignmentMethod);
+    logger.info('Finish ordersSteps.ts selectAssignmentMethod');
+}
+
+async function setLimitPrice(page: Page, orderLimitPrice: number) {
+    logger.info('Start ordersSteps.ts setLimitPrice', { orderLimitPrice });
+    await getByIdAndFill(page, 'limit_cost', orderLimitPrice.toString());
+    logger.info('Finish ordersSteps.ts setLimitPrice');
 }
 
 async function selectPickUpLocation(page: Page, pickUpLocation: string) {

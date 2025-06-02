@@ -8,6 +8,12 @@ export async function clickOnText(page: Page, text: string): Promise<Locator> {
     return locator;
 }
 
+export async function clickOnTextNth(page: Page, text: string, nth: number): Promise<Locator> {
+    const locator: Locator = page.getByText(text);
+    await locator.nth(nth).click();
+    return locator;
+}
+
 export async function clickOnElementById(page: Page, id: string): Promise<Locator> {
     const locator: Locator = getById(page, id);
     await locator.click();

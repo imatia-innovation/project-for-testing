@@ -7,6 +7,8 @@ export default interface CreateNewOrderTest {
     reference: string;
     provider?: string;
     service?: number;
-    executeFunctions: (page: Page) => Promise<void>;
+    selectPackage: (page: Page) => Promise<void>;
     destination: Destination;
+    limitPrice?: number;
+    assignmentMethod?: string;
 }

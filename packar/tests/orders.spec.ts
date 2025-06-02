@@ -24,7 +24,7 @@ const order1: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'GLS',
     service: 0,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 5, width: 20, height: 30, weight: 50 });
     },
     destination: {
@@ -39,7 +39,7 @@ const order2: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'NARVAL',
     service: 0,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectCompleteOrder(page, { boxQty: 2, weight: 36 });
 
         await selectCompleteOrder(page, { boxQty: 3, weight: 36 });
@@ -60,7 +60,7 @@ const order3: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'SEUR',
     service: 0,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 5, width: 20, height: 30, weight: 50 });
 
         await selectCompleteOrder(page, { boxQty: 50, weight: 50 });
@@ -81,7 +81,7 @@ const order4: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'STEF',
     service: 0,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         const now = new Date();
 
         const startDate = new Date(now);
@@ -110,7 +110,7 @@ const order5: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'CORREOS',
     service: 0,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectPallet(page, 'Europalet', { length: 5, width: 20, height: 30, weight: 50 }, 3);
 
         await selectPallet(page, 'Isopalet', { length: 5, width: 20, height: 30, weight: 50 }, 6);
@@ -129,7 +129,7 @@ const order6: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'GLS',
     service: 1,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 15, width: 25, height: 35, weight: 55 });
     },
     destination: {
@@ -150,7 +150,7 @@ const order7: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'NARVAL',
     service: 1,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 11, width: 22, height: 33, weight: 44 });
     },
     destination: {
@@ -172,7 +172,7 @@ const order8: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'SEUR',
     service: 1,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 100, width: 200, height: 300, weight: 500 });
     },
     destination: {
@@ -192,7 +192,7 @@ const order9: CreateNewOrderTest = {
     pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 100, width: 200, height: 300, weight: 500 });
     },
     destination: {
@@ -207,7 +207,7 @@ const order10: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'TRANSPORTES PACO',
     service: 0,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
@@ -222,7 +222,7 @@ const order11: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'EMILIO SL',
     service: 0,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
@@ -237,7 +237,7 @@ const order12: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'STEF',
     service: 1,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
@@ -252,7 +252,7 @@ const order13: CreateNewOrderTest = {
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'BAJO COTIZACIÓN',
     service: 0,
-    executeFunctions: async (page: Page) => {
+    selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
