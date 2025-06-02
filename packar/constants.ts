@@ -11,6 +11,11 @@ export const demo: User = {
     password: process.env.USER_DEMO_PASS!,
 };
 
+export const courier: User = {
+    username: process.env.USER_COURIER_NAME!,
+    password: process.env.USER_COURIER_PASS!,
+};
+
 export const baserUrl: string = process.env.BASE_URL!;
 
 export const coreBaseUrl: string = process.env.CORE_BASE_URL!;

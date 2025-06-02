@@ -197,13 +197,13 @@ async function clean() {
     await deleteRule(ruleThatFails.name, ruleService);
 }
 
-test.beforeEach('delete tests rules created in the past', async () => {
-    await clean();
-});
+// test.beforeAll('delete tests rules created in the past', async () => {
+//     await clean();
+// });
 
-test.afterAll('delete tests rules created in the past', async () => {
-    await clean();
-});
+// test.afterAll('delete tests rules created in the past', async () => {
+//     await clean();
+// });
 
 test(`should go to the Rules Section and sort by Priority descendant order`, async ({ page }) => {
     await navigateToRulesPageRoutine(page, COLUMNS);

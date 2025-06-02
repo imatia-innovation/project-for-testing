@@ -37,7 +37,7 @@ export class OrderProviderMapper {
         });
     }
 
-    createMissingOrder(combination: Combination, index: number): CreateNewOrderTest {
+    createLeftOrder(combination: Combination, index: number): CreateNewOrderTest {
         return {
             title:
                 'should create new order with the minimum fields selecting Partial Order, provider: ' +
@@ -63,14 +63,14 @@ export class OrderProviderMapper {
 
         this.mapTests(orderTests);
 
-        const missingCombinations: Combination[] = this.combinations.filter(
+        const leftCombinations: Combination[] = this.combinations.filter(
             (combination: Combination) => !combination.used
         );
 
         let moreOrderTests: CreateNewOrderTest[] = [];
 
-        missingCombinations.forEach((missingOrder: Combination, index) => {
-            moreOrderTests.push(this.createMissingOrder(missingOrder, index + 1));
+        leftCombinations.forEach((missingOrder: Combination, index) => {
+            moreOrderTests.push(this.createLeftOrder(missingOrder, index + 1));
         });
 
         return orderTests.concat(moreOrderTests);
