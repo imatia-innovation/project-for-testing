@@ -3,6 +3,7 @@ import Destination from './Destination';
 
 export default interface CreateNewOrderTest {
     title: string;
+    pickUpLocation: string;
     reference: string;
     provider?: string;
     service?: number;

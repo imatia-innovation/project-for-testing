@@ -48,6 +48,14 @@ export const PROVIDER_SERVICES: ProviderServices[] = [
         name: 'EMILIO SL',
         services: ['Standard'],
     },
+    {
+        name: 'BAJO COTIZACIÓN',
+        services: ['Estándar'],
+    },
+    {
+        name: 'ENVIOS PEPITO',
+        services: ['Standard'],
+    },
 ];
 
 export function labelChangesByProvider(provider: string) {

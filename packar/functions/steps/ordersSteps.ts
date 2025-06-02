@@ -17,7 +17,7 @@ import logger from '../utils/logger';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import { getProviderService } from '../../constants/providers';
 
-const COLUMNS: string[] = [
+const LABELS_AND_COLUMNS: string[] = [
     'Buscar envíos',
     'Fecha del envío',
     'Nº Referencia Cliente',
@@ -26,6 +26,7 @@ const COLUMNS: string[] = [
     'Transportista',
     'Servicio del Transportista',
     'Nº de bultos',
+    'Coste',
     'Estado',
     'Etiquetas',
 ];
@@ -35,6 +36,7 @@ const COLUMNS_CREATE_NEW: string[] = [
     'ORIGEN',
     'BULTOS',
     'DESTINO',
+    'PROVEEDOR',
     'Bultos asignados',
     'Guardar como Nuevo Destino',
     'Asignar Bulto',
@@ -54,6 +56,8 @@ export async function createNewOrder(page: Page, orderTest: CreateNewOrderTest, 
 
     // start fill form
     test.slow();
+
+    await selectPickUpLocation(page, orderTest.pickUpLocation);
 
     const reference = orderTest.reference + '-' + testIndex;
 
@@ -78,6 +82,11 @@ export async function createNewOrder(page: Page, orderTest: CreateNewOrderTest, 
     return reference;
 }
 
+async function selectPickUpLocation(page: Page, pickUpLocation: string) {
+    await clickOnElementById(page, 'pickup_location');
+    await clickOnText(page, pickUpLocation);
+}
+
 export async function navigateToOrdersPageRoutine(page: Page) {
     await login(page, admin);
 
@@ -89,7 +98,7 @@ export async function navigateToOrdersPageRoutine(page: Page) {
 export async function assertOrderHome(page: Page) {
     await waitUntilUrlLoads(page, '/app/main/order');
 
-    await assertList(page, COLUMNS);
+    await assertList(page, LABELS_AND_COLUMNS);
 
     const createNewLocator = await page.locator('button').getByText('Nuevo').count();
     expect(createNewLocator).not.toBe(0);

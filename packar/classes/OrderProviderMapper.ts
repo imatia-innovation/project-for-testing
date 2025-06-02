@@ -44,6 +44,7 @@ export class OrderProviderMapper {
                 combination.provider +
                 ' service: ' +
                 getProviderService(combination.provider, combination.service)?.service,
+            pickUpLocation: 'Renlo',
             reference: 'Autotest' + new Date().getTime().toString(),
             provider: combination.provider,
             service: combination.service,

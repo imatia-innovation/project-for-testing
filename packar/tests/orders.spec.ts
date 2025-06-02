@@ -20,6 +20,7 @@ const ORDER_ID = '140';
 
 const order1: CreateNewOrderTest = {
     title: 'should fill the create new order form with the minimum fields selecting Partial Order',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'GLS',
     service: 0,
@@ -34,6 +35,7 @@ const order1: CreateNewOrderTest = {
 };
 const order2: CreateNewOrderTest = {
     title: 'should fill the create new order form with the minimum fields selecting Complete Order',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'NARVAL',
     service: 0,
@@ -54,6 +56,7 @@ const order2: CreateNewOrderTest = {
 };
 const order3: CreateNewOrderTest = {
     title: 'should fill the create new order form with box, complete order, pallet and envelope',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'SEUR',
     service: 0,
@@ -74,6 +77,7 @@ const order3: CreateNewOrderTest = {
 };
 const order4: CreateNewOrderTest = {
     title: 'should fill the create new order form with box, pallet and envelope, with date for 1-2 days',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'STEF',
     service: 0,
@@ -102,6 +106,7 @@ const order4: CreateNewOrderTest = {
 };
 const order5: CreateNewOrderTest = {
     title: 'should fill the create new order with various pallets',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'CORREOS',
     service: 0,
@@ -120,6 +125,7 @@ const order5: CreateNewOrderTest = {
 };
 const order6: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with email',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'GLS',
     service: 1,
@@ -140,6 +146,7 @@ const order6: CreateNewOrderTest = {
 };
 const order7: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with phone number',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'NARVAL',
     service: 1,
@@ -161,6 +168,7 @@ const order7: CreateNewOrderTest = {
 };
 const order8: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with email and select other country',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'SEUR',
     service: 1,
@@ -181,6 +189,7 @@ const order8: CreateNewOrderTest = {
 };
 const order9: CreateNewOrderTest = {
     title: 'should create an order without provider',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
 
     executeFunctions: async (page: Page) => {
@@ -194,6 +203,7 @@ const order9: CreateNewOrderTest = {
 };
 const order10: CreateNewOrderTest = {
     title: 'should fill the create new order form with provider Paco Stardard',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'TRANSPORTES PACO',
     service: 0,
@@ -208,6 +218,7 @@ const order10: CreateNewOrderTest = {
 };
 const order11: CreateNewOrderTest = {
     title: 'should fill the create new order form with provider Emilio Stardard',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'EMILIO SL',
     service: 0,
@@ -222,9 +233,25 @@ const order11: CreateNewOrderTest = {
 };
 const order12: CreateNewOrderTest = {
     title: 'should fill the create new order form with provider STEF Congelado',
+    pickUpLocation: 'Renlo',
     reference: 'Autotest' + new Date().getTime().toString(),
     provider: 'STEF',
     service: 1,
+    executeFunctions: async (page: Page) => {
+        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+    },
+    destination: {
+        favorite: 'test',
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+};
+const order13: CreateNewOrderTest = {
+    title: 'should fill the create new order form with provider Bajo Cotización Stardard',
+    pickUpLocation: 'Renlo',
+    reference: 'Autotest' + new Date().getTime().toString(),
+    provider: 'BAJO COTIZACIÓN',
+    service: 0,
     executeFunctions: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
@@ -248,6 +275,7 @@ let createOrdersTests: CreateNewOrderTest[] = [
     order10,
     order11,
     order12,
+    order13,
 ];
 
 const providerMapper = new OrderProviderMapper();
