@@ -6,6 +6,16 @@ import { getById } from '../utils/getById';
 export default async function login(page: Page, user: User) {
     await page.goto(baserUrl + '/app/login');
 
+    await fillLoginInputs(page, user);
+}
+
+export async function loginAfterLogout(page: Page, user: User) {
+    await page.waitForURL(baserUrl + '/app/login?session-expired=false');
+
+    await fillLoginInputs(page, user);
+}
+
+async function fillLoginInputs(page: Page, user: User) {
     const userSelector = getById(page, 'username');
     await userSelector.click();
     await userSelector.fill(user.username);

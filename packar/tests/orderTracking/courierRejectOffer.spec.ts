@@ -7,24 +7,22 @@ import test, { Page } from '@playwright/test';
 import { selectBox } from '../../functions/steps/ordersSteps';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import { PROVIDER_SERVICES } from '../../constants/providers';
-import { clickOnText } from '../../functions/utils/clickOnText';
 import {
     baserUrl,
     courierNOFixedPrice,
     courierFixedPrice,
     pickUpLocation,
     destination_favorite,
+    TIMEOUT,
 } from '../../constants';
 import {
     createOrderAndGoToOfferDetailPage,
     offerDetailPageAssertions,
     offerDetailPageAssertionsFixedPrice,
-    offerDetailPageRejectAssertions,
     rejectedOfferDetailPageAssertions,
-} from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps.spec';
+    rejectOffer,
+} from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps';
 import OfferTest from '../../interfaces/OfferTest';
-
-const TIMEOUT = process.env.ENVIRONMENT === 'dev' ? 800 : 1000;
 
 const order1: OfferTest = {
     title: 'Reject Order with Traditional Courier First Offer without Limit Price',
@@ -186,17 +184,7 @@ createOfferTests.forEach((orderTest, testIndex) => {
             ? await offerDetailPageAssertionsFixedPrice(page)
             : await offerDetailPageAssertions(page);
 
-        await clickOnText(page, 'Rechazar');
-
-        await page.waitForTimeout(TIMEOUT);
-
-        await offerDetailPageRejectAssertions(page);
-
-        await page.getByText('Motivo del rechazo').nth(1).fill('Test reject offer');
-
-        await clickOnText(page, 'Enviar');
-
-        await page.waitForTimeout(TIMEOUT);
+        await rejectOffer(page, 'Test reject offer');
 
         await page.goto(`${baserUrl}/app/main/offertDetail/${orderId}`);
         await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {

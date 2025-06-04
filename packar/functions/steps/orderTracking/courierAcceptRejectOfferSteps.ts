@@ -10,11 +10,12 @@ import { assertTextInRow, createNewOrder } from '../ordersSteps';
 import logger from '../../utils/logger';
 import assertList from '../../utils/assertList';
 import assertListExcluded from '../../utils/assertListExcluded';
-import { baserUrl } from '../../../constants';
-import login from '../login';
+import { baserUrl, TIMEOUT } from '../../../constants';
+import login, { loginAfterLogout } from '../login';
 import OfferTest from '../../../interfaces/OfferTest';
-
-const TIMEOUT = process.env.ENVIRONMENT === 'dev' ? 800 : 1000;
+import User from '../../../interfaces/User';
+import { getByIdAndFill } from '../../utils/getByIdAndFill';
+import logout from '../../utils/logout';
 
 const LABELS_AND_COLUMNS: string[] = [
     'Nº REFERENCIA CLIENTE:',
@@ -143,8 +144,8 @@ const LABELS_AND_COLUMNS_REJECTED_EXCLUDED_2: string[] = [
     'Respuesta',
 ];
 
-export async function getOrderId(page: Page, reference: string): Promise<string> {
-    await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ACCEPT);
+export async function getOrderId(page: Page, reference: string, isOpenPricing?: boolean): Promise<string> {
+    await assertTextInRow(page, reference, isOpenPricing ? ORDER_STATUS.PENDING_PRICING : ORDER_STATUS.PENDING_ACCEPT);
     await clickOnText(page, reference);
 
     await page.waitForTimeout(TIMEOUT);
@@ -162,8 +163,7 @@ export async function getOrderId(page: Page, reference: string): Promise<string>
 
     logger.info(' courierAcceptRejectOfferSteps.spec.ts getOrderId ural and orderId', url, orderId);
 
-    await clickOnElementById(page, 'logout');
-    await clickOnText(page, 'Ok');
+    await logout(page);
 
     return orderId;
 }
@@ -183,7 +183,14 @@ export async function createOrderAndGoToOfferDetailPage(
 
     await page.waitForTimeout(TIMEOUT);
 
-    await login(page, offerTest.courier);
+    await goToOfferDetailPage(page, offerTest.courier, orderId);
+
+    return orderId;
+}
+
+export async function goToOfferDetailPage(page: Page, courier: User, orderId: string): Promise<void> {
+    await loginAfterLogout(page, courier);
+
     await page.waitForURL(`${baserUrl}/app/main/home`, {
         waitUntil: 'load',
     });
@@ -195,8 +202,31 @@ export async function createOrderAndGoToOfferDetailPage(
         waitUntil: 'load',
     });
     await page.waitForTimeout(TIMEOUT);
+}
 
-    return orderId;
+export async function acceptOffer(page: Page, courierHasFixedPrice?: boolean, setPrice?: string): Promise<void> {
+    if (courierHasFixedPrice) {
+        await offerDetailPageAssertionsFixedPrice(page);
+        await clickOnText(page, 'Aceptar');
+    } else {
+        await offerDetailPageAssertions(page);
+        if (setPrice) await getByIdAndFill(page, 'response', setPrice);
+        await clickOnText(page, 'Aceptar');
+    }
+}
+
+export async function rejectOffer(page: Page, rejectText: string): Promise<void> {
+    await clickOnText(page, 'Rechazar');
+
+    await page.waitForTimeout(TIMEOUT);
+
+    await offerDetailPageRejectAssertions(page);
+
+    await page.getByText('Motivo del rechazo').nth(1).fill(rejectText);
+
+    await clickOnText(page, 'Enviar');
+
+    await page.waitForTimeout(TIMEOUT);
 }
 
 export async function offerDetailPageAssertions(page: Page): Promise<void> {

@@ -1,5 +1,6 @@
 import Provider from '../interfaces/Provider';
 
+const OPEN_PRICING_SERVICE_NAME_STANDARD = process.env.ENVIRONMENT === 'dev' ? 'Estándar' : 'Standard';
 export interface ProviderServices {
     name: string;
     services: string[];
@@ -50,7 +51,7 @@ export const PROVIDER_SERVICES: ProviderServices[] = [
     },
     {
         name: 'BAJO COTIZACIÓN', // 7
-        services: ['Estándar'],
+        services: [OPEN_PRICING_SERVICE_NAME_STANDARD],
     },
     {
         name: 'ENVIOS PEPITO', // 8

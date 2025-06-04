@@ -1,5 +1,5 @@
 import test, { Locator, Page, expect } from '@playwright/test';
-import { admin, baserUrl } from '../../constants';
+import { admin, baserUrl, TIMEOUT } from '../../constants';
 import assertList from '../utils/assertList';
 import login from './login';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
@@ -17,6 +17,7 @@ import logger from '../utils/logger';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import { getProviderService } from '../../constants/providers';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
+import User from '../../interfaces/User';
 
 const LABELS_AND_COLUMNS: string[] = [
     'Buscar envíos',
@@ -46,6 +47,58 @@ const COLUMNS_CREATE_NEW: string[] = [
     'Ref Cliente',
     'Fecha de recogida',
     'Fecha de entrega',
+];
+
+const COLUMNS_AND_LABELS_DETAIL_PAGE: string[] = [
+    'Nº REFERENCIA CLIENTE',
+    'Cancelar envío',
+    'Reasignar pedido',
+    //
+    'Seguimiento transporte',
+    //
+    'Bultos',
+    'Descargar etiquetas',
+    'Número de seguimiento',
+    'Estado del bulto',
+    'Peso',
+    'Alto',
+    'Ancho',
+    'Largo',
+    'Peso volumétrico',
+    'Registros por página',
+    //
+    'Información de recogida',
+    'Transportista',
+    'Nombre del conductor',
+    'Matrícula',
+    'Fecha de recogida estimada',
+    'Servicio del transportista',
+    'Teléfono transportista',
+    'Fecha de recogida real',
+    // esta sección no está todavía en PRE
+    'Documentación',
+    'Subir archivo...',
+    'Archivos adjuntos',
+    //
+    'Datos del remitente',
+    'Datos del Destinatario',
+    'Nombre de la empresa',
+    'Dirección',
+    'Localidad',
+    'País',
+    'Correo Electrónico',
+    'C.P',
+    'Teléfono',
+    'Notas/Observaciones',
+    //
+    'Ofertas Enviadas',
+    'Fecha de solicitud',
+    'Fecha de respuesta',
+    'Transportista',
+    'Estado',
+    'Precio',
+    'Motivo del rechazo',
+    'Asignar',
 ];
 
 export let ORDERS_IDS: string[] = [];
@@ -428,4 +481,29 @@ export async function assertTextIsNotInRow(page: Page, reference: string, text: 
 
     expect(rowText).not.toBeUndefined();
     expect(rowText!.includes(text)).not.toBeTruthy();
+}
+
+export async function gotToOrderDetailPage(page: Page, user: User, orderId: string): Promise<void> {
+    await login(page, user);
+
+    await page.waitForTimeout(TIMEOUT);
+
+    await page.waitForURL(`${baserUrl}/app/main/home`, {
+        waitUntil: 'load',
+    });
+
+    await page.waitForTimeout(TIMEOUT);
+
+    await page.goto(`${baserUrl}/app/main/order/${orderId}?isdetail=true`);
+
+    await page.waitForURL(`${baserUrl}/app/main/order/${orderId}?isdetail=true`, {
+        waitUntil: 'load',
+    });
+    await page.waitForTimeout(TIMEOUT);
+}
+
+export async function orderDetailPageAssertions(page: Page, order: CreateNewOrderTest, orderStatus: string) {
+    await assertList(page, COLUMNS_AND_LABELS_DETAIL_PAGE);
+
+    await assertList(page, [orderStatus, order.pickUpLocation, order.reference]);
 }

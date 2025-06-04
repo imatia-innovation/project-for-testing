@@ -32,3 +32,5 @@ export const coreBaseUrl: string = process.env.CORE_BASE_URL!;
 
 export const pickUpLocation: string = process.env.PICKUP_LOCATION!;
 export const destination_favorite: string = process.env.DESTINATION_FAVORITE!;
+
+export const TIMEOUT = process.env.ENVIRONMENT === 'dev' ? 1000 : 1200;

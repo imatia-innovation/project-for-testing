@@ -7,24 +7,20 @@ import test, { Page } from '@playwright/test';
 import { selectBox } from '../../functions/steps/ordersSteps';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import { PROVIDER_SERVICES } from '../../constants/providers';
-import { clickOnText } from '../../functions/utils/clickOnText';
 import {
     baserUrl,
     courierNOFixedPrice,
     courierFixedPrice,
     pickUpLocation,
     destination_favorite,
+    TIMEOUT,
 } from '../../constants';
 import {
+    acceptOffer,
     createOrderAndGoToOfferDetailPage,
-    offerDetailPageAssertions,
     offerDetailPageAssertionsDriver,
-    offerDetailPageAssertionsFixedPrice,
-} from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps.spec';
-import { getByIdAndFill } from '../../functions/utils/getByIdAndFill';
+} from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps';
 import OfferTest from '../../interfaces/OfferTest';
-
-const TIMEOUT = process.env.ENVIRONMENT === 'dev' ? 800 : 1000;
 
 const order1: OfferTest = {
     title: 'Accept Order with Traditional Courier First Offer without Limit Price',
@@ -186,16 +182,7 @@ createOfferTests.forEach((orderTest, testIndex) => {
     test(orderTest.title, async ({ page }) => {
         const orderId = await createOrderAndGoToOfferDetailPage(page, orderTest, testIndex);
 
-        if (orderTest.courierHasFixedPrice) {
-            await offerDetailPageAssertionsFixedPrice(page);
-            await clickOnText(page, 'Aceptar');
-        } else {
-            await offerDetailPageAssertions(page);
-
-            if (orderTest.setPrice) await getByIdAndFill(page, 'response', orderTest.setPrice);
-
-            await clickOnText(page, 'Aceptar');
-        }
+        await acceptOffer(page, orderTest.courierHasFixedPrice, orderTest.setPrice);
 
         await page.waitForTimeout(TIMEOUT);
 
