@@ -108,7 +108,8 @@ async function setLimitPrice(page: Page, orderLimitPrice: number) {
 
 async function selectPickUpLocation(page: Page, pickUpLocation: string) {
     await clickOnElementById(page, 'pickup_location');
-    await clickOnText(page, pickUpLocation);
+    //await clickOnText(page, pickUpLocation);
+    await clickOnTextNth(page, pickUpLocation, 1);
 }
 
 export async function navigateToOrdersPageRoutine(page: Page) {

@@ -13,54 +13,55 @@ import { clickOnButton, clickOnText } from '../functions/utils/clickOnText';
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
 import logger from '../functions/utils/logger';
 import { ORDER_STATUS } from '../constants/orderStatus';
+import { destination_favorite, pickUpLocation } from '../constants';
 
 // Pending to assignment
 const order1: CreateNewOrderTest = {
     title: 'should create an order without provider length: 99, width: 99, height: 99, weight: 99',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 99, width: 99, height: 99, weight: 99 });
     },
     destination: {
-        favorite: 'test',
+        favorite: destination_favorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order2: CreateNewOrderTest = {
     title: 'should create an order without provider length: 100, width: 100, height: 100, weight: 100',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
-        favorite: 'test',
+        favorite: destination_favorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order3: CreateNewOrderTest = {
     title: 'should create an order without provider length: 101, width: 101, height: 101, weight: 101',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 101, width: 101, height: 101, weight: 101 });
     },
     destination: {
-        favorite: 'test',
+        favorite: destination_favorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order4: CreateNewOrderTest = {
     title: 'order with destination name containing AAA',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 500, width: 500, height: 500, weight: 500 });
@@ -79,8 +80,8 @@ const order4: CreateNewOrderTest = {
 };
 const order5: CreateNewOrderTest = {
     title: 'order with destination name containing bbbAAAccc',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 499, width: 499, height: 499, weight: 499 });
@@ -99,8 +100,8 @@ const order5: CreateNewOrderTest = {
 };
 const order6: CreateNewOrderTest = {
     title: 'order with destination name containing aaa123aaa and boxQty: 50, weight: 50',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectCompleteOrder(page, { boxQty: 50, weight: 50 });
@@ -119,8 +120,8 @@ const order6: CreateNewOrderTest = {
 };
 const order7: CreateNewOrderTest = {
     title: 'order with destination name containing aaa123aaa and boxQty: 51, weight: 51',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectCompleteOrder(page, { boxQty: 51, weight: 51 });
@@ -139,8 +140,8 @@ const order7: CreateNewOrderTest = {
 };
 const order8: CreateNewOrderTest = {
     title: 'order with destination name containing aaa123aaa and boxQty: 49, weight: 49',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectCompleteOrder(page, { boxQty: 49, weight: 49 });
@@ -159,84 +160,84 @@ const order8: CreateNewOrderTest = {
 };
 const order9: CreateNewOrderTest = {
     title: 'should create an order without provider length: 1, width: 1, height: 1, weight: 1',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: 'test',
+        favorite: destination_favorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order10: CreateNewOrderTest = {
     title: 'should create an order without provider length: 2, width: 2, height: 2, weight: 2',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 2, width: 2, height: 2, weight: 2 });
     },
     destination: {
-        favorite: 'test',
+        favorite: destination_favorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order11: CreateNewOrderTest = {
     title: 'should create an order without provider length: 3, width: 3, height: 3, weight: 3',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 3, width: 3, height: 3, weight: 3 });
     },
     destination: {
-        favorite: 'test',
+        favorite: destination_favorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order12: CreateNewOrderTest = {
     title: 'should create an order without provider length: 4, width: 4, height: 4, weight: 4',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 4, width: 4, height: 4, weight: 4 });
     },
     destination: {
-        favorite: 'test',
+        favorite: destination_favorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order13: CreateNewOrderTest = {
     title: 'should create an order without provider length: 5, width: 5, height: 5, weight: 5',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 5, width: 5, height: 5, weight: 5 });
     },
     destination: {
-        favorite: 'test',
+        favorite: destination_favorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order14: CreateNewOrderTest = {
     title: 'should create an order without provider length: 6, width: 6, height: 6, weight: 6',
-    pickUpLocation: 'Renlo',
-    reference: 'Autotest' + new Date().getTime().toString(),
+    pickUpLocation,
+    reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 6, width: 6, height: 6, weight: 6 });
     },
     destination: {
-        favorite: 'test',
+        favorite: destination_favorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },

@@ -2,6 +2,7 @@ import { Page } from '@playwright/test';
 import { getProviderService, PROVIDER_SERVICES, ProviderServices } from '../constants/providers';
 import { selectBox } from '../functions/steps/ordersSteps';
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
+import { destination_favorite, pickUpLocation } from '../constants';
 
 interface Combination {
     provider: string;
@@ -44,15 +45,15 @@ export class OrderProviderMapper {
                 combination.provider +
                 ' service: ' +
                 getProviderService(combination.provider, combination.service)?.service,
-            pickUpLocation: 'Renlo',
-            reference: 'Autotest' + new Date().getTime().toString(),
+            pickUpLocation,
+            reference: 'atest' + new Date().getTime().toString(),
             provider: combination.provider,
             service: combination.service,
             selectPackage: async (page: Page) => {
                 await selectBox(page, { length: index, width: index, height: index, weight: index });
             },
             destination: {
-                favorite: 'test',
+                favorite: destination_favorite,
                 saveAsNew: false,
                 remarks: 'This is an automatic test',
             },

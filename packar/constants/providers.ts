@@ -41,19 +41,19 @@ export const PROVIDER_SERVICES: ProviderServices[] = [
         ],
     },
     {
-        name: 'TRANSPORTES PACO',
+        name: 'TRANSPORTES PACO', // 5
         services: ['Standard'],
     },
     {
-        name: 'EMILIO SL',
+        name: 'EMILIO SL', // 6
         services: ['Standard'],
     },
     {
-        name: 'BAJO COTIZACIÓN',
+        name: 'BAJO COTIZACIÓN', // 7
         services: ['Estándar'],
     },
     {
-        name: 'ENVIOS PEPITO',
+        name: 'ENVIOS PEPITO', // 8
         services: ['Standard'],
     },
 ];
