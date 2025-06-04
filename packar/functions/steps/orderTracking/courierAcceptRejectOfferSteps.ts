@@ -5,17 +5,17 @@
 
 import { Page } from '@playwright/test';
 import { ORDER_STATUS } from '../../../constants/orderStatus';
-import { clickOnElementById, clickOnText } from '../../utils/clickOnText';
+import { clickOnText } from '../../utils/clickOnText';
 import { assertTextInRow, createNewOrder } from '../ordersSteps';
 import logger from '../../utils/logger';
 import assertList from '../../utils/assertList';
 import assertListExcluded from '../../utils/assertListExcluded';
 import { baserUrl, TIMEOUT } from '../../../constants';
-import login, { loginAfterLogout } from '../login';
+import { loginAfterLogout } from '../login';
 import OfferTest from '../../../interfaces/OfferTest';
 import User from '../../../interfaces/User';
 import { getByIdAndFill } from '../../utils/getByIdAndFill';
-import logout from '../../utils/logout';
+import logout from '../logout';
 
 const LABELS_AND_COLUMNS: string[] = [
     'Nº REFERENCIA CLIENTE:',

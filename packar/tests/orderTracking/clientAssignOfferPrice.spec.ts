@@ -24,10 +24,11 @@ import {
 } from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps';
 import OfferOpenPriceTest from '../../interfaces/OfferOpenPriceTest';
 import { createOrderOpenPricingAndGetOrderId } from '../../functions/steps/orderTracking/clientAssignOfferPriceSteps';
-import logout from '../../functions/utils/logout';
+
 import { ORDER_STATUS } from '../../constants/orderStatus';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import { clickOnTextNth } from '../../functions/utils/clickOnText';
+import logout from '../../functions/steps/logout';
 
 const order1: OfferOpenPriceTest = {
     title: 'Accept Order with Open Price Courier First Offer without Limit Price',

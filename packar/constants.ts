@@ -13,16 +13,19 @@ export const demo: User = {
 
 export const courier: User = {
     username: process.env.USER_COURIER_NAME!,
+    providerName: process.env.USER_COURIER_PROVIDER_NAME!,
     password: process.env.USER_COURIER_PASS!,
 };
 
 export const courierNOFixedPrice: User = {
     username: process.env.USER_COURIER_NAME_NO_FIXED_PRICE!,
+    providerName: process.env.USER_COURIER_PROVIDER_NAME_NO_FIXED_PRICE!,
     password: process.env.USER_COURIER_PASS_NO_FIXED_PRICE!,
 };
 
 export const courierFixedPrice: User = {
     username: process.env.USER_COURIER_NAME_FIXED_PRICE!,
+    providerName: process.env.USER_COURIER_PROVIDER_NAME_FIXED_PRICE!,
     password: process.env.USER_COURIER_PASS_FIXED_PRICE!,
 };
 
