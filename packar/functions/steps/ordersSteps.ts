@@ -417,7 +417,6 @@ export async function fillDestinationOrders(page: Page, destination: Destination
 
 export async function navigateToOrderDetailPage(page: Page, orderId: string) {
     await page.goto(baserUrl + `/app/main/order/${orderId}?isdetail=true`);
-
     await page.waitForURL(baserUrl + `/app/main/order/${orderId}?isdetail=true`);
 }
 

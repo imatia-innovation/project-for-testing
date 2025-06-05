@@ -10,9 +10,8 @@ import { gotToOrderDetailPage, orderDetailPageAssertions, selectBox } from '../.
 import { PROVIDER_SERVICES } from '../../constants/providers';
 import {
     courierNOFixedPrice,
-    courierFixedPrice,
     pickUpLocation,
-    destination_favorite,
+    destinationFavorite,
     courier,
     admin,
     TIMEOUT,
@@ -40,7 +39,7 @@ const order1: OfferOpenPriceTest = {
         await selectBox(page, { length: 10, width: 10, height: 10, weight: 10 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -67,7 +66,7 @@ const order2: OfferOpenPriceTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },

@@ -3,18 +3,10 @@
 // Here create expedition with order ids
 
 import test, { Page } from '@playwright/test';
-import { admin, courierFixedPrice, courierNOFixedPrice, destination_favorite, pickUpLocation } from '../../constants';
-import {
-    createExpedition,
-    createOrdersForExpedition,
-    navigateToClientExpeditionPage,
-    selectExpedition,
-    selectOrders,
-} from '../../functions/steps/orderTracking/createExpeditionSteps';
+import { courierFixedPrice, courierNOFixedPrice, destinationFavorite, pickUpLocation } from '../../constants';
+import { createExpeditionWithOrders } from '../../functions/steps/orderTracking/createExpeditionSteps';
 import { selectBox } from '../../functions/steps/ordersSteps';
-import login from '../../functions/steps/login';
 import ExpeditionTest from '../../interfaces/ExpeditionTest';
-import { clickOnText } from '../../functions/utils/clickOnText';
 
 const expedition1: ExpeditionTest = {
     title: 'should create an Expedition for courier No fixed price',
@@ -22,14 +14,14 @@ const expedition1: ExpeditionTest = {
     order: {
         title: 'generic order for expedition',
         pickUpLocation,
-        reference: 'atest' + new Date().getTime().toString() + '1',
+        reference: 'atest' + new Date().getTime().toString() + '-1',
         provider: courierNOFixedPrice.providerName,
         service: 0,
         selectPackage: async (page: Page) => {
             await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
         },
         destination: {
-            favorite: destination_favorite,
+            favorite: destinationFavorite,
             saveAsNew: false,
             remarks: 'This is an automatic test',
         },
@@ -45,14 +37,14 @@ const expedition2: ExpeditionTest = {
     order: {
         title: 'generic order for expedition',
         pickUpLocation,
-        reference: 'atest' + new Date().getTime().toString() + '2',
+        reference: 'atest' + new Date().getTime().toString() + '-2',
         provider: courierFixedPrice.providerName,
         service: 0,
         selectPackage: async (page: Page) => {
             await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
         },
         destination: {
-            favorite: destination_favorite,
+            favorite: destinationFavorite,
             saveAsNew: false,
             remarks: 'This is an automatic test',
         },
@@ -65,20 +57,7 @@ const expeditionTests = [expedition1, expedition2];
 
 expeditionTests.forEach((expeditionTest) => {
     test(expeditionTest.title, async ({ page }) => {
-        await createOrdersForExpedition(page, 1, expeditionTest.order);
-
-        await login(page, admin);
-
-        await navigateToClientExpeditionPage(page);
-
-        const pickupCode: string = await createExpedition(page, expeditionTest.courier.providerName!);
-
-        await selectExpedition(page, pickupCode);
-
-        await selectOrders(page);
-
-        await clickOnText(page, 'Guardar');
-
-        await clickOnText(page, ' lock_open');
+        const qtyOrders: number = 1;
+        await createExpeditionWithOrders(page, expeditionTest, qtyOrders);
     });
 });

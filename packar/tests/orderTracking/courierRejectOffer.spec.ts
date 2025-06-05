@@ -12,7 +12,7 @@ import {
     courierNOFixedPrice,
     courierFixedPrice,
     pickUpLocation,
-    destination_favorite,
+    destinationFavorite,
     TIMEOUT,
 } from '../../constants';
 import {
@@ -23,6 +23,7 @@ import {
     rejectOffer,
 } from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps';
 import OfferTest from '../../interfaces/OfferTest';
+import OfferTestResult from '../../interfaces/OfferTestResult';
 
 const order1: OfferTest = {
     title: 'Reject Order with Traditional Courier First Offer without Limit Price',
@@ -34,7 +35,7 @@ const order1: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -51,7 +52,7 @@ const order2: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -70,7 +71,7 @@ const order3: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -88,7 +89,7 @@ const order4: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -107,7 +108,7 @@ const order5: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -125,7 +126,7 @@ const order6: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -145,7 +146,7 @@ const order7: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -164,7 +165,7 @@ const order8: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -178,7 +179,7 @@ const createOfferTests: OfferTest[] = [order1, order2, order3, order4, order5, o
 
 createOfferTests.forEach((orderTest, testIndex) => {
     test(orderTest.title, async ({ page }) => {
-        const orderId = await createOrderAndGoToOfferDetailPage(page, orderTest, testIndex);
+        const { orderId }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, orderTest, testIndex);
 
         orderTest.courierHasFixedPrice
             ? await offerDetailPageAssertionsFixedPrice(page)

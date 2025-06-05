@@ -2,7 +2,7 @@ import { Page } from '@playwright/test';
 import { getProviderService, PROVIDER_SERVICES, ProviderServices } from '../constants/providers';
 import { selectBox } from '../functions/steps/ordersSteps';
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
-import { destination_favorite, pickUpLocation } from '../constants';
+import { destinationFavorite, pickUpLocation } from '../constants';
 
 interface Combination {
     provider: string;
@@ -53,7 +53,7 @@ export class OrderProviderMapper {
                 await selectBox(page, { length: index, width: index, height: index, weight: index });
             },
             destination: {
-                favorite: destination_favorite,
+                favorite: destinationFavorite,
                 saveAsNew: false,
                 remarks: 'This is an automatic test',
             },

@@ -16,6 +16,7 @@ import OfferTest from '../../../interfaces/OfferTest';
 import User from '../../../interfaces/User';
 import { getByIdAndFill } from '../../utils/getByIdAndFill';
 import logout from '../logout';
+import OfferTestResult from '../../../interfaces/OfferTestResult';
 
 const LABELS_AND_COLUMNS: string[] = [
     'Nº REFERENCIA CLIENTE:',
@@ -150,7 +151,7 @@ export async function getOrderId(page: Page, reference: string, isOpenPricing?: 
 
     await page.waitForTimeout(TIMEOUT);
 
-    await page.waitForURL((url: any) => url != 'https://delivery.dev.packar.es/app/main/order', {
+    await page.waitForURL((url: any) => url != baserUrl + '/app/main/order', {
         waitUntil: 'load',
     });
 
@@ -172,7 +173,7 @@ export async function createOrderAndGoToOfferDetailPage(
     page: Page,
     offerTest: OfferTest,
     testIndex: number
-): Promise<string> {
+): Promise<OfferTestResult> {
     const reference: string = await createNewOrder(page, offerTest, testIndex);
 
     await page.waitForTimeout(TIMEOUT);
@@ -185,7 +186,10 @@ export async function createOrderAndGoToOfferDetailPage(
 
     await goToOfferDetailPage(page, offerTest.courier, orderId);
 
-    return orderId;
+    return {
+        orderId,
+        reference,
+    };
 }
 
 export async function goToOfferDetailPage(page: Page, courier: User, orderId: string): Promise<void> {

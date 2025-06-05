@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { baserUrl, pickUpLocation, TIMEOUT } from '../../../constants';
+import { admin, baserUrl, pickUpLocation, TIMEOUT } from '../../../constants';
 import { clickOnElementById, clickOnText, clickOnTextLast } from '../../utils/clickOnText';
 import assertList from '../../utils/assertList';
 import { getById } from '../../utils/getById';
@@ -7,6 +7,10 @@ import logger from '../../utils/logger';
 import { acceptOffer, createOrderAndGoToOfferDetailPage } from './courierAcceptRejectOfferSteps';
 import OfferTest from '../../../interfaces/OfferTest';
 import { getByAttribute } from '../../utils/getByAttribute';
+import login from '../login';
+import ExpeditionTest from '../../../interfaces/ExpeditionTest';
+import ExpeditionTestResult from '../../../interfaces/ExpeditionTestResult';
+import OfferTestResult from '../../../interfaces/OfferTestResult';
 
 const EXPEDITION_TABLE_COLUMNS = [
     'Expedición',
@@ -74,11 +78,18 @@ export async function navigateToClientExpeditionPage(page: Page) {
     await assertList(page, EXPEDITION_TABLE_COLUMNS);
 }
 
-export async function createOrdersForExpedition(page: Page, qtyOrders: number, orderTest: OfferTest): Promise<void> {
+export async function createOrdersForExpedition(
+    page: Page,
+    qtyOrders: number,
+    orderTest: OfferTest
+): Promise<string[]> {
+    let orderReferences: string[] = [];
     for (let i = 0; i < qtyOrders; i++) {
-        await createOrderAndGoToOfferDetailPage(page, orderTest, i);
+        const { reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, orderTest, i);
         await acceptOffer(page, orderTest.courierHasFixedPrice, orderTest.setPrice);
+        orderReferences.push(reference);
     }
+    return orderReferences;
 }
 
 export async function selectOrders(page: Page) {
@@ -89,4 +100,31 @@ export async function selectOrders(page: Page) {
 
         await checkboxLocator.click();
     }
+}
+
+export async function createExpeditionWithOrders(
+    page: Page,
+    expeditionTest: ExpeditionTest,
+    qtyOrders: number = 1
+): Promise<ExpeditionTestResult> {
+    const orderReferences = await createOrdersForExpedition(page, qtyOrders, expeditionTest.order);
+
+    await login(page, admin);
+
+    await navigateToClientExpeditionPage(page);
+
+    const expeditionCode: string = await createExpedition(page, expeditionTest.courier.providerName!);
+
+    await selectExpedition(page, expeditionCode);
+
+    await selectOrders(page);
+
+    await clickOnText(page, 'Guardar');
+
+    await clickOnText(page, ' lock_open');
+
+    return {
+        expeditionCode,
+        orderReferences,
+    };
 }

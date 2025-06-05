@@ -57,6 +57,10 @@ export const PROVIDER_SERVICES: ProviderServices[] = [
         name: 'ENVIOS PEPITO', // 8
         services: ['Standard'],
     },
+    {
+        name: 'DANIEL IGLESIA', // 8
+        services: ['Standard'],
+    },
 ];
 
 export function labelChangesByProvider(provider: string) {

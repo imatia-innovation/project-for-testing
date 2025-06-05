@@ -15,7 +15,7 @@ import {
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
 import logger from '../functions/utils/logger';
 import { OrderProviderMapper } from '../classes/OrderProviderMapper';
-import { destination_favorite, pickUpLocation } from '../constants';
+import { destinationFavorite, pickUpLocation } from '../constants';
 
 const ORDER_ID = '140';
 
@@ -29,7 +29,7 @@ const order1: CreateNewOrderTest = {
         await selectBox(page, { length: 5, width: 20, height: 30, weight: 50 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -50,7 +50,7 @@ const order2: CreateNewOrderTest = {
         await selectCompleteOrder(page, { boxQty: 5, weight: 36 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -71,7 +71,7 @@ const order3: CreateNewOrderTest = {
         await selectEnvelope(page, { length: 10, width: 100, height: 200, weight: 14 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -100,7 +100,7 @@ const order4: CreateNewOrderTest = {
         await selectEnvelope(page, { length: 10, width: 100, height: 200, weight: 14 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -119,7 +119,7 @@ const order5: CreateNewOrderTest = {
         await selectPallet(page, 'Custom', { length: 5, width: 20, height: 30, weight: 50 }, 9);
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -197,7 +197,7 @@ const order9: CreateNewOrderTest = {
         await selectBox(page, { length: 100, width: 200, height: 300, weight: 500 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -212,7 +212,7 @@ const order10: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -227,7 +227,7 @@ const order11: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -242,7 +242,7 @@ const order12: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -257,7 +257,7 @@ const order13: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },

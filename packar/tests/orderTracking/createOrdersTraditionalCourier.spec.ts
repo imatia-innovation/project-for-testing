@@ -8,7 +8,7 @@ import { assertTextInRow, createNewOrder, selectBox } from '../../functions/step
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import { PROVIDER_SERVICES } from '../../constants/providers';
-import { destination_favorite, pickUpLocation } from '../../constants';
+import { destinationFavorite, pickUpLocation } from '../../constants';
 
 const provider: string = PROVIDER_SERVICES[6].name;
 
@@ -22,7 +22,7 @@ const order1: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -38,7 +38,7 @@ const order2: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -56,7 +56,7 @@ const order3: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -73,7 +73,7 @@ const order4: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },

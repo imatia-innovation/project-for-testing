@@ -9,11 +9,11 @@ import {
     selectBox,
     selectCompleteOrder,
 } from '../functions/steps/ordersSteps';
-import { clickOnButton, clickOnText } from '../functions/utils/clickOnText';
+import { clickOnText } from '../functions/utils/clickOnText';
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
 import logger from '../functions/utils/logger';
 import { ORDER_STATUS } from '../constants/orderStatus';
-import { destination_favorite, pickUpLocation } from '../constants';
+import { destinationFavorite, pickUpLocation } from '../constants';
 
 // Pending to assignment
 const order1: CreateNewOrderTest = {
@@ -25,7 +25,7 @@ const order1: CreateNewOrderTest = {
         await selectBox(page, { length: 99, width: 99, height: 99, weight: 99 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -39,7 +39,7 @@ const order2: CreateNewOrderTest = {
         await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -53,7 +53,7 @@ const order3: CreateNewOrderTest = {
         await selectBox(page, { length: 101, width: 101, height: 101, weight: 101 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -167,7 +167,7 @@ const order9: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -181,7 +181,7 @@ const order10: CreateNewOrderTest = {
         await selectBox(page, { length: 2, width: 2, height: 2, weight: 2 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -195,7 +195,7 @@ const order11: CreateNewOrderTest = {
         await selectBox(page, { length: 3, width: 3, height: 3, weight: 3 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -209,7 +209,7 @@ const order12: CreateNewOrderTest = {
         await selectBox(page, { length: 4, width: 4, height: 4, weight: 4 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -223,7 +223,7 @@ const order13: CreateNewOrderTest = {
         await selectBox(page, { length: 5, width: 5, height: 5, weight: 5 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -237,7 +237,7 @@ const order14: CreateNewOrderTest = {
         await selectBox(page, { length: 6, width: 6, height: 6, weight: 6 });
     },
     destination: {
-        favorite: destination_favorite,
+        favorite: destinationFavorite,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
