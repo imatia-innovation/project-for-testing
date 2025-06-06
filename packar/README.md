@@ -1,3 +1,7 @@
+## Environment Vars
+
+example.env File shows the names (without values) of the environment variables that must be used to run the tests
+
 ## Testing
 
 ### Get in the directory
