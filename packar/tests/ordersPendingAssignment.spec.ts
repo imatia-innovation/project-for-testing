@@ -276,7 +276,7 @@ ordersPendingToAssignment.forEach((orderTest, testIndex) => {
     });
 });
 
-test.only('it should mark all pending tests and assign a provider', async ({ page }) => {
+test('it should mark all pending tests and assign a provider', async ({ page }) => {
     await navigateToOrdersPageRoutine(page);
 
     await checkHeaderRow(page);

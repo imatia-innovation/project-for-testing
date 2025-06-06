@@ -8,14 +8,7 @@
 import test, { Page } from '@playwright/test';
 import { gotToOrderDetailPage, orderDetailPageAssertions, selectBox } from '../../functions/steps/ordersSteps';
 import { PROVIDER_SERVICES } from '../../constants/providers';
-import {
-    courierNOFixedPrice,
-    pickUpLocation,
-    destinationFavorite,
-    courier,
-    admin,
-    TIMEOUT,
-} from '../../constants';
+import { courierNOFixedPrice, pickUpLocation, destinationFavorite, courier, admin, TIMEOUT } from '../../constants';
 import {
     acceptOffer,
     goToOfferDetailPage,
