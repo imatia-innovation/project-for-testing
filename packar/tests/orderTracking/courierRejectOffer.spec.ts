@@ -11,8 +11,8 @@ import {
     baserUrl,
     courierNOFixedPrice,
     courierFixedPrice,
-    pickUpLocation,
-    destinationFavorite,
+    PICKUP_LOCATION,
+    DESTINATION_FAVORITE,
     TIMEOUT,
 } from '../../constants';
 import {
@@ -27,7 +27,7 @@ import OfferTestResult from '../../interfaces/OfferTestResult';
 
 const order1: OfferTest = {
     title: 'Reject Order with Traditional Courier First Offer without Limit Price',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: PROVIDER_SERVICES[6].name,
     service: 0,
@@ -35,7 +35,7 @@ const order1: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -44,7 +44,7 @@ const order1: OfferTest = {
 
 const order2: OfferTest = {
     title: 'Reject Order with Traditional Courier First Offer with Limit Price 99.99',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: PROVIDER_SERVICES[6].name,
     service: 0,
@@ -52,7 +52,7 @@ const order2: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -63,7 +63,7 @@ const order2: OfferTest = {
 
 const order3: OfferTest = {
     title: 'Reject Order with Traditional Courier Manual Assignment without Limit Price',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: PROVIDER_SERVICES[6].name,
     service: 0,
@@ -71,7 +71,7 @@ const order3: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -81,7 +81,7 @@ const order3: OfferTest = {
 
 const order4: OfferTest = {
     title: 'Reject Order with Traditional Courier Manual Assignment with Limit Price 99.99',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: PROVIDER_SERVICES[6].name,
     service: 0,
@@ -89,7 +89,7 @@ const order4: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -100,7 +100,7 @@ const order4: OfferTest = {
 
 const order5: OfferTest = {
     title: 'Reject Order with Traditional Courier Paco First Offer without Limit Price',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: PROVIDER_SERVICES[5].name,
     service: 0,
@@ -108,7 +108,7 @@ const order5: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -118,7 +118,7 @@ const order5: OfferTest = {
 
 const order6: OfferTest = {
     title: 'Reject Order with Traditional Courier Paco First Offer with Limit Price 9.99',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: PROVIDER_SERVICES[5].name,
     service: 0,
@@ -126,7 +126,7 @@ const order6: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -138,7 +138,7 @@ const order6: OfferTest = {
 
 const order7: OfferTest = {
     title: 'Reject Order with Traditional Courier Paco Manual Assignment without Limit Price',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: PROVIDER_SERVICES[5].name,
     service: 0,
@@ -146,7 +146,7 @@ const order7: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -157,7 +157,7 @@ const order7: OfferTest = {
 
 const order8: OfferTest = {
     title: 'Reject Order with Traditional Courier Paco Manual Assignment with Limit Price 9.99',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: PROVIDER_SERVICES[5].name,
     service: 0,
@@ -165,7 +165,7 @@ const order8: OfferTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },

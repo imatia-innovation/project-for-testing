@@ -33,7 +33,8 @@ export const baserUrl: string = process.env.BASE_URL!;
 
 export const coreBaseUrl: string = process.env.CORE_BASE_URL!;
 
-export const pickUpLocation: string = process.env.PICKUP_LOCATION!;
-export const destinationFavorite: string = process.env.DESTINATION_FAVORITE!;
+export const PICKUP_LOCATION: string = process.env.PICKUP_LOCATION!;
+export const DESTINATION_FAVORITE: string = process.env.DESTINATION_FAVORITE!;
+export const PICKUP_LOCATION_SECONDARY: string = process.env.PICKUP_LOCATION_SECONDARY!;
 
 export const TIMEOUT = process.env.ENVIRONMENT === 'dev' ? 800 : 1400;

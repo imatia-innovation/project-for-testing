@@ -2,7 +2,7 @@
 
 import test, { expect, Locator, Page } from '@playwright/test';
 import { createExpeditionWithOrders } from '../../functions/steps/orderTracking/createExpeditionSteps';
-import { courierNOFixedPrice, pickUpLocation, destinationFavorite, TIMEOUT } from '../../constants';
+import { courierNOFixedPrice, PICKUP_LOCATION, DESTINATION_FAVORITE, TIMEOUT } from '../../constants';
 import { selectBox } from '../../functions/steps/ordersSteps';
 import ExpeditionTest from '../../interfaces/ExpeditionTest';
 import {
@@ -22,7 +22,7 @@ const expedition1: ExpeditionTest = {
     courier: courierNOFixedPrice,
     order: {
         title: 'generic order for expedition',
-        pickUpLocation,
+        pickUpLocation: PICKUP_LOCATION,
         reference: 'atest' + new Date().getTime().toString(),
         provider: courierNOFixedPrice.providerName,
         service: 0,
@@ -30,7 +30,7 @@ const expedition1: ExpeditionTest = {
             await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
         },
         destination: {
-            favorite: destinationFavorite,
+            favorite: DESTINATION_FAVORITE,
             saveAsNew: false,
             remarks: 'This is an automatic test',
         },

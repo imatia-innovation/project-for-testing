@@ -15,13 +15,13 @@ import {
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
 import logger from '../functions/utils/logger';
 import { OrderProviderMapper } from '../classes/OrderProviderMapper';
-import { destinationFavorite, pickUpLocation } from '../constants';
+import { DESTINATION_FAVORITE, PICKUP_LOCATION } from '../constants';
 
 const ORDER_ID = '140';
 
 const order1: CreateNewOrderTest = {
     title: 'should fill the create new order form with the minimum fields selecting Partial Order',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'GLS',
     service: 0,
@@ -29,14 +29,14 @@ const order1: CreateNewOrderTest = {
         await selectBox(page, { length: 5, width: 20, height: 30, weight: 50 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order2: CreateNewOrderTest = {
     title: 'should fill the create new order form with the minimum fields selecting Complete Order',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'NARVAL',
     service: 0,
@@ -50,14 +50,14 @@ const order2: CreateNewOrderTest = {
         await selectCompleteOrder(page, { boxQty: 5, weight: 36 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order3: CreateNewOrderTest = {
     title: 'should fill the create new order form with box, complete order, pallet and envelope',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'SEUR',
     service: 0,
@@ -71,14 +71,14 @@ const order3: CreateNewOrderTest = {
         await selectEnvelope(page, { length: 10, width: 100, height: 200, weight: 14 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order4: CreateNewOrderTest = {
     title: 'should fill the create new order form with box, pallet and envelope, with date for 1-2 days',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'STEF',
     service: 0,
@@ -100,14 +100,14 @@ const order4: CreateNewOrderTest = {
         await selectEnvelope(page, { length: 10, width: 100, height: 200, weight: 14 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order5: CreateNewOrderTest = {
     title: 'should fill the create new order with various pallets',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'CORREOS',
     service: 0,
@@ -119,14 +119,14 @@ const order5: CreateNewOrderTest = {
         await selectPallet(page, 'Custom', { length: 5, width: 20, height: 30, weight: 50 }, 9);
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order6: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with email',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'GLS',
     service: 1,
@@ -147,7 +147,7 @@ const order6: CreateNewOrderTest = {
 };
 const order7: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with phone number',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'NARVAL',
     service: 1,
@@ -169,7 +169,7 @@ const order7: CreateNewOrderTest = {
 };
 const order8: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with email and select other country',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'SEUR',
     service: 1,
@@ -190,21 +190,21 @@ const order8: CreateNewOrderTest = {
 };
 const order9: CreateNewOrderTest = {
     title: 'should create an order without provider',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 100, width: 200, height: 300, weight: 500 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order10: CreateNewOrderTest = {
     title: 'should fill the create new order form with provider Paco Stardard',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'TRANSPORTES PACO',
     service: 0,
@@ -212,14 +212,14 @@ const order10: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order11: CreateNewOrderTest = {
     title: 'should fill the create new order form with provider Emilio Stardard',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'EMILIO SL',
     service: 0,
@@ -227,14 +227,14 @@ const order11: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order12: CreateNewOrderTest = {
     title: 'should fill the create new order form with provider STEF Congelado',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'STEF',
     service: 1,
@@ -242,14 +242,14 @@ const order12: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
 };
 const order13: CreateNewOrderTest = {
     title: 'should fill the create new order form with provider Bajo Cotización Stardard',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: 'BAJO COTIZACIÓN',
     service: 0,
@@ -257,7 +257,7 @@ const order13: CreateNewOrderTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },

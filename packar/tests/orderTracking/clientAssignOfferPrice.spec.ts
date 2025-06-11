@@ -8,7 +8,7 @@
 import test, { Page } from '@playwright/test';
 import { gotToOrderDetailPage, orderDetailPageAssertions, selectBox } from '../../functions/steps/ordersSteps';
 import { PROVIDER_SERVICES } from '../../constants/providers';
-import { courierNOFixedPrice, pickUpLocation, destinationFavorite, courier, admin, TIMEOUT } from '../../constants';
+import { courierNOFixedPrice, PICKUP_LOCATION, DESTINATION_FAVORITE, courier, admin, TIMEOUT } from '../../constants';
 import {
     acceptOffer,
     goToOfferDetailPage,
@@ -24,7 +24,7 @@ import logout from '../../functions/steps/logout';
 
 const order1: OfferOpenPriceTest = {
     title: 'Accept Order with Open Price Courier First Offer without Limit Price',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: PROVIDER_SERVICES[7].name,
     service: 0,
@@ -32,7 +32,7 @@ const order1: OfferOpenPriceTest = {
         await selectBox(page, { length: 10, width: 10, height: 10, weight: 10 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
@@ -51,7 +51,7 @@ const order1: OfferOpenPriceTest = {
 
 const order2: OfferOpenPriceTest = {
     title: 'Accept Order with Open Price Courier Manual Assignment without Limit Price',
-    pickUpLocation,
+    pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: PROVIDER_SERVICES[7].name,
     service: 0,
@@ -59,7 +59,7 @@ const order2: OfferOpenPriceTest = {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
     },
     destination: {
-        favorite: destinationFavorite,
+        favorite: DESTINATION_FAVORITE,
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },

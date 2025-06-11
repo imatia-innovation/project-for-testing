@@ -20,49 +20,9 @@ import { getById } from '../functions/utils/getById';
 import { getByIdAndFill } from '../functions/utils/getByIdAndFill';
 import logger from '../functions/utils/logger';
 import { RuleProviderMapper } from '../classes/RuleProviderMapper';
+import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../constants/rulesPropertiesAndOperations';
 
 const ruleService = new RuleService();
-
-const COLUMNS: string[] = [
-    'Reglas de asignación',
-    'Prioridad',
-    'Nombre',
-    'CP origen',
-    'CP destino',
-    'Alto (cm)',
-    'Ancho (cm)',
-    'Largo (cm)',
-    'Peso (Kg)',
-    'Número de bultos',
-    'Empresa',
-    'Proveedor',
-    'Servicio',
-];
-
-const FORM_SECTIONS: string[] = ['Información', 'Nueva condición', 'Condiciones'];
-
-// i
-export const PROPERTY_OPTIONS: string[] = [
-    'Alto (cm)',
-    'Ancho (cm)',
-    'Código postal destino',
-    'Código postal origen',
-    'Empresa',
-    'Largo (cm)',
-    'Peso',
-    'Número de bultos',
-];
-
-// j
-export const OPERATOR_OPTIONS: string[] = [
-    'Contiene',
-    'Distinto de',
-    'Igual a',
-    'Mayor e igual que',
-    'Mayor que',
-    'Menor e igual que',
-    'Menor que',
-];
 
 const combinationsFor100: Calculator = new Calculator(PROPERTY_OPTIONS, OPERATOR_OPTIONS, '100');
 
@@ -206,16 +166,16 @@ async function clean() {
 // });
 
 test(`should go to the Rules Section and sort by Priority descendant order`, async ({ page }) => {
-    await navigateToRulesPageRoutine(page, COLUMNS);
+    await navigateToRulesPageRoutine(page);
 
     lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, 0);
 });
 
-// Antes de activar esta regla, debemos tener previamente una regla con prioridad 1
+// Antes de activar este test, debemos tener previamente una regla con prioridad 1
 test(`should see an error when try to use the same last priority value`, async ({ page }) => {
-    await navigateToRulesPageRoutine(page, COLUMNS);
+    await navigateToRulesPageRoutine(page);
 
-    await openNewRuleForm(page, FORM_SECTIONS);
+    await openNewRuleForm(page);
 
     // Start fill form
     test.slow();
@@ -241,11 +201,11 @@ test(`should see an error when try to use the same last priority value`, async (
     expect(priorityInUse).toBeTruthy();
 });
 
-// Antes de activar esta regla, debemos tener previamente una regla sin condiciones
+// Antes de activar este test, debemos tener previamente una regla sin condiciones
 test(`should see an error when try to save a rule without fill the inputs`, async ({ page }) => {
-    await navigateToRulesPageRoutine(page, COLUMNS);
+    await navigateToRulesPageRoutine(page);
 
-    await openNewRuleForm(page, FORM_SECTIONS);
+    await openNewRuleForm(page);
 
     // Start fill form
     test.slow();
@@ -265,11 +225,11 @@ newRuleTests.forEach((rule, index) => {
     test(`should validate a rule with parameters: ${rule.name}, ${PROPERTY_OPTIONS[rule.combination.i]} ${OPERATOR_OPTIONS[rule.combination.j]} ${rule.combinationMain.value}`, async ({
         page,
     }) => {
-        await navigateToRulesPageRoutine(page, COLUMNS);
+        await navigateToRulesPageRoutine(page);
 
         lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, index);
 
-        await openNewRuleForm(page, FORM_SECTIONS);
+        await openNewRuleForm(page);
 
         // Start fill form
         test.slow();
@@ -297,7 +257,3 @@ newRuleTests.forEach((rule, index) => {
         await assertRuleCreated(page, rule.name);
     });
 });
-
-// TODO: borrar una y borrar todas utilizando el check y eliminar del front
-
-// Generate rule tests with all providers and services

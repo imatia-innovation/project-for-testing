@@ -3,7 +3,7 @@
 // Here create expedition with order ids
 
 import test, { Page } from '@playwright/test';
-import { courierFixedPrice, courierNOFixedPrice, destinationFavorite, pickUpLocation } from '../../constants';
+import { courierFixedPrice, courierNOFixedPrice, DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
 import { createExpeditionWithOrders } from '../../functions/steps/orderTracking/createExpeditionSteps';
 import { selectBox } from '../../functions/steps/ordersSteps';
 import ExpeditionTest from '../../interfaces/ExpeditionTest';
@@ -13,7 +13,7 @@ const expedition1: ExpeditionTest = {
     courier: courierNOFixedPrice,
     order: {
         title: 'generic order for expedition',
-        pickUpLocation,
+        pickUpLocation: PICKUP_LOCATION,
         reference: 'atest' + new Date().getTime().toString() + '-1',
         provider: courierNOFixedPrice.providerName,
         service: 0,
@@ -21,7 +21,7 @@ const expedition1: ExpeditionTest = {
             await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
         },
         destination: {
-            favorite: destinationFavorite,
+            favorite: DESTINATION_FAVORITE,
             saveAsNew: false,
             remarks: 'This is an automatic test',
         },
@@ -36,7 +36,7 @@ const expedition2: ExpeditionTest = {
     courier: courierFixedPrice,
     order: {
         title: 'generic order for expedition',
-        pickUpLocation,
+        pickUpLocation: PICKUP_LOCATION,
         reference: 'atest' + new Date().getTime().toString() + '-2',
         provider: courierFixedPrice.providerName,
         service: 0,
@@ -44,7 +44,7 @@ const expedition2: ExpeditionTest = {
             await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
         },
         destination: {
-            favorite: destinationFavorite,
+            favorite: DESTINATION_FAVORITE,
             saveAsNew: false,
             remarks: 'This is an automatic test',
         },

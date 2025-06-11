@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { admin, baserUrl, pickUpLocation, TIMEOUT } from '../../../constants';
+import { admin, baserUrl, PICKUP_LOCATION, TIMEOUT } from '../../../constants';
 import { clickOnElementById, clickOnText, clickOnTextLast } from '../../utils/clickOnText';
 import assertList from '../../utils/assertList';
 import { getById } from '../../utils/getById';
@@ -40,10 +40,10 @@ export async function createExpedition(page: Page, provider: string): Promise<st
     await clickOnText(page, 'Nueva expedición');
     await assertList(page, NEW_EXPEDITION_TEXTS);
 
-    logger.info('createExpeditionSteps.ts createExpedition pickUpLocation:', pickUpLocation);
+    logger.info('createExpeditionSteps.ts createExpedition pickUpLocation:', PICKUP_LOCATION);
 
     await clickOnElementById(page, 'pickup_location');
-    await clickOnTextLast(page, ` ${pickUpLocation} `);
+    await clickOnTextLast(page, ` ${PICKUP_LOCATION} `);
 
     logger.info('createExpeditionSteps.ts createExpedition provider:', provider);
 

@@ -14,7 +14,25 @@ import { getByAttribute } from '../utils/getByAttribute';
 import { getById } from '../utils/getById';
 import logger from '../utils/logger';
 
-export async function navigateToRulesPageRoutine(page: Page, columns: string[]) {
+const RULES_PAGE_TEXT: string[] = [
+    'Reglas de asignación',
+    'Prioridad',
+    'Nombre',
+    'CP origen',
+    'CP destino',
+    'Alto (cm)',
+    'Ancho (cm)',
+    'Largo (cm)',
+    'Peso (Kg)',
+    'Número de bultos',
+    'Empresa',
+    'Proveedor',
+    'Servicio',
+];
+
+const FORM_SECTIONS: string[] = ['Información', 'Nueva condición', 'Condiciones'];
+
+export async function navigateToRulesPageRoutine(page: Page) {
     logger.info('Start rulesSteps.ts navigateToRulesPageRoutine');
     await login(page, admin);
 
@@ -22,7 +40,7 @@ export async function navigateToRulesPageRoutine(page: Page, columns: string[]) 
 
     await waitUntilUrlLoads(page, '/app/main/rules');
 
-    await assertList(page, columns);
+    await assertList(page, RULES_PAGE_TEXT);
 
     const createNewRuleLocator = await page.locator('button').getByText('Nueva regla').count();
     expect(createNewRuleLocator).not.toBe(0);
@@ -63,7 +81,7 @@ export async function getLastPriorityRoutine(page: Page, lastPriorityValue: stri
     return maxN;
 }
 
-export async function openNewRuleForm(page: Page, formSections: string[]) {
+export async function openNewRuleForm(page: Page) {
     logger.info('Start rulesSteps.ts openNewRuleForm');
     const createNewRuleLocator = page.locator('button').getByText('Nueva regla');
     await createNewRuleLocator.click();
@@ -71,7 +89,7 @@ export async function openNewRuleForm(page: Page, formSections: string[]) {
     let formTitleLocator = page.getByText('Reglas: Nuevo');
     expect(formTitleLocator).not.toBeNull();
 
-    await assertList(page, formSections);
+    await assertList(page, FORM_SECTIONS);
 
     const saveButtonLocator = page.locator('button').getByText('Guardar');
     expect(saveButtonLocator).not.toBeNull();

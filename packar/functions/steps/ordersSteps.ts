@@ -1,5 +1,5 @@
 import test, { Locator, Page, expect } from '@playwright/test';
-import { admin, baserUrl, TIMEOUT } from '../../constants';
+import { admin, baserUrl, PICKUP_LOCATION, TIMEOUT } from '../../constants';
 import assertList from '../utils/assertList';
 import login from './login';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
@@ -160,9 +160,12 @@ async function setLimitPrice(page: Page, orderLimitPrice: number) {
 }
 
 async function selectPickUpLocation(page: Page, pickUpLocation: string) {
+    logger.info(' Start ordersSteps.ts selectPickUpLocation: ', pickUpLocation);
     await clickOnElementById(page, 'pickup_location');
-    //await clickOnText(page, pickUpLocation);
-    await clickOnTextNth(page, pickUpLocation, 1);
+    pickUpLocation === PICKUP_LOCATION
+        ? await clickOnTextNth(page, pickUpLocation, 1)
+        : await clickOnText(page, pickUpLocation);
+    logger.info(' Finish ordersSteps.ts selectPickUpLocation');
 }
 
 export async function navigateToOrdersPageRoutine(page: Page) {
