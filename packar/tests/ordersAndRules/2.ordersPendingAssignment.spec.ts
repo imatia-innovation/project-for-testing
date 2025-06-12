@@ -2,7 +2,6 @@
 
 import test, { Page } from '@playwright/test';
 import {
-    assertTextInRow,
     checkHeaderRow,
     createNewOrder,
     navigateToOrdersPageRoutine,
@@ -13,6 +12,7 @@ import { clickOnText } from '../../functions/utils/clickOnText';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import { ORDER_STATUS } from '../../constants/orderStatus';
 import { DESTINATION_FAVORITE, PICKUP_LOCATION, PICKUP_LOCATION_SECONDARY } from '../../constants';
+import { assertTextInRow } from '../../functions/utils/assertTextInRow';
 
 // Pending to assignment
 const order1: CreateNewOrderTest = {

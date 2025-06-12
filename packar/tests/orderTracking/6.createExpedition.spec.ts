@@ -7,6 +7,7 @@ import { courierFixedPrice, courierNOFixedPrice, DESTINATION_FAVORITE, PICKUP_LO
 import { createExpeditionWithOrders } from '../../functions/steps/orderTracking/createExpeditionSteps';
 import { selectBox } from '../../functions/steps/ordersSteps';
 import ExpeditionTest from '../../interfaces/ExpeditionTest';
+import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 
 const expedition1: ExpeditionTest = {
     title: 'should create an Expedition for courier No fixed price',
@@ -28,6 +29,7 @@ const expedition1: ExpeditionTest = {
         courier: courierNOFixedPrice,
         setPrice: '55',
         courierHasFixedPrice: false,
+        assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
     },
 };
 
@@ -50,6 +52,7 @@ const expedition2: ExpeditionTest = {
         },
         courier: courierFixedPrice,
         courierHasFixedPrice: true,
+        assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
     },
 };
 

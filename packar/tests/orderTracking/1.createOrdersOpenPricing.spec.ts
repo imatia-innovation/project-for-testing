@@ -1,12 +1,13 @@
 // create Orders with Open Pricing Provider
 
 import test, { Page } from '@playwright/test';
-import { assertTextInRow, createNewOrder, selectBox } from '../../functions/steps/ordersSteps';
+import { createNewOrder, selectBox } from '../../functions/steps/ordersSteps';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import { PROVIDER_SERVICES } from '../../constants/providers';
 import { ORDER_STATUS } from '../../constants/orderStatus';
 import { DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
+import { assertTextInRow } from '../../functions/utils/assertTextInRow';
 
 const provider: string = PROVIDER_SERVICES[7].name;
 
@@ -24,6 +25,7 @@ const order1: CreateNewOrderTest = {
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
+    assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
 };
 
 const order2: CreateNewOrderTest = {

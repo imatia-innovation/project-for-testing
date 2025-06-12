@@ -11,6 +11,7 @@ import login from '../login';
 import ExpeditionTest from '../../../interfaces/ExpeditionTest';
 import ExpeditionTestResult from '../../../interfaces/ExpeditionTestResult';
 import OfferTestResult from '../../../interfaces/OfferTestResult';
+import { selectRegisterPerPage } from '../../utils/pagination';
 
 const EXPEDITION_TABLE_COLUMNS = [
     'Expedición',
@@ -114,6 +115,9 @@ export async function createExpeditionWithOrders(
     await navigateToClientExpeditionPage(page);
 
     const expeditionCode: string = await createExpedition(page, expeditionTest.courier.providerName!);
+
+    // select 100 registers per page
+    await selectRegisterPerPage(page);
 
     await selectExpedition(page, expeditionCode);
 

@@ -16,6 +16,7 @@ import ExpeditionTestResult from '../../interfaces/ExpeditionTestResult';
 import { clickOnText } from '../../functions/utils/clickOnText';
 import logger from '../../functions/utils/logger';
 import assertByText from '../../functions/utils/assertByText';
+import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 
 const expedition1: ExpeditionTest = {
     title: 'should create an Expedition for courier No fixed price',
@@ -37,6 +38,7 @@ const expedition1: ExpeditionTest = {
         courier: courierNOFixedPrice,
         setPrice: '129.99',
         courierHasFixedPrice: false,
+        assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
     },
 };
 
@@ -95,7 +97,7 @@ test('should set Received on the order', async ({ page }) => {
     const statusIndex: number = 1; // received
 
     await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, 'Recibido');
+    await assertByText(page, 'Recogido');
     await assertByText(page, 'RECOGIDO');
 });
 
@@ -108,7 +110,7 @@ test('should set On route on the order', async ({ page }) => {
     let statusIndex: number = 1; // received
 
     await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, 'Recibido');
+    await assertByText(page, 'Recogido');
     await assertByText(page, 'RECOGIDO');
 
     statusIndex = 2; // on route
@@ -125,7 +127,7 @@ test('should set Delivered on the order', async ({ page }) => {
     let statusIndex: number = 1; // received
 
     await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, 'Recibido');
+    await assertByText(page, 'Recogido');
     await assertByText(page, 'RECOGIDO');
 
     statusIndex = 2; // on route
@@ -158,7 +160,7 @@ test('should create incidences between states on the order', async ({ page }) =>
     let statusIndex: number = 1; // received
 
     await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, 'Recibido');
+    await assertByText(page, 'Recogido');
     await assertByText(page, 'RECOGIDO');
 
     await saveIncidence(page, 0, 'Esto es un test automatizado 1');

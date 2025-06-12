@@ -18,6 +18,7 @@ import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import { getProviderService } from '../../constants/providers';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import User from '../../interfaces/User';
+import { locateRow } from '../utils/assertTextInRow';
 
 const LABELS_AND_COLUMNS: string[] = [
     'Buscar envíos',
@@ -147,7 +148,7 @@ export async function createNewOrder(page: Page, orderTest: CreateNewOrderTest, 
 async function selectAssignmentMethod(page: Page, orderAssignmentMethod: string) {
     logger.info('Start ordersSteps.ts selectAssignmentMethod', { orderAssignmentMethod });
     await clickOnText(page, 'Método de asignación');
-    orderAssignmentMethod === ASSIGNMENT_METHOD.FIRST_OFFER
+    orderAssignmentMethod === ASSIGNMENT_METHOD.MANUAL_ASSIGNMENT
         ? await clickOnTextNth(page, orderAssignmentMethod, 1)
         : await clickOnText(page, orderAssignmentMethod);
     logger.info('Finish ordersSteps.ts selectAssignmentMethod');
@@ -427,34 +428,6 @@ export async function assertOrderDetailPageData(page: Page) {
     await assertByText(page, `Nº REFERENCIA CLIENTE: `);
 }
 
-export async function locateRow(page: Page, reference: string) {
-    const rowsLocators: Locator = page.getByRole('row');
-
-    const rowsLocatorsArray: Locator[] = await rowsLocators.all();
-
-    let rows = [];
-
-    for (let index = 0; index < rowsLocatorsArray.length; index++) {
-        const rowLocator: Locator = rowsLocatorsArray[index];
-
-        const innerText: null | string = await rowLocator.innerText();
-
-        if (innerText) {
-            const rowTexts: string[] = innerText.replace(/\t\n/g, '').split(/\n/g);
-            const rowText: string = rowTexts.join(',');
-            rows.push(rowText);
-        }
-    }
-
-    let index = 0;
-    const row = rows.find((row, i) => {
-        index = i;
-        return row.includes(reference);
-    });
-
-    return { rowsLocators, index, rowLocator: rowsLocators.nth(index), rowText: row };
-}
-
 export async function checkRow(page: Page, reference: string, attribute: string, value: string) {
     const { rowLocator } = await locateRow(page, reference);
 
@@ -467,15 +440,6 @@ export async function checkHeaderRow(page: Page) {
     const checkboxOnRow = page.getByRole('columnheader').first();
 
     await checkboxOnRow.click();
-}
-
-export async function assertTextInRow(page: Page, reference: string, text: string) {
-    logger.info('Start assertTextInRow, text: ', text);
-    const { rowText } = await locateRow(page, reference);
-
-    expect(rowText).not.toBeUndefined();
-    expect(rowText!.includes(text)).toBeTruthy();
-    logger.info('Finish assertTextInRow');
 }
 
 export async function assertTextIsNotInRow(page: Page, reference: string, text: string) {

@@ -39,6 +39,7 @@ const order1: OfferTest = {
     },
     courier: courierNOFixedPrice,
     setPrice: '10',
+    assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
 };
 
 const order2: OfferTest = {
@@ -116,6 +117,7 @@ const order5: OfferTest = {
     },
     courier: courierFixedPrice,
     courierHasFixedPrice: true,
+    assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
 };
 
 const order6: OfferTest = {

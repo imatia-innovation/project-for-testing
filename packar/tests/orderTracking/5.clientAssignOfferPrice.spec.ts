@@ -5,7 +5,7 @@
 // Login as courier and reject the same order
 // Accept the better price with client
 
-import test, { Page } from '@playwright/test';
+import test, { Locator, Page } from '@playwright/test';
 import { gotToOrderDetailPage, orderDetailPageAssertions, selectBox } from '../../functions/steps/ordersSteps';
 import { PROVIDER_SERVICES } from '../../constants/providers';
 import { courierNOFixedPrice, PICKUP_LOCATION, DESTINATION_FAVORITE, courier, admin, TIMEOUT } from '../../constants';
@@ -19,8 +19,11 @@ import { createOrderOpenPricingAndGetOrderId } from '../../functions/steps/order
 
 import { ORDER_STATUS } from '../../constants/orderStatus';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
-import { clickOnTextNth } from '../../functions/utils/clickOnText';
+import { clickOnButton, clickOnTextNth, locateTheButtonIndex } from '../../functions/utils/clickOnText';
 import logout from '../../functions/steps/logout';
+import logger from '../../functions/utils/logger';
+import { locateRow } from '../../functions/utils/assertTextInRow';
+import { getEnabledButtonExcludingText, getEnabledButtonsByText } from '../../functions/utils/getEnabledButton';
 
 const order1: OfferOpenPriceTest = {
     title: 'Accept Order with Open Price Courier First Offer without Limit Price',
@@ -47,6 +50,7 @@ const order1: OfferOpenPriceTest = {
         },
     ],
     assignButtonIndex: 1,
+    assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
 };
 
 const order2: OfferOpenPriceTest = {
@@ -79,7 +83,7 @@ const order2: OfferOpenPriceTest = {
         //     setPrice: '75.99',
         // },
     ],
-    assignButtonIndex: 2,
+    assignButtonIndex: 1,
 };
 
 const createOfferTests: OfferOpenPriceTest[] = [order1, order2];
@@ -114,6 +118,8 @@ createOfferTests.forEach((orderTest, testIndex) => {
 
         await page.waitForTimeout(TIMEOUT);
 
+        logger.info('5.clientAssignOfferPrice.spec.ts orderTest.assignmentMethod: ', orderTest.assignmentMethod);
+
         if (orderTest.assignmentMethod === ASSIGNMENT_METHOD.MANUAL_ASSIGNMENT) {
             // should accept Open Price
 
@@ -121,7 +127,17 @@ createOfferTests.forEach((orderTest, testIndex) => {
 
             await page.waitForTimeout(TIMEOUT);
 
-            await clickOnTextNth(page, 'Asignar', orderTest.assignButtonIndex);
+            logger.info(
+                "Start 5.clientAssignOfferPrice.spec.ts searching enabled button with text: 'local_shipping Asignar '"
+            );
+
+            const assignButtonLocators: Locator[] = await getEnabledButtonsByText(page, 'local_shipping Asignar ');
+            const assignButtonLocator = await getEnabledButtonExcludingText(assignButtonLocators, 'Reasignar pedido');
+            await assignButtonLocator?.click();
+
+            logger.info(
+                "Finish 5.clientAssignOfferPrice.spec.ts searching enabled button with text: 'local_shipping Asignar '"
+            );
 
             await page.waitForTimeout(5000);
         }
