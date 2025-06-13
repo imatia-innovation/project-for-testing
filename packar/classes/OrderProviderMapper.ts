@@ -3,6 +3,7 @@ import { getProviderService, PROVIDER_SERVICES, ProviderServices } from '../cons
 import { selectBox } from '../functions/steps/ordersSteps';
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
 import { DESTINATION_FAVORITE, PICKUP_LOCATION } from '../constants';
+import { PRE_PROVIDER_SERVICES } from '../constants/pre-providers';
 
 interface Combination {
     provider: string;
@@ -10,11 +11,13 @@ interface Combination {
     used: boolean;
 }
 
+const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : PROVIDER_SERVICES;
+
 export class OrderProviderMapper {
     combinations: Combination[] = [];
 
     calculateAllCombinations(): void {
-        PROVIDER_SERVICES.forEach((element: ProviderServices) => {
+        PROV_SERVICES.forEach((element: ProviderServices) => {
             element.services.forEach((_service: string, index) => {
                 this.combinations.push({
                     provider: element.name,
@@ -44,7 +47,7 @@ export class OrderProviderMapper {
                 'should create new order with the minimum fields selecting Partial Order, provider: ' +
                 combination.provider +
                 ' service: ' +
-                getProviderService(combination.provider, combination.service)?.service,
+                getProviderService(combination.provider, combination.service, PROV_SERVICES)?.service,
             pickUpLocation: PICKUP_LOCATION,
             reference: 'atest' + new Date().getTime().toString(),
             provider: combination.provider,

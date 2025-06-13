@@ -1,4 +1,4 @@
-import test, { Locator, Page, expect } from '@playwright/test';
+import test, { Page, expect } from '@playwright/test';
 import { admin, baserUrl, PICKUP_LOCATION, TIMEOUT } from '../../constants';
 import assertList from '../utils/assertList';
 import login from './login';
@@ -15,10 +15,13 @@ import { getByAttribute } from '../utils/getByAttribute';
 import { getByIdAndFill } from '../utils/getByIdAndFill';
 import logger from '../utils/logger';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
-import { getProviderService } from '../../constants/providers';
-import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
+import { getProviderService, PROVIDER_SERVICES } from '../../constants/providers';
+import { ASSIGNMENT_METHOD_DEFAULT } from '../../constants/assignmentMethod';
 import User from '../../interfaces/User';
 import { locateRow } from '../utils/assertTextInRow';
+import { PRE_PROVIDER_SERVICES } from '../../constants/pre-providers';
+
+const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : PROVIDER_SERVICES;
 
 const LABELS_AND_COLUMNS: string[] = [
     'Buscar envíos',
@@ -77,9 +80,9 @@ const COLUMNS_AND_LABELS_DETAIL_PAGE: string[] = [
     'Teléfono transportista',
     'Fecha de recogida real',
     // esta sección no está todavía en PRE
-    'Documentación',
-    'Subir archivo...',
-    'Archivos adjuntos',
+    // 'Documentación',
+    // 'Subir archivo...',
+    // 'Archivos adjuntos',
     //
     'Datos del remitente',
     'Datos del Destinatario',
@@ -122,7 +125,8 @@ export async function createNewOrder(page: Page, orderTest: CreateNewOrderTest, 
         await selectAssignmentMethod(page, orderTest.assignmentMethod);
     }
 
-    if (orderTest.provider) await selectProvider(page, getProviderService(orderTest.provider, orderTest.service)!);
+    if (orderTest.provider)
+        await selectProvider(page, getProviderService(orderTest.provider, orderTest.service, PROV_SERVICES)!);
 
     if (orderTest.limitPrice) {
         await setLimitPrice(page, orderTest.limitPrice);
@@ -148,7 +152,7 @@ export async function createNewOrder(page: Page, orderTest: CreateNewOrderTest, 
 async function selectAssignmentMethod(page: Page, orderAssignmentMethod: string) {
     logger.info('Start ordersSteps.ts selectAssignmentMethod', { orderAssignmentMethod });
     await clickOnText(page, 'Método de asignación');
-    orderAssignmentMethod === ASSIGNMENT_METHOD.MANUAL_ASSIGNMENT
+    orderAssignmentMethod === ASSIGNMENT_METHOD_DEFAULT
         ? await clickOnTextNth(page, orderAssignmentMethod, 1)
         : await clickOnText(page, orderAssignmentMethod);
     logger.info('Finish ordersSteps.ts selectAssignmentMethod');

@@ -22,12 +22,15 @@ import {
 } from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps';
 import OfferTest from '../../interfaces/OfferTest';
 import OfferTestResult from '../../interfaces/OfferTestResult';
+import { PRE_PROVIDER_SERVICES } from '../../constants/pre-providers';
+
+const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : PROVIDER_SERVICES;
 
 const order1: OfferTest = {
     title: 'Accept Order with Traditional Courier First Offer without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[6].name,
+    provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -46,7 +49,7 @@ const order2: OfferTest = {
     title: 'Accept Order with Traditional Courier First Offer with Limit Price 9.99',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[6].name,
+    provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -66,7 +69,7 @@ const order3: OfferTest = {
     title: 'Accept Order with Traditional Courier Manual Assignment without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[6].name,
+    provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -85,7 +88,7 @@ const order4: OfferTest = {
     title: 'Accept Order with Traditional Courier Manual Assignment with Limit Price 9.99',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[6].name,
+    provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -105,7 +108,7 @@ const order5: OfferTest = {
     title: 'Accept Order with Traditional Courier Paco First Offer without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[5].name,
+    provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -124,7 +127,7 @@ const order6: OfferTest = {
     title: 'Accept Order with Traditional Courier Paco First Offer with Limit Price 9.99',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[5].name,
+    provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -144,7 +147,7 @@ const order7: OfferTest = {
     title: 'Accept Order with Traditional Courier Paco Manual Assignment without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[5].name,
+    provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -163,7 +166,7 @@ const order8: OfferTest = {
     title: 'Accept Order with Traditional Courier Paco Manual Assignment with Limit Price 9.99',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[5].name,
+    provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });

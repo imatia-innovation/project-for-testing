@@ -6,7 +6,6 @@
 import test, { Page } from '@playwright/test';
 import { selectBox } from '../../functions/steps/ordersSteps';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
-import { PROVIDER_SERVICES } from '../../constants/providers';
 import {
     baserUrl,
     courierNOFixedPrice,
@@ -29,7 +28,7 @@ const order1: OfferTest = {
     title: 'Reject Order with Traditional Courier First Offer without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[6].name,
+    provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -47,7 +46,7 @@ const order2: OfferTest = {
     title: 'Reject Order with Traditional Courier First Offer with Limit Price 99.99',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[6].name,
+    provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -66,7 +65,7 @@ const order3: OfferTest = {
     title: 'Reject Order with Traditional Courier Manual Assignment without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[6].name,
+    provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -84,7 +83,7 @@ const order4: OfferTest = {
     title: 'Reject Order with Traditional Courier Manual Assignment with Limit Price 99.99',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[6].name,
+    provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -103,7 +102,7 @@ const order5: OfferTest = {
     title: 'Reject Order with Traditional Courier Paco First Offer without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[5].name,
+    provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -122,7 +121,7 @@ const order6: OfferTest = {
     title: 'Reject Order with Traditional Courier Paco First Offer with Limit Price 9.99',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[5].name,
+    provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -142,7 +141,7 @@ const order7: OfferTest = {
     title: 'Reject Order with Traditional Courier Paco Manual Assignment without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[5].name,
+    provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -161,7 +160,7 @@ const order8: OfferTest = {
     title: 'Reject Order with Traditional Courier Paco Manual Assignment with Limit Price 9.99',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[5].name,
+    provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
@@ -189,7 +188,8 @@ createOfferTests.forEach((orderTest, testIndex) => {
 
         await rejectOffer(page, 'Test reject offer');
 
-        await page.goto(`${baserUrl}/app/main/offertDetail/${orderId}`);
+        await page.waitForTimeout(TIMEOUT);
+
         await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {
             waitUntil: 'load',
         });

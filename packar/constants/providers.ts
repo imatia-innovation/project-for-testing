@@ -1,14 +1,15 @@
 import Provider from '../interfaces/Provider';
 
-const OPEN_PRICING_SERVICE_NAME_STANDARD = process.env.ENVIRONMENT === 'dev' ? 'Estándar' : 'Standard';
+export const OPEN_PRICING_SERVICE_NAME_STANDARD = process.env.ENVIRONMENT === 'dev' ? 'Estándar' : 'Standard';
 export interface ProviderServices {
     name: string;
     services: string[];
 }
 
 export const PROVIDER_SERVICES: ProviderServices[] = [
+    // ----------------------------------- NO TRAD --------------------------------
     {
-        name: 'GLS',
+        name: 'GLS', // 0
         services: ['Estándar 24H', 'Estándar devoluciones en tienda'],
     },
     {
@@ -29,7 +30,7 @@ export const PROVIDER_SERVICES: ProviderServices[] = [
         services: ['Fresco o Seco', 'Congelado'],
     },
     {
-        name: 'CORREOS',
+        name: 'CORREOS', // 4
         services: [
             ' PAQUETE ESTÁNDAR DOMICILIO ',
             ' PAQUETE ESTÁNDAR OFICINA ',
@@ -41,6 +42,7 @@ export const PROVIDER_SERVICES: ProviderServices[] = [
             ' PAQUETE PREMIUM DOMICILIO ',
         ],
     },
+    // ------------------------------------ TRAD ---------------------------------
     {
         name: 'TRANSPORTES PACO', // 5
         services: ['Standard'],
@@ -55,10 +57,6 @@ export const PROVIDER_SERVICES: ProviderServices[] = [
     },
     {
         name: 'ENVIOS PEPITO', // 8
-        services: ['Standard'],
-    },
-    {
-        name: 'DANIEL IGLESIA', // 8
         services: ['Standard'],
     },
 ];
@@ -80,8 +78,12 @@ export function labelChangesByProvider(provider: string) {
     return 'Tipo de servicio';
 }
 
-export function getProviderService(name: string, index: number = 0): Provider | undefined {
-    const providerService = PROVIDER_SERVICES.find((providerService) => providerService.name === name);
+export function getProviderService(
+    name: string,
+    index: number = 0,
+    providerServices: ProviderServices[]
+): Provider | undefined {
+    const providerService = providerServices.find((providerService) => providerService.name === name);
 
     if (providerService) {
         return {

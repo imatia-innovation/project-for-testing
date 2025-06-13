@@ -7,7 +7,6 @@
 
 import test, { Locator, Page } from '@playwright/test';
 import { gotToOrderDetailPage, orderDetailPageAssertions, selectBox } from '../../functions/steps/ordersSteps';
-import { PROVIDER_SERVICES } from '../../constants/providers';
 import { courierNOFixedPrice, PICKUP_LOCATION, DESTINATION_FAVORITE, courier, admin, TIMEOUT } from '../../constants';
 import {
     acceptOffer,
@@ -19,17 +18,17 @@ import { createOrderOpenPricingAndGetOrderId } from '../../functions/steps/order
 
 import { ORDER_STATUS } from '../../constants/orderStatus';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
-import { clickOnButton, clickOnTextNth, locateTheButtonIndex } from '../../functions/utils/clickOnText';
 import logout from '../../functions/steps/logout';
 import logger from '../../functions/utils/logger';
-import { locateRow } from '../../functions/utils/assertTextInRow';
 import { getEnabledButtonExcludingText, getEnabledButtonsByText } from '../../functions/utils/getEnabledButton';
+
+const provider = 'BAJO COTIZACIÓN';
 
 const order1: OfferOpenPriceTest = {
     title: 'Accept Order with Open Price Courier First Offer without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[7].name,
+    provider,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 10, width: 10, height: 10, weight: 10 });
@@ -57,7 +56,7 @@ const order2: OfferOpenPriceTest = {
     title: 'Accept Order with Open Price Courier Manual Assignment without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: PROVIDER_SERVICES[7].name,
+    provider,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });

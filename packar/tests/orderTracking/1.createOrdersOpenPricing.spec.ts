@@ -8,8 +8,11 @@ import { PROVIDER_SERVICES } from '../../constants/providers';
 import { ORDER_STATUS } from '../../constants/orderStatus';
 import { DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
 import { assertTextInRow } from '../../functions/utils/assertTextInRow';
+import { PRE_PROVIDER_SERVICES } from '../../constants/pre-providers';
 
-const provider: string = PROVIDER_SERVICES[7].name;
+const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : PROVIDER_SERVICES;
+
+const provider: string = 'BAJO COTIZACIÓN';
 
 const order1: CreateNewOrderTest = {
     title: 'create Order with Open Pricing Courier First Offer without Limit Price',

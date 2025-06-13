@@ -15,13 +15,14 @@ import { clickOnText } from '../../functions/utils/clickOnText';
 import assertByText from '../../functions/utils/assertByText';
 import CreateNewRuleOrderTest from '../../interfaces/CreateNewRuleOrderTest';
 import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../../constants/rulesPropertiesAndOperations';
-import { getProviderService } from '../../constants/providers';
+import { getProviderService, PROVIDER_SERVICES } from '../../constants/providers';
 import { getByIdAndFill } from '../../functions/utils/getByIdAndFill';
 import { selectCondition } from '../../functions/steps/couriersRulesSteps';
 import { courierFixedPrice, courierNOFixedPrice } from '../../constants';
+import { PRE_PROVIDER_SERVICES } from '../../constants/pre-providers';
+import { selectRegisterPerPage } from '../../functions/utils/pagination';
 
-courierFixedPrice;
-courierNOFixedPrice;
+const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : PROVIDER_SERVICES;
 
 const rule1: CreateNewRuleOrderTest = {
     name: 'Si el alto es igual que 100, asignar a GLS Estándar 24H',
@@ -153,6 +154,8 @@ let newRuleTests: CreateNewRuleOrderTest[] = [rule1, rule2, rule3, rule4, rule5,
 test('Delete all rules test', async ({ page }) => {
     await navigateToRulesPageRoutine(page);
 
+    await selectRegisterPerPage(page);
+
     const checkAllLocator: Locator = page.getByRole('checkbox');
 
     const checkboxes: Locator[] = await checkAllLocator.all();
@@ -192,7 +195,7 @@ test('Create rules', async ({ page }) => {
 
         await getByIdAndFill(page, 'name', rule.name);
 
-        await selectProvider(page, getProviderService(rule.provider, rule.service)!);
+        await selectProvider(page, getProviderService(rule.provider, rule.service, PROV_SERVICES)!);
 
         await getByIdAndFill(page, 'priority', rule.priority);
 
