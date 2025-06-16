@@ -13,7 +13,7 @@ import ExpeditionTestResult from '../../../interfaces/ExpeditionTestResult';
 import OfferTestResult from '../../../interfaces/OfferTestResult';
 import { selectRegisterPerPage } from '../../utils/pagination';
 
-const EXPEDITION_TABLE_COLUMNS = [
+export const EXPEDITION_TABLE_COLUMNS = [
     'Expedición',
     'Codigo de Transportista',
     'Transportista',
@@ -24,7 +24,7 @@ const EXPEDITION_TABLE_COLUMNS = [
     'Cerrar',
 ];
 
-const NEW_EXPEDITION_TEXTS = [
+export const NEW_EXPEDITION_TEXTS = [
     'Solicitar Nueva Expedición',
     'Código',
     'Almacén',
