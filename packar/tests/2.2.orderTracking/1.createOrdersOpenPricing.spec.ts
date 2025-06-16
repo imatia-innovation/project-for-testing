@@ -4,13 +4,9 @@ import test, { Page } from '@playwright/test';
 import { createNewOrder, selectBox } from '../../functions/steps/ordersSteps';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
-import { PROVIDER_SERVICES } from '../../constants/providers';
 import { ORDER_STATUS } from '../../constants/orderStatus';
 import { DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
 import { assertTextInRow } from '../../functions/utils/assertTextInRow';
-import { PRE_PROVIDER_SERVICES } from '../../constants/pre-providers';
-
-const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : PROVIDER_SERVICES;
 
 const provider: string = 'BAJO COTIZACIÓN';
 

@@ -1,4 +1,4 @@
-import { OPEN_PRICING_SERVICE_NAME_STANDARD, ProviderServices } from './providers';
+import { OPEN_PRICING_SERVICE_NAME_STANDARD, ProviderServices } from './dev-providers';
 
 export const PRE_PROVIDER_SERVICES: ProviderServices[] = [
     // ----------------------------------- NO TRAD --------------------------------

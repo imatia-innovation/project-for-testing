@@ -1,5 +1,5 @@
 import test, { Page, expect } from '@playwright/test';
-import { admin, baserUrl, PICKUP_LOCATION, TIMEOUT } from '../../constants';
+import { admin, baserUrl, PICKUP_LOCATION, PROVIDER_SERVICES, TIMEOUT } from '../../constants';
 import assertList from '../utils/assertList';
 import login from './login';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
@@ -15,13 +15,10 @@ import { getByAttribute } from '../utils/getByAttribute';
 import { getByIdAndFill } from '../utils/getByIdAndFill';
 import logger from '../utils/logger';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
-import { getProviderService, PROVIDER_SERVICES } from '../../constants/providers';
+import { getProviderService } from '../../constants/dev-providers';
 import { ASSIGNMENT_METHOD_DEFAULT } from '../../constants/assignmentMethod';
 import User from '../../interfaces/User';
 import { locateRow } from '../utils/assertTextInRow';
-import { PRE_PROVIDER_SERVICES } from '../../constants/pre-providers';
-
-const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : PROVIDER_SERVICES;
 
 const LABELS_AND_COLUMNS: string[] = [
     'Buscar envíos',
@@ -97,6 +94,7 @@ const COLUMNS_AND_LABELS_DETAIL_PAGE: string[] = [
     'Datos del remitente',
     'Datos del Destinatario',
     'Nombre de la empresa',
+    //
     'Dirección',
     'Localidad',
     'País',
@@ -136,7 +134,7 @@ export async function createNewOrder(page: Page, orderTest: CreateNewOrderTest, 
     }
 
     if (orderTest.provider)
-        await selectProvider(page, getProviderService(orderTest.provider, orderTest.service, PROV_SERVICES)!);
+        await selectProvider(page, getProviderService(orderTest.provider, orderTest.service, PROVIDER_SERVICES)!);
 
     if (orderTest.limitPrice) {
         await setLimitPrice(page, orderTest.limitPrice);

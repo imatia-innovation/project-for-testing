@@ -15,14 +15,11 @@ import { clickOnText } from '../../functions/utils/clickOnText';
 import assertByText from '../../functions/utils/assertByText';
 import CreateNewRuleOrderTest from '../../interfaces/CreateNewRuleOrderTest';
 import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../../constants/rulesPropertiesAndOperations';
-import { getProviderService, PROVIDER_SERVICES } from '../../constants/providers';
+import { getProviderService } from '../../constants/dev-providers';
 import { getByIdAndFill } from '../../functions/utils/getByIdAndFill';
 import { selectCondition } from '../../functions/steps/couriersRulesSteps';
-import { courierFixedPrice, courierNOFixedPrice } from '../../constants';
-import { PRE_PROVIDER_SERVICES } from '../../constants/pre-providers';
+import { courierFixedPrice, courierNOFixedPrice, PROVIDER_SERVICES } from '../../constants';
 import { selectRegisterPerPage } from '../../functions/utils/pagination';
-
-const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : PROVIDER_SERVICES;
 
 const rule1: CreateNewRuleOrderTest = {
     name: 'Si el alto es igual que 100, asignar a GLS Estándar 24H',
@@ -195,7 +192,7 @@ test('Create rules', async ({ page }) => {
 
         await getByIdAndFill(page, 'name', rule.name);
 
-        await selectProvider(page, getProviderService(rule.provider, rule.service, PROV_SERVICES)!);
+        await selectProvider(page, getProviderService(rule.provider, rule.service, PROVIDER_SERVICES)!);
 
         await getByIdAndFill(page, 'priority', rule.priority);
 

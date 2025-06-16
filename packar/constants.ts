@@ -1,5 +1,7 @@
 import 'dotenv/config';
 import User from './interfaces/User';
+import { PRE_PROVIDER_SERVICES } from './constants/pre-providers';
+import { DEV_PROVIDER_SERVICES } from './constants/dev-providers';
 
 export const admin: User = {
     username: process.env.USER_ADMIN_NAME!,
@@ -38,3 +40,5 @@ export const DESTINATION_FAVORITE: string = process.env.DESTINATION_FAVORITE!;
 export const PICKUP_LOCATION_SECONDARY: string = process.env.PICKUP_LOCATION_SECONDARY!;
 
 export const TIMEOUT = process.env.ENVIRONMENT === 'dev' ? 800 : 1400;
+
+export const PROVIDER_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : DEV_PROVIDER_SERVICES;

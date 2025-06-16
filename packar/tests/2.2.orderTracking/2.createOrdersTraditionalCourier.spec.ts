@@ -2,7 +2,7 @@
 // Manual Assignment
 // First Offer
 
-import { ORDER_STATUS } from './../../constants/orderStatus';
+import { ORDER_STATUS } from '../../constants/orderStatus';
 import test, { Page } from '@playwright/test';
 import { createNewOrder, selectBox } from '../../functions/steps/ordersSteps';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';

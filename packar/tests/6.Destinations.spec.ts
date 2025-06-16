@@ -1,0 +1,84 @@
+import test from '@playwright/test';
+import { admin, TIMEOUT } from '../constants';
+import login from '../functions/steps/login';
+import { assertNewDestinationForm, navigateToDestinationsPage } from '../functions/steps/destinationsSteps';
+import { clickOnText } from '../functions/utils/clickOnText';
+import { getByIdAndFill } from '../functions/utils/getByIdAndFill';
+import assertList from '../functions/utils/assertList';
+
+test('should go to Destinations page and make text assertions', async ({ page }) => {
+    await login(page, admin);
+
+    await navigateToDestinationsPage(page);
+});
+
+test(`should open the create new destination form`, async ({ page }) => {
+    await login(page, admin);
+
+    await navigateToDestinationsPage(page);
+
+    await assertNewDestinationForm(page);
+});
+
+const destination1 = {
+    testTitle: 'should open the create new destination form and try to save with invalid email and zipCode', // This is a bug
+    textFields: [
+        {
+            id: 'destinationName',
+            value: 'test',
+        },
+        {
+            id: 'addressName',
+            value: 'test',
+        },
+        {
+            id: 'email',
+            value: 'test',
+        },
+        {
+            id: 'street',
+            value: 'test',
+        },
+        {
+            id: 'zipCode',
+            value: 'test',
+        },
+        {
+            id: 'city',
+            value: 'test',
+        },
+    ],
+};
+
+const destinationTests = [destination1];
+
+destinationTests.forEach((destination) => {
+    test(destination.testTitle, async ({ page }) => {
+        await login(page, admin);
+
+        await navigateToDestinationsPage(page);
+
+        await assertNewDestinationForm(page);
+
+        for (let index = 0; index < destination.textFields.length; index++) {
+            const textField = destination.textFields[index];
+            await getByIdAndFill(page, textField.id, textField.value);
+        }
+
+        await clickOnText(page, 'Guardar');
+
+        await page.waitForTimeout(TIMEOUT);
+
+        await clickOnText(page, 'test');
+        await clickOnText(page, 'Eliminar');
+        await assertList(page, [
+            'Confirmar',
+            '¿Está seguro de que quiere borrar los items seleccionados?',
+            'Cancelar',
+            'Ok',
+        ]);
+        await clickOnText(page, 'Ok');
+
+        await page.waitForTimeout(TIMEOUT);
+    });
+});

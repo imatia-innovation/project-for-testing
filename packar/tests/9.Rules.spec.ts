@@ -15,15 +15,13 @@ import {
     deleteRule,
 } from '../functions/steps/rulesSteps';
 import CreateNewRuleTest from '../interfaces/CreateNewRuleTest';
-import { getProviderService, PROVIDER_SERVICES } from '../constants/providers';
+import { getProviderService } from '../constants/dev-providers';
 import { getById } from '../functions/utils/getById';
 import { getByIdAndFill } from '../functions/utils/getByIdAndFill';
 import logger from '../functions/utils/logger';
 import { RuleProviderMapper } from '../classes/RuleProviderMapper';
 import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../constants/rulesPropertiesAndOperations';
-import { PRE_PROVIDER_SERVICES } from '../constants/pre-providers';
-
-const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : PROVIDER_SERVICES;
+import { PROVIDER_SERVICES } from '../constants';
 
 const ruleService = new RuleService();
 
@@ -239,7 +237,7 @@ newRuleTests.forEach((rule, index) => {
 
         await getByIdAndFill(page, 'name', rule.name);
 
-        await selectProvider(page, getProviderService(rule.provider, rule.service, PROV_SERVICES)!);
+        await selectProvider(page, getProviderService(rule.provider, rule.service, PROVIDER_SERVICES)!);
 
         await selectCondition(page, PROPERTY_OPTIONS, OPERATOR_OPTIONS, rule.combinationMain, rule.combination);
 

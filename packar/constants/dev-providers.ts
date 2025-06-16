@@ -6,7 +6,7 @@ export interface ProviderServices {
     services: string[];
 }
 
-export const PROVIDER_SERVICES: ProviderServices[] = [
+export const DEV_PROVIDER_SERVICES: ProviderServices[] = [
     // ----------------------------------- NO TRAD --------------------------------
     {
         name: 'GLS', // 0

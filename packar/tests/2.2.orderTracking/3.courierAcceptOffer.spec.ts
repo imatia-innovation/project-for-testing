@@ -6,7 +6,6 @@
 import test, { Page } from '@playwright/test';
 import { selectBox } from '../../functions/steps/ordersSteps';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
-import { PROVIDER_SERVICES } from '../../constants/providers';
 import {
     baserUrl,
     courierNOFixedPrice,
@@ -22,9 +21,6 @@ import {
 } from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps';
 import OfferTest from '../../interfaces/OfferTest';
 import OfferTestResult from '../../interfaces/OfferTestResult';
-import { PRE_PROVIDER_SERVICES } from '../../constants/pre-providers';
-
-const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : PROVIDER_SERVICES;
 
 const order1: OfferTest = {
     title: 'Accept Order with Traditional Courier First Offer without Limit Price',

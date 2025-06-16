@@ -1,5 +1,5 @@
-import { PRE_PROVIDER_SERVICES } from '../constants/pre-providers';
-import { getProviderService, PROVIDER_SERVICES, ProviderServices } from '../constants/providers';
+import { PROVIDER_SERVICES } from '../constants';
+import { getProviderService, ProviderServices } from '../constants/dev-providers';
 import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../constants/rulesPropertiesAndOperations';
 import CreateNewRuleTest from '../interfaces/CreateNewRuleTest';
 import Calculator from './Calculator';
@@ -10,13 +10,11 @@ interface Combination {
     used: boolean;
 }
 
-const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : PROVIDER_SERVICES;
-
 export class RuleProviderMapper {
     combinations: Combination[] = [];
 
     calculateAllCombinations(): void {
-        PROV_SERVICES.forEach((element: ProviderServices) => {
+        PROVIDER_SERVICES.forEach((element: ProviderServices) => {
             element.services.forEach((_service: string, index) => {
                 this.combinations.push({
                     provider: element.name,
@@ -50,7 +48,7 @@ export class RuleProviderMapper {
                 ' provider: ' +
                 combination.provider +
                 ' service: ' +
-                getProviderService(combination.provider, combination.service, PROV_SERVICES)?.service,
+                getProviderService(combination.provider, combination.service, PROVIDER_SERVICES)?.service,
             provider: combination.provider,
             service: combination.service,
             combinationMain: combinationForOperations,
