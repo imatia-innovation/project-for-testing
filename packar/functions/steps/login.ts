@@ -1,7 +1,17 @@
-import { Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import { baserUrl } from '../../constants';
 import User from '../../interfaces/User';
 import { getById } from '../utils/getById';
+import assertList from '../utils/assertList';
+import { getByAttribute } from '../utils/getByAttribute';
+
+const LOGIN_TEXTS: string[] = [
+    'Inicia sesión en tu cuenta:',
+    'Iniciar sesión',
+    'Creado por Imatia',
+    '© 2024.',
+    'Todos los derechos reservados',
+];
 
 export default async function login(page: Page, user: User) {
     await page.goto(baserUrl + '/app/login');
@@ -27,4 +37,12 @@ async function fillLoginInputs(page: Page, user: User) {
     await page.getByText('Iniciar sesión').click();
 
     await page.waitForURL(baserUrl + '/app/main/home');
+}
+
+export async function loginPageAssertions(page: Page) {
+    await assertList(page, LOGIN_TEXTS);
+
+    const packarImage = await getByAttribute(page, 'src', 'assets/images/logo-packar-rosa-grande.png').count();
+
+    expect(packarImage > 0).toBeTruthy();
 }

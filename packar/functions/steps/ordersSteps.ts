@@ -25,6 +25,16 @@ const PROV_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES 
 
 const LABELS_AND_COLUMNS: string[] = [
     'Buscar envíos',
+    'Seleccionar fechas',
+    'Estado',
+    'Nº Referencia Cliente',
+    'Nº Referencia Transportista',
+    'Transportista',
+    'País',
+    'Servicio del transportista',
+    'Filtrar',
+    'Limpiar',
+    //
     'Fecha del envío',
     'Nº Referencia Cliente',
     'Nº Referencia Transportista',

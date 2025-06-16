@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { admin, baserUrl, demo, courier } from '../constants';
 import { getById } from '../functions/utils/getById';
+import logout from '../functions/steps/logout';
+import { loginPageAssertions } from '../functions/steps/login';
 
 test.afterEach(async ({ page }) => {
     page.close();
@@ -31,7 +33,7 @@ test('should go to login Page and send an invalid password', async ({ page }) =>
     await page.getByText('Ok').click();
 });
 
-test('should go to login Page, and make login successfully with admin user', async ({ page }) => {
+test('should go to login Page, and make login successfully with admin user and logout', async ({ page }) => {
     await page.goto(baserUrl + '/app/login');
 
     const selectorMessage = page.getByText('Inicia sesión en tu cuenta:');
@@ -52,9 +54,16 @@ test('should go to login Page, and make login successfully with admin user', asy
 
     await page.waitForURL(baserUrl + '/app/main/home');
     expect(page.url()).toContain('/app/main/home');
+
+    await logout(page);
+
+    await page.waitForURL(baserUrl + '/app/login?session-expired=false');
+    expect(page.url()).toContain('/app/login?session-expired=false');
+
+    await loginPageAssertions(page);
 });
 
-test('should go to login Page, and make login successfully with demo user', async ({ page }) => {
+test('should go to login Page, and make login successfully with demo user and logout', async ({ page }) => {
     await page.goto(baserUrl + '/app/login');
 
     const selectorMessage = page.getByText('Inicia sesión en tu cuenta:');
@@ -75,9 +84,16 @@ test('should go to login Page, and make login successfully with demo user', asyn
 
     await page.waitForURL(baserUrl + '/app/main/home');
     expect(page.url()).toContain('/app/main/home');
+
+    await logout(page);
+
+    await page.waitForURL(baserUrl + '/app/login?session-expired=false');
+    expect(page.url()).toContain('/app/login?session-expired=false');
+
+    await loginPageAssertions(page);
 });
 
-test('should go to login Page, and make login successfully with courier user', async ({ page }) => {
+test('should go to login Page, and make login successfully with courier user and logout', async ({ page }) => {
     await page.goto(baserUrl + '/app/login');
 
     const selectorMessage = page.getByText('Inicia sesión en tu cuenta:');
@@ -98,4 +114,11 @@ test('should go to login Page, and make login successfully with courier user', a
 
     await page.waitForURL(baserUrl + '/app/main/home');
     expect(page.url()).toContain('/app/main/home');
+
+    await logout(page);
+
+    await page.waitForURL(baserUrl + '/app/login?session-expired=false');
+    expect(page.url()).toContain('/app/login?session-expired=false');
+
+    await loginPageAssertions(page);
 });
