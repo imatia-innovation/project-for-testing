@@ -172,7 +172,6 @@ export async function createOrderAndGoToOfferDetailPage(
     testIndex: number
 ): Promise<OfferTestResult> {
     const reference: string = await createNewOrder(page, offerTest, testIndex);
-
     await page.waitForTimeout(TIMEOUT);
 
     await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ACCEPT);

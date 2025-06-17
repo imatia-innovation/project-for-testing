@@ -11,10 +11,11 @@ import {
     acceptOffer,
     createOrderAndGoToOfferDetailPage,
     getOrderId,
+    goToOfferDetailPage,
 } from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps';
 import assertByText from '../../functions/utils/assertByText';
 import { assertTextInRow } from '../../functions/utils/assertTextInRow';
-import { clickOnText, clickOnTextLast, clickOnTextNth } from '../../functions/utils/clickOnText';
+import { clickOnText, clickOnTextNth } from '../../functions/utils/clickOnText';
 import {
     courierNOFixedPrice,
     PICKUP_LOCATION,
@@ -22,12 +23,11 @@ import {
     TIMEOUT,
     baserUrl,
     PROVIDER_SERVICES,
+    courierFixedPrice,
 } from '../../constants';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import OfferTest from '../../interfaces/OfferTest';
-import { getById } from '../../functions/utils/getById';
-import { waitUntilUrlLoads } from '../../functions/utils/waitUntilUrlLoads';
 import OfferTestResult from '../../interfaces/OfferTestResult';
 import logout from '../../functions/steps/logout';
 import { navigateToMyExpeditionsPage } from '../../functions/steps/myExpeditionsSteps';
@@ -38,6 +38,13 @@ import {
 } from '../../functions/steps/orderTracking/orderExpeditionTrackingSteps';
 import assertListExcluded from '../../functions/utils/assertListExcluded';
 import logger from '../../functions/utils/logger';
+import {
+    acceptOfferAndLogout,
+    createOrderWithAssignedStatus,
+    reassignOrder,
+    reassignOrderSuccessfully,
+} from '../../functions/steps/orderCancelAndReassingSteps';
+import Provider from '../../interfaces/Provider';
 
 const provider: string = courierNOFixedPrice.providerName!;
 
@@ -120,31 +127,21 @@ test("should go to an order with status 'Pte. asignación' detail page and try t
     await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ASSIGNMENT);
 
     const orderId = await getOrderId(page, reference);
-
-    await navigateToOrderDetailPage(page, orderId);
-
+    const provider: Provider = { name: 'GLS', service: 'Estándar 24H' };
+    const orderIdRef: OfferTestResult = { orderId, reference };
     test.slow();
 
-    await page.waitForTimeout(TIMEOUT);
-    await assertOrderDetailPageData(page);
+    // IT SHOULD BE THIS:
+    // const orderStatusExpected = ORDER_STATUS.ASSIGNED
+    // const orderId2: string = await reassignOrderSuccessfully(page, provider, orderIdRef, orderStatusExpected);
+    // await navigateToOrderDetailPage(page, orderId);
+    // await assertOrderDetailPageData(page, ORDER_STATUS.CANCELLED);
 
-    await clickOnText(page, 'Reasignar pedido');
-    await assertByText(
-        page,
-        'Al confirmar este cambio, se cancelará el pedido actual y se generará un nuevo pedido con el transportista seleccionado. Si la fecha de recogida original es anterior a hoy, será hoy. Si la fecha de entrega original era anterior a mañana, será mañana.'
-    );
-
-    await getById(page, 'courier').click();
-    await clickOnText(page, ' GLS ');
-
-    await getById(page, 'service_type').click();
-    await clickOnText(page, ' Estándar 24H ');
-
-    await clickOnText(page, 'Guardar');
-
-    await page.waitForTimeout(TIMEOUT * 2);
+    // await navigateToOrderDetailPage(page, orderId2);
+    // await assertOrderDetailPageData(page, ORDER_STATUS.ASSIGNED);
 
     // CURRENTLY IS THIS:
+    await reassignOrder(page, provider, orderIdRef);
     await assertByText(page, `No se puede reasignar el envío ${reference} porque está asignado a una expedición.`);
 
     await clickOnTextNth(page, 'Ok', 0);
@@ -153,11 +150,6 @@ test("should go to an order with status 'Pte. asignación' detail page and try t
     await navigateToOrderDetailPage(page, orderId);
     await assertOrderDetailPageData(page);
     await assertByText(page, ORDER_STATUS.PENDING_ASSIGNMENT);
-
-    // IT SHOULD BE THIS:
-    // await waitUntilUrlLoads(page, '/app/main/order');
-    // await page.waitForTimeout(TIMEOUT);
-    // await assertTextInRow(page, reference, ORDER_STATUS.ASSIGNED);
 });
 
 test("should go to an order with status 'Pte. cotización' detail page and try to reassign but throws an error", async ({
@@ -166,35 +158,26 @@ test("should go to an order with status 'Pte. cotización' detail page and try t
     // BUG
     await navigateToOrdersPageRoutine(page);
 
-    const reference: string = await createNewOrder(page, order4, 0);
+    const reference: string = await createNewOrder(page, order4, 1);
     await assertTextInRow(page, reference, ORDER_STATUS.PENDING_PRICING);
 
     const orderId = await getOrderId(page, reference);
 
-    await navigateToOrderDetailPage(page, orderId);
-
+    const provider: Provider = { name: 'GLS', service: 'Estándar 24H' };
+    const orderIdRef: OfferTestResult = { orderId, reference };
     test.slow();
 
-    await page.waitForTimeout(TIMEOUT);
-    await assertOrderDetailPageData(page);
+    // IT SHOULD BE THIS:
+    // const orderStatusExpected = ORDER_STATUS.ASSIGNED
+    // const orderId2: string = await reassignOrderSuccessfully(page, provider, orderIdRef, orderStatusExpected);
+    // await navigateToOrderDetailPage(page, orderId);
+    // await assertOrderDetailPageData(page, ORDER_STATUS.CANCELLED);
 
-    await clickOnText(page, 'Reasignar pedido');
-    await assertByText(
-        page,
-        'Al confirmar este cambio, se cancelará el pedido actual y se generará un nuevo pedido con el transportista seleccionado. Si la fecha de recogida original es anterior a hoy, será hoy. Si la fecha de entrega original era anterior a mañana, será mañana.'
-    );
-
-    await getById(page, 'courier').click();
-    await clickOnText(page, ' GLS ');
-
-    await getById(page, 'service_type').click();
-    await clickOnText(page, ' Estándar 24H ');
-
-    await clickOnText(page, 'Guardar');
-
-    await page.waitForTimeout(TIMEOUT * 2);
+    // await navigateToOrderDetailPage(page, orderId2);
+    // await assertOrderDetailPageData(page, ORDER_STATUS.ASSIGNED);
 
     // CURRENTLY IS THIS:
+    await reassignOrder(page, provider, orderIdRef);
     await assertByText(page, `No se puede reasignar el envío ${reference} porque está asignado a una expedición.`);
 
     await clickOnTextNth(page, 'Ok', 0);
@@ -203,11 +186,6 @@ test("should go to an order with status 'Pte. cotización' detail page and try t
     await navigateToOrderDetailPage(page, orderId);
     await assertOrderDetailPageData(page);
     await assertByText(page, ORDER_STATUS.PENDING_PRICING);
-
-    // IT SHOULD BE THIS:
-    // await waitUntilUrlLoads(page, '/app/main/order');
-    // await page.waitForTimeout(TIMEOUT);
-    // await assertTextInRow(page, reference, ORDER_STATUS.ASSIGNED);
 });
 
 test("should go to an order with status 'Pte. aceptación' detail page and reassign to other courier", async ({
@@ -215,86 +193,42 @@ test("should go to an order with status 'Pte. aceptación' detail page and reass
 }) => {
     await navigateToOrdersPageRoutine(page);
 
-    const reference: string = await createNewOrder(page, order2, 0);
+    const reference: string = await createNewOrder(page, order2, 2);
     await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ACCEPT);
 
     const orderId = await getOrderId(page, reference);
+    const provider: Provider = { name: 'GLS', service: 'Estándar 24H' };
+    const orderIdRef: OfferTestResult = { orderId, reference };
+    const orderStatusExpected = ORDER_STATUS.ASSIGNED;
+    test.slow();
+    const orderId2: string = await reassignOrderSuccessfully(page, provider, orderIdRef, orderStatusExpected);
 
     await navigateToOrderDetailPage(page, orderId);
+    await assertOrderDetailPageData(page, ORDER_STATUS.CANCELLED);
 
-    test.slow();
-
-    await clickOnText(page, 'Reasignar pedido');
-    await assertByText(
-        page,
-        'Al confirmar este cambio, se cancelará el pedido actual y se generará un nuevo pedido con el transportista seleccionado. Si la fecha de recogida original es anterior a hoy, será hoy. Si la fecha de entrega original era anterior a mañana, será mañana.'
-    );
-
-    await getById(page, 'courier').click();
-    await clickOnText(page, ' GLS ');
-
-    await getById(page, 'service_type').click();
-    await clickOnText(page, ' Estándar 24H ');
-
-    await clickOnText(page, 'Guardar');
-
-    await page.waitForTimeout(TIMEOUT * 2);
-
-    await waitUntilUrlLoads(page, '/app/main/order');
-    await page.waitForTimeout(TIMEOUT);
-    await assertTextInRow(page, reference, ORDER_STATUS.ASSIGNED);
+    await navigateToOrderDetailPage(page, orderId2);
+    await assertOrderDetailPageData(page, ORDER_STATUS.ASSIGNED);
 });
 
 test("should go to an order with status 'Asignado' detail page and reassign to other courier", async ({ page }) => {
-    const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 0);
-
-    await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
-
-    await page.waitForTimeout(TIMEOUT);
-
-    await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {
-        waitUntil: 'load',
-    });
-    await page.waitForTimeout(TIMEOUT);
-
-    await logout(page);
-
-    await page.waitForTimeout(TIMEOUT);
+    const { orderId, reference }: OfferTestResult = await createOrderWithAssignedStatus(page, order3, 3);
 
     test.slow();
 
-    await navigateToOrdersPageRoutine(page);
-
-    await assertTextInRow(page, reference, ORDER_STATUS.ASSIGNED);
+    const provider: Provider = { name: 'GLS', service: 'Estándar 24H' };
+    const orderIdRef: OfferTestResult = { orderId, reference };
+    const orderStatusExpected = ORDER_STATUS.ASSIGNED;
+    const orderId2: string = await reassignOrderSuccessfully(page, provider, orderIdRef, orderStatusExpected);
 
     await navigateToOrderDetailPage(page, orderId);
+    await assertOrderDetailPageData(page, ORDER_STATUS.CANCELLED);
 
-    await page.waitForTimeout(TIMEOUT);
-    await assertOrderDetailPageData(page);
-
-    await clickOnText(page, 'Reasignar pedido');
-    await assertByText(
-        page,
-        'Al confirmar este cambio, se cancelará el pedido actual y se generará un nuevo pedido con el transportista seleccionado. Si la fecha de recogida original es anterior a hoy, será hoy. Si la fecha de entrega original era anterior a mañana, será mañana.'
-    );
-
-    await getById(page, 'courier').click();
-    await clickOnText(page, ' GLS ');
-
-    await getById(page, 'service_type').click();
-    await clickOnText(page, ' Estándar 24H ');
-
-    await clickOnText(page, 'Guardar');
-
-    await page.waitForTimeout(TIMEOUT * 2);
-
-    await waitUntilUrlLoads(page, '/app/main/order');
-    await page.waitForTimeout(TIMEOUT);
-    await assertTextInRow(page, reference, ORDER_STATUS.ASSIGNED);
+    await navigateToOrderDetailPage(page, orderId2);
+    await assertOrderDetailPageData(page, ORDER_STATUS.ASSIGNED);
 });
 
-test("should go to an order with status 'Recogido' detail page and it can not be cancelled", async ({ page }) => {
-    const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 0);
+test("should go to an order with status 'Recogido' detail page and it can not be reassigned", async ({ page }) => {
+    const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 4);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
     await page.waitForTimeout(TIMEOUT);
@@ -333,8 +267,8 @@ test("should go to an order with status 'Recogido' detail page and it can not be
     await assertListExcluded(page, ['Reasignar pedido']);
 });
 
-test("should go to an order with status 'En ruta' detail page and it can not be cancelled", async ({ page }) => {
-    const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 0);
+test("should go to an order with status 'En ruta' detail page and it can not be reassigned", async ({ page }) => {
+    const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 5);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
     await page.waitForTimeout(TIMEOUT);
@@ -380,8 +314,8 @@ test("should go to an order with status 'En ruta' detail page and it can not be 
     await assertListExcluded(page, ['Reasignar pedido']);
 });
 
-test("should go to an order with status 'Entregado' detail page and it can not be cancelled", async ({ page }) => {
-    const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 0);
+test("should go to an order with status 'Entregado' detail page and it can not be reassigned", async ({ page }) => {
+    const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 6);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
     await page.waitForTimeout(TIMEOUT);
@@ -441,8 +375,8 @@ test("should go to an order with status 'Entregado' detail page and it can not b
     await assertListExcluded(page, ['Reasignar pedido']);
 });
 
-test("should go to an order with status 'Incidencia' detail page and it can not be cancelled", async ({ page }) => {
-    const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 0);
+test("should go to an order with status 'Incidencia' detail page and it can not be reassigned", async ({ page }) => {
+    const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 7);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
     await page.waitForTimeout(TIMEOUT);
@@ -483,4 +417,44 @@ test("should go to an order with status 'Incidencia' detail page and it can not 
     await assertOrderDetailPageData(page);
 
     await assertListExcluded(page, ['Reasignar pedido']);
+});
+
+test('should reassign an order by second time', async ({ page }) => {
+    const { orderId, reference }: OfferTestResult = await createOrderWithAssignedStatus(page, order3, 8);
+
+    test.slow();
+
+    const provider: Provider = { name: courierFixedPrice.providerName!, service: 'Standard' };
+    const orderIdRef: OfferTestResult = { orderId, reference };
+    const orderStatusExpected = ORDER_STATUS.PENDING_ACCEPT;
+    const orderId2 = await reassignOrderSuccessfully(page, provider, orderIdRef, orderStatusExpected, true);
+
+    await navigateToOrderDetailPage(page, orderId);
+    await assertOrderDetailPageData(page, ORDER_STATUS.CANCELLED);
+
+    await navigateToOrderDetailPage(page, orderId2);
+    await assertOrderDetailPageData(page, ORDER_STATUS.PENDING_ACCEPT);
+
+    await logout(page);
+    await page.waitForTimeout(TIMEOUT);
+
+    await goToOfferDetailPage(page, courierFixedPrice, orderId2);
+    await acceptOfferAndLogout(page, orderId2, true, order3.setPrice);
+
+    test.slow();
+
+    await navigateToOrdersPageRoutine(page);
+    await assertTextInRow(page, reference, ORDER_STATUS.ASSIGNED);
+
+    await navigateToOrderDetailPage(page, orderId2);
+
+    const provider2: Provider = { name: 'GLS', service: 'Estándar 24H' };
+    const orderIdRef2: OfferTestResult = { orderId: orderId2, reference };
+    const orderId3 = await reassignOrderSuccessfully(page, provider2, orderIdRef2, ORDER_STATUS.ASSIGNED);
+
+    await navigateToOrderDetailPage(page, orderId2);
+    await assertOrderDetailPageData(page, ORDER_STATUS.CANCELLED);
+
+    await navigateToOrderDetailPage(page, orderId3);
+    await assertOrderDetailPageData(page, ORDER_STATUS.ASSIGNED);
 });
