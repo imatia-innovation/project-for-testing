@@ -146,8 +146,7 @@ const LABELS_AND_COLUMNS_REJECTED_EXCLUDED_2: string[] = [
     'Respuesta',
 ];
 
-export async function getOrderId(page: Page, reference: string, isOpenPricing?: boolean): Promise<string> {
-    await assertTextInRow(page, reference, isOpenPricing ? ORDER_STATUS.PENDING_PRICING : ORDER_STATUS.PENDING_ACCEPT);
+export async function getOrderId(page: Page, reference: string): Promise<string> {
     await clickOnText(page, reference);
 
     await page.waitForTimeout(TIMEOUT);
@@ -163,10 +162,7 @@ export async function getOrderId(page: Page, reference: string, isOpenPricing?: 
         orderId = match[1]; // "1268"
     }
 
-    logger.info(' courierAcceptRejectOfferSteps.spec.ts getOrderId ural and orderId', url, orderId);
-
-    await logout(page);
-
+    logger.info(' courierAcceptRejectOfferSteps.spec.ts getOrderId url and orderId', url, orderId);
     return orderId;
 }
 
@@ -179,7 +175,9 @@ export async function createOrderAndGoToOfferDetailPage(
 
     await page.waitForTimeout(TIMEOUT);
 
+    await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ACCEPT);
     const orderId = await getOrderId(page, reference);
+    await logout(page);
 
     logger.info(`courierAcceptRejectOfferSteps.spec.ts createOrderAndGoToOfferDetailPage orderId: ${orderId}`);
 

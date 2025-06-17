@@ -67,7 +67,7 @@ export const PRE_PROVIDER_SERVICES: ProviderServices[] = [
     },
     {
         name: 'AUTOS BREA', // 12
-        services: [' Test de servicio de transportista tradicional '],
+        services: ['Test de servicio de transportista tradicional'],
     },
     {
         name: 'TRANSPORTES CORUÑA', // 13

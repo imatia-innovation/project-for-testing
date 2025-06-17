@@ -17,6 +17,7 @@ import { clickOnText } from '../../functions/utils/clickOnText';
 import logger from '../../functions/utils/logger';
 import assertByText from '../../functions/utils/assertByText';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
+import { ORDER_STATUS } from '../../constants/orderStatus';
 
 const expedition1: ExpeditionTest = {
     title: 'should create an Expedition for courier No fixed price',
@@ -97,8 +98,7 @@ test('should set Received on the order', async ({ page }) => {
     const statusIndex: number = 1; // received
 
     await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, 'Recogido');
-    await assertByText(page, 'RECOGIDO');
+    await assertByText(page, ORDER_STATUS.RECEIVED);
 });
 
 test('should set On route on the order', async ({ page }) => {
@@ -110,12 +110,11 @@ test('should set On route on the order', async ({ page }) => {
     let statusIndex: number = 1; // received
 
     await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, 'Recogido');
-    await assertByText(page, 'RECOGIDO');
+    await assertByText(page, ORDER_STATUS.RECEIVED);
 
     statusIndex = 2; // on route
     await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, 'En ruta');
+    await assertByText(page, ORDER_STATUS.ON_ROUTE);
 });
 
 test('should set Delivered on the order', async ({ page }) => {
@@ -127,12 +126,11 @@ test('should set Delivered on the order', async ({ page }) => {
     let statusIndex: number = 1; // received
 
     await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, 'Recogido');
-    await assertByText(page, 'RECOGIDO');
+    await assertByText(page, ORDER_STATUS.RECEIVED);
 
     statusIndex = 2; // on route
     await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, 'En ruta');
+    await assertByText(page, ORDER_STATUS.ON_ROUTE);
 
     const confirmDeliveryTextLocator: Locator = page.getByText('Confirmar entrega');
     const confirmDeliveryBtnLocators: Locator[] = await confirmDeliveryTextLocator.all();
@@ -148,7 +146,7 @@ test('should set Delivered on the order', async ({ page }) => {
 
     await page.waitForTimeout(TIMEOUT);
 
-    await assertByText(page, 'Entregado');
+    await assertByText(page, ORDER_STATUS.SENT);
 });
 
 test('should create incidences between states on the order', async ({ page }) => {
@@ -160,8 +158,7 @@ test('should create incidences between states on the order', async ({ page }) =>
     let statusIndex: number = 1; // received
 
     await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, 'Recogido');
-    await assertByText(page, 'RECOGIDO');
+    await assertByText(page, ORDER_STATUS.RECEIVED);
 
     await saveIncidence(page, 0, 'Esto es un test automatizado 1');
     await page.waitForTimeout(TIMEOUT);
@@ -171,7 +168,7 @@ test('should create incidences between states on the order', async ({ page }) =>
 
     statusIndex = 2; // on route
     await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, 'En ruta');
+    await assertByText(page, ORDER_STATUS.ON_ROUTE);
 
     await saveIncidence(page, 0, 'Esto es un test automatizado 3');
     await page.waitForTimeout(TIMEOUT);
@@ -194,5 +191,5 @@ test('should create incidences between states on the order', async ({ page }) =>
 
     await page.waitForTimeout(TIMEOUT);
 
-    await assertByText(page, 'Entregado');
+    await assertByText(page, ORDER_STATUS.SENT);
 });

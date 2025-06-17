@@ -110,22 +110,30 @@ export async function createExpeditionWithOrders(
 ): Promise<ExpeditionTestResult> {
     const orderReferences = await createOrdersForExpedition(page, qtyOrders, expeditionTest.order);
 
-    await login(page, admin);
+    let expeditionCode: string = '';
 
-    await navigateToClientExpeditionPage(page);
+    if (qtyOrders > 1) {
+        await login(page, admin);
 
-    const expeditionCode: string = await createExpedition(page, expeditionTest.courier.providerName!);
+        await navigateToClientExpeditionPage(page);
 
-    // select 100 registers per page
-    await selectRegisterPerPage(page);
+        expeditionCode = await createExpedition(page, expeditionTest.courier.providerName!);
 
-    await selectExpedition(page, expeditionCode);
+        await page.waitForTimeout(TIMEOUT);
 
-    await selectOrders(page);
+        // select 100 registers per page
+        await selectRegisterPerPage(page);
 
-    await clickOnText(page, 'Guardar');
+        await selectExpedition(page, expeditionCode);
 
-    await clickOnText(page, ' lock_open');
+        await selectOrders(page);
+
+        await clickOnText(page, 'Guardar');
+
+        await clickOnText(page, ' lock_open');
+    } else {
+        expeditionCode = orderReferences[0];
+    }
 
     return {
         expeditionCode,

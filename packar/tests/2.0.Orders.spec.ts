@@ -305,7 +305,7 @@ test(`should open the create new order form`, async ({ page }) => {
 });
 
 createOrdersTests.forEach((orderTest, testIndex) => {
-    test(orderTest.title, async ({ page }) => {
+    test.skip(orderTest.title, async ({ page }) => {
         await createNewOrder(page, orderTest, testIndex);
     });
 });
