@@ -3,6 +3,7 @@ import assertList from '../utils/assertList';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import { getById } from '../utils/getById';
 import { clickOnText } from '../utils/clickOnText';
+import { TIMEOUT } from '../../constants';
 
 const REPORTS_PAGE: string[] = ['Informes generados', 'Nuevo informe'];
 
@@ -41,6 +42,8 @@ export async function navigateToReportsPage(page: Page) {
     await locator.click();
 
     await waitUntilUrlLoads(page, '/app/main/reports');
+
+    await page.waitForTimeout(TIMEOUT);
 
     await assertReportsPage(page);
 }

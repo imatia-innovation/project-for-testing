@@ -130,6 +130,7 @@ reportsTest.forEach((report) => {
         await clickOnText(page, 'Guardar');
 
         await waitUntilUrlLoads(page, '/app/main/reports');
+        await page.waitForTimeout(TIMEOUT);
 
         await navigateToReportsGeneratedPage(page);
 

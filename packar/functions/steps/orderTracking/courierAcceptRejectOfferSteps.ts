@@ -159,7 +159,7 @@ export async function getOrderId(page: Page, reference: string): Promise<string>
     let orderId: string = '';
     const match = url.match(/\/order\/(\d+)/);
     if (match) {
-        orderId = match[1]; // "1268"
+        orderId = match[1]; // 1268
     }
 
     logger.info(' courierAcceptRejectOfferSteps.ts getOrderId url and orderId', url, orderId);

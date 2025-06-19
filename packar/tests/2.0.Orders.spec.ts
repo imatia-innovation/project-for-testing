@@ -280,7 +280,7 @@ let createOrdersTests: CreateNewOrderTest[] = [
 ];
 
 const providerMapper = new OrderProviderMapper();
-createOrdersTests = providerMapper.createOrders(createOrdersTests);
+//createOrdersTests = providerMapper.createOrders(createOrdersTests); // use this line to create more combinations to create orders
 
 test.afterAll('run clean code', async () => {
     logger.info('2.0.Orders.spec.ts afterAll created orders references: ', { ORDERS_IDS });
@@ -305,7 +305,7 @@ test('should open the create new order form', async ({ page }) => {
 });
 
 createOrdersTests.forEach((orderTest, testIndex) => {
-    test.skip(orderTest.title, async ({ page }) => {
+    test(orderTest.title, async ({ page }) => {
         await createNewOrder(page, orderTest, testIndex);
     });
 });

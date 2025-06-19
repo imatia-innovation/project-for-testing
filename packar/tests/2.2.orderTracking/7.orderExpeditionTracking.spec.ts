@@ -86,22 +86,32 @@ test('should set Incidence on the order', async ({ page }) => {
     expect(incidenceBtnLocators2.length > incidenceBtnLocators.length).toBeTruthy();
 });
 
-test('should set Received on the order', async ({ page }) => {
+test("should create incidences after 'Received' status ", async ({ page }) => {
     await expeditionDetailPageRoutine(page, expeditionReferences);
 
-    await changeOfferStatus(page, ORDER_STATUS.RECEIVED, expeditionReferences);
+    await selectReceivedStatus(page);
+
+    await saveIncidence(page, 0, 'Esto es un test automatizado 1');
+
+    await saveIncidence(page, 2, 'Esto es un test automatizado 2');
 });
 
-test('should set On route on the order', async ({ page }) => {
+test("should create incidences after 'On route' status ", async ({ page }) => {
     await expeditionDetailPageRoutine(page, expeditionReferences);
 
-    await changeOfferStatus(page, ORDER_STATUS.ON_ROUTE, expeditionReferences);
-});
+    await selectReceivedStatus(page);
 
-test('should set Sent on the order', async ({ page }) => {
-    await expeditionDetailPageRoutine(page, expeditionReferences);
+    await saveIncidence(page, 0, 'Esto es un test automatizado 1');
 
-    await changeOfferStatus(page, ORDER_STATUS.SENT, expeditionReferences);
+    await saveIncidence(page, 2, 'Esto es un test automatizado 2');
+
+    await selectOnRouteStatus(page);
+
+    await saveIncidence(page, 0, 'Esto es un test automatizado 3');
+
+    await saveIncidence(page, 2, 'Esto es un test automatizado 4');
+
+    await saveIncidence(page, 2, 'Esto es un test automatizado 5');
 });
 
 test('should create incidences between states on the order before confirm', async ({ page }) => {
@@ -124,30 +134,20 @@ test('should create incidences between states on the order before confirm', asyn
     await selectSentStatus(page, expeditionReferences);
 });
 
-test("should create incidences after 'On route' status ", async ({ page }) => {
+test("should set 'Received' on the order", async ({ page }) => {
     await expeditionDetailPageRoutine(page, expeditionReferences);
 
-    await selectReceivedStatus(page);
-
-    await saveIncidence(page, 0, 'Esto es un test automatizado 1');
-
-    await saveIncidence(page, 2, 'Esto es un test automatizado 2');
-
-    await selectOnRouteStatus(page);
-
-    await saveIncidence(page, 0, 'Esto es un test automatizado 3');
-
-    await saveIncidence(page, 2, 'Esto es un test automatizado 4');
-
-    await saveIncidence(page, 2, 'Esto es un test automatizado 5');
+    await changeOfferStatus(page, ORDER_STATUS.RECEIVED, expeditionReferences);
 });
 
-test("should create incidences after 'Received' status ", async ({ page }) => {
+test("should set 'On route' on the order", async ({ page }) => {
     await expeditionDetailPageRoutine(page, expeditionReferences);
 
-    await selectReceivedStatus(page);
+    await changeOfferStatus(page, ORDER_STATUS.ON_ROUTE, expeditionReferences);
+});
 
-    await saveIncidence(page, 0, 'Esto es un test automatizado 1');
+test("should set 'Sent' on the order", async ({ page }) => {
+    await expeditionDetailPageRoutine(page, expeditionReferences);
 
-    await saveIncidence(page, 2, 'Esto es un test automatizado 2');
+    await changeOfferStatus(page, ORDER_STATUS.SENT, expeditionReferences);
 });
