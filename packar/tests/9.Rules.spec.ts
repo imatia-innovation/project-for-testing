@@ -148,7 +148,7 @@ const ruleThatFails: CreateNewRuleTest = {
 let newRuleTests: CreateNewRuleTest[] = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10, rule11];
 
 const providerMapper = new RuleProviderMapper();
-newRuleTests = providerMapper.createRules(newRuleTests);
+// newRuleTests = providerMapper.createRules(newRuleTests); //use this line to test all combinations to create rules
 
 async function clean() {
     newRuleTests.forEach(async (rule) => {
@@ -166,14 +166,14 @@ async function clean() {
 //     await clean();
 // });
 
-test(`should go to the Rules Section and sort by Priority descendant order`, async ({ page }) => {
+test('should go to the Rules Section and sort by Priority descendant order', async ({ page }) => {
     await navigateToRulesPageRoutine(page);
 
     lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, 0);
 });
 
 // Antes de activar este test, debemos tener previamente una regla con prioridad 1
-test(`should see an error when try to use the same last priority value`, async ({ page }) => {
+test('should see an error when try to use the same last priority value', async ({ page }) => {
     await navigateToRulesPageRoutine(page);
 
     await openNewRuleForm(page);
@@ -203,7 +203,7 @@ test(`should see an error when try to use the same last priority value`, async (
 });
 
 // Antes de activar este test, debemos tener previamente una regla sin condiciones
-test(`should see an error when try to save a rule without fill the inputs`, async ({ page }) => {
+test('should see an error when try to save a rule without fill the inputs', async ({ page }) => {
     await navigateToRulesPageRoutine(page);
 
     await openNewRuleForm(page);
@@ -251,7 +251,7 @@ newRuleTests.forEach((rule, index) => {
 
         lastPriorityValue = await getLastPriorityRoutine(page, lastPriorityValue, index + 1);
 
-        logger.info('  rules.spec.ts:302', { expectedText: rule.expectedText });
+        logger.info('  9.Rules.spec.ts:254', { expectedText: rule.expectedText });
 
         expect(await page.getByText(rule.expectedText).count()).not.toBe(0);
 

@@ -32,6 +32,7 @@ import logger from '../../functions/utils/logger';
 import {
     cancelOrder,
     cancelOrderSuccessfully,
+    changeOfferStatusAndLogout,
     createOrderWithAssignedStatus,
 } from '../../functions/steps/orderCancelAndReassingSteps';
 
@@ -106,10 +107,7 @@ const order4: CreateNewOrderTest = {
     assignmentMethod: ASSIGNMENT_METHOD.MANUAL_ASSIGNMENT,
 };
 
-test("should go to an order with status 'Pte. asignación' detail page and try to cancel but throws an error", async ({
-    page,
-}) => {
-    // BUG
+test("should go to an order with status 'Pte. asignación' detail page and try to cancel", async ({ page }) => {
     await navigateToOrdersPageRoutine(page);
 
     const reference: string = await createNewOrder(page, order1, 0);
@@ -119,25 +117,10 @@ test("should go to an order with status 'Pte. asignación' detail page and try t
 
     test.slow();
 
-    // IT SHOULD BE THIS:
-    // await cancelOrderSuccessfully(page, orderId);
-
-    // CURRENTLY IS THIS:
-    await cancelOrder(page, orderId);
-    await assertByText(page, `No se puede cancelar el envío ${reference} porque está asignado a una expedición.`);
-
-    await clickOnText(page, 'Ok');
-    await clickOnText(page, 'No cancelar');
-
-    await navigateToOrderDetailPage(page, orderId);
-    await assertOrderDetailPageData(page);
-    await assertByText(page, ORDER_STATUS.PENDING_ASSIGNMENT);
+    await cancelOrderSuccessfully(page, orderId);
 });
 
-test("should go to an order with status 'Pte. cotización' detail page and try to cancel but throws an error", async ({
-    page,
-}) => {
-    // BUG
+test("should go to an order with status 'Pte. cotización' detail page and try to cancel", async ({ page }) => {
     await navigateToOrdersPageRoutine(page);
 
     const reference: string = await createNewOrder(page, order4, 1);
@@ -147,19 +130,7 @@ test("should go to an order with status 'Pte. cotización' detail page and try t
 
     test.slow();
 
-    // IT SHOULD BE THIS:
-    // await cancelOrderSuccessfully(page, orderId);
-
-    // CURRENTLY IS THIS:
-    await cancelOrder(page, orderId);
-    await assertByText(page, `No se puede cancelar el envío ${reference} porque está asignado a una expedición.`);
-
-    await clickOnText(page, 'Ok');
-    await clickOnText(page, 'No cancelar');
-
-    await navigateToOrderDetailPage(page, orderId);
-    await assertOrderDetailPageData(page);
-    await assertByText(page, ORDER_STATUS.PENDING_PRICING);
+    await cancelOrderSuccessfully(page, orderId);
 });
 
 test("should go to an order with status 'Pte. aceptación' detail page and cancel", async ({ page }) => {
@@ -181,31 +152,15 @@ test("should go to an order with status 'Asignado' detail page and cancel", asyn
     await cancelOrderSuccessfully(page, orderId);
 });
 
-test("should go to an order with status 'Recogido' detail page and it can not be cancelled", async ({ page }) => {
+test("should go to an order with status 'Recogido' detail page and it can not be cancelled or reassigned neither", async ({
+    page,
+}) => {
     const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 4);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
     await page.waitForTimeout(TIMEOUT);
 
-    await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {
-        waitUntil: 'load',
-    });
-
-    await navigateToMyExpeditionsPage(page);
-    await page.waitForTimeout(TIMEOUT * 2);
-
-    await clickOnText(page, reference);
-    await page.waitForTimeout(TIMEOUT * 2);
-
-    const orderIndex: number = 0; // first order
-    const statusIndex: number = 1; // received
-
-    await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, ORDER_STATUS.RECEIVED);
-
-    await page.waitForTimeout(TIMEOUT);
-    await logout(page);
-    await page.waitForTimeout(TIMEOUT);
+    await changeOfferStatusAndLogout(page, { orderId, reference }, ORDER_STATUS.RECEIVED);
 
     test.slow();
 
@@ -221,38 +176,15 @@ test("should go to an order with status 'Recogido' detail page and it can not be
     await assertListExcluded(page, ['Cancelar envío']);
 });
 
-test("should go to an order with status 'En ruta' detail page and it can not be cancelled", async ({ page }) => {
+test("should go to an order with status 'En ruta' detail page and it can not be cancelled or reassigned neither", async ({
+    page,
+}) => {
     const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 5);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
     await page.waitForTimeout(TIMEOUT);
 
-    await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {
-        waitUntil: 'load',
-    });
-
-    await navigateToMyExpeditionsPage(page);
-    await page.waitForTimeout(TIMEOUT * 2);
-
-    await clickOnText(page, reference);
-    await page.waitForTimeout(TIMEOUT * 2);
-
-    const orderIndex: number = 0; // first order
-    let statusIndex: number = 1; // received
-
-    await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, ORDER_STATUS.RECEIVED);
-
-    await page.waitForTimeout(TIMEOUT);
-
-    statusIndex = 2; // on route
-    await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, ORDER_STATUS.ON_ROUTE);
-
-    await page.waitForTimeout(TIMEOUT);
-
-    await logout(page);
-    await page.waitForTimeout(TIMEOUT);
+    await changeOfferStatusAndLogout(page, { orderId, reference }, ORDER_STATUS.ON_ROUTE);
 
     test.slow();
 
@@ -268,52 +200,15 @@ test("should go to an order with status 'En ruta' detail page and it can not be 
     await assertListExcluded(page, ['Cancelar envío']);
 });
 
-test("should go to an order with status 'Entregado' detail page and it can not be cancelled", async ({ page }) => {
+test("should go to an order with status 'Entregado' detail page and it can not be cancelled or reassigned neither", async ({
+    page,
+}) => {
     const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 6);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
     await page.waitForTimeout(TIMEOUT);
 
-    await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {
-        waitUntil: 'load',
-    });
-
-    await navigateToMyExpeditionsPage(page);
-    await page.waitForTimeout(TIMEOUT * 2);
-
-    await clickOnText(page, reference);
-    await page.waitForTimeout(TIMEOUT * 2);
-
-    const orderIndex: number = 0; // first order
-    let statusIndex: number = 1; // received
-
-    await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, ORDER_STATUS.RECEIVED);
-
-    await page.waitForTimeout(TIMEOUT);
-
-    statusIndex = 2; // on route
-    await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, ORDER_STATUS.ON_ROUTE);
-
-    await page.waitForTimeout(TIMEOUT);
-
-    const confirmDeliveryTextLocator: Locator = page.getByText('Confirmar entrega');
-    const confirmDeliveryBtnLocators: Locator[] = await confirmDeliveryTextLocator.all();
-    logger.info('1.orderCancel.spec.ts Incidence buttons number: ', confirmDeliveryBtnLocators.length);
-
-    await confirmDeliveryBtnLocators[orderIndex].click();
-    await confirmDeliveryModalAssertions(page);
-
-    await page.getByText('DNI').nth(0).fill('03915150K');
-    await clickOnText(page, 'Guardar');
-
-    await page.waitForTimeout(TIMEOUT);
-
-    await assertByText(page, ORDER_STATUS.SENT);
-
-    await logout(page);
-    await page.waitForTimeout(TIMEOUT);
+    await changeOfferStatusAndLogout(page, { orderId, reference }, ORDER_STATUS.SENT);
 
     test.slow();
 
@@ -329,29 +224,15 @@ test("should go to an order with status 'Entregado' detail page and it can not b
     await assertListExcluded(page, ['Cancelar envío']);
 });
 
-test("should go to an order with status 'Incidencia' detail page and it can not be cancelled", async ({ page }) => {
+test("should go to an order with status 'Incidencia' detail page and it can not be cancelled or reassigned neither", async ({
+    page,
+}) => {
     const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 7);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
     await page.waitForTimeout(TIMEOUT);
 
-    await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {
-        waitUntil: 'load',
-    });
-
-    await navigateToMyExpeditionsPage(page);
-    await page.waitForTimeout(TIMEOUT * 2);
-
-    await clickOnText(page, reference);
-    await page.waitForTimeout(TIMEOUT * 2);
-
-    const orderIndex: number = 0; // first order
-    const statusIndex: number = 1; // received
-
-    await selectOrderAndStatus(page, orderIndex, statusIndex);
-    await assertByText(page, ORDER_STATUS.RECEIVED);
-
-    await page.waitForTimeout(TIMEOUT);
+    await changeOfferStatusAndLogout(page, { orderId, reference }, ORDER_STATUS.RECEIVED, false);
 
     await saveIncidence(page, 0, 'Esto es un test automatizado');
     await page.waitForTimeout(TIMEOUT);
@@ -370,7 +251,7 @@ test("should go to an order with status 'Incidencia' detail page and it can not 
     await page.waitForTimeout(TIMEOUT);
     await assertOrderDetailPageData(page);
 
-    await assertListExcluded(page, ['Cancelar envío']);
+    await assertListExcluded(page, ['Cancelar envío', 'Reasignar pedido']);
 });
 
 test("should go to an order with status 'Cancelado' detail page and it can not be cancelled", async ({ page }) => {

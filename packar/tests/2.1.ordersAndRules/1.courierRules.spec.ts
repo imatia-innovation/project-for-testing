@@ -156,7 +156,7 @@ test('Delete all rules test', async ({ page }) => {
     const checkAllLocator: Locator = page.getByRole('checkbox');
 
     const checkboxes: Locator[] = await checkAllLocator.all();
-    logger.info('couriersAssignedByRules.spec.ts checkboxes.length: ', checkboxes.length);
+    logger.info('1.courierRules.spec.spec.ts checkboxes.length: ', checkboxes.length);
 
     await checkAllLocator.first().click();
 
@@ -165,7 +165,7 @@ test('Delete all rules test', async ({ page }) => {
     const deleteLocator: Locator = page.getByText(' Eliminar ');
 
     const deleteButtons: Locator[] = await deleteLocator.all();
-    logger.info('couriersAssignedByRules.spec.ts deleteButtons.length ', deleteButtons.length);
+    logger.info('1.courierRules.spec.spec.ts deleteButtons.length ', deleteButtons.length);
 
     await assertByText(
         page,
@@ -182,7 +182,7 @@ test('Create rules', async ({ page }) => {
         const rule = newRuleTests[index];
 
         logger.info(
-            `rule${index} parameters: ${rule.name}, ${rule.conditions} provider: ${rule.provider}, priority: ${rule.priority}`
+            `1.couriersAssignedByRules.spec.ts rule${index} parameters: ${rule.name}, ${rule.conditions} provider: ${rule.provider}, priority: ${rule.priority}`
         );
 
         await openNewRuleForm(page);

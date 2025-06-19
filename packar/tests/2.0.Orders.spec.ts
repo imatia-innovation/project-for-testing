@@ -62,13 +62,13 @@ const order3: CreateNewOrderTest = {
     provider: 'SEUR',
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 5, width: 20, height: 30, weight: 50 });
+        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
 
-        await selectCompleteOrder(page, { boxQty: 50, weight: 50 });
+        await selectCompleteOrder(page, { boxQty: 2, weight: 2 });
 
-        await selectPallet(page, 'Europalet', { length: 5, width: 20, height: 30, weight: 50 }, 3);
+        await selectPallet(page, 'Europalet', { length: 3, width: 3, height: 3, weight: 3 }, 3);
 
-        await selectEnvelope(page, { length: 10, width: 100, height: 200, weight: 14 });
+        await selectEnvelope(page, { length: 4, width: 4, height: 4, weight: 4 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -266,7 +266,7 @@ const order13: CreateNewOrderTest = {
 let createOrdersTests: CreateNewOrderTest[] = [
     order1,
     order2,
-    order3, // va a fallar hasta que corrijan el bug
+    order3,
     order4,
     order5,
     order6,
@@ -283,14 +283,14 @@ const providerMapper = new OrderProviderMapper();
 createOrdersTests = providerMapper.createOrders(createOrdersTests);
 
 test.afterAll('run clean code', async () => {
-    logger.info('orders.spec.ts.ts afterAll created orders references: ', { ORDERS_IDS });
+    logger.info('2.0.Orders.spec.ts afterAll created orders references: ', { ORDERS_IDS });
 });
 
-test(`should go to the Orders Section and make assertions`, async ({ page }) => {
+test('should go to the Orders Section and make assertions', async ({ page }) => {
     await navigateToOrdersPageRoutine(page);
 });
 
-test(`should go to an order detail page`, async ({ page }) => {
+test('should go to an order detail page', async ({ page }) => {
     await navigateToOrdersPageRoutine(page);
 
     await navigateToOrderDetailPage(page, ORDER_ID);
@@ -298,7 +298,7 @@ test(`should go to an order detail page`, async ({ page }) => {
     await assertOrderDetailPageData(page);
 });
 
-test(`should open the create new order form`, async ({ page }) => {
+test('should open the create new order form', async ({ page }) => {
     await navigateToOrdersPageRoutine(page);
 
     await navigateToCreateNewOrderForm(page);

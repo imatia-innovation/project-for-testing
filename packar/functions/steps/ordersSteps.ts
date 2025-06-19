@@ -438,7 +438,7 @@ export async function navigateToOrderDetailPage(page: Page, orderId: string) {
 }
 
 export async function assertOrderDetailPageData(page: Page, expectedStatus?: string) {
-    await assertByText(page, 'Nº REFERENCIA CLIENTE: ');
+    await assertByText(page, 'Nº REFERENCIA CLIENTE ');
     if (expectedStatus) await assertByText(page, expectedStatus);
 }
 

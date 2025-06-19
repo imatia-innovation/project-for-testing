@@ -12,7 +12,7 @@ test('should go to Destinations page and make text assertions', async ({ page })
     await navigateToDestinationsPage(page);
 });
 
-test(`should open the create new destination form`, async ({ page }) => {
+test('should open the create new destination form', async ({ page }) => {
     await login(page, admin);
 
     await navigateToDestinationsPage(page);
@@ -21,7 +21,7 @@ test(`should open the create new destination form`, async ({ page }) => {
 });
 
 const destination1 = {
-    testTitle: 'should open the create new destination form and try to save with invalid email and zipCode', // This is a bug
+    testTitle: 'should open the create new destination form and try to save with the minimum fields',
     textFields: [
         {
             id: 'destinationName',
@@ -33,7 +33,7 @@ const destination1 = {
         },
         {
             id: 'email',
-            value: 'test',
+            value: 'test@example.com',
         },
         {
             id: 'street',
@@ -41,7 +41,7 @@ const destination1 = {
         },
         {
             id: 'zipCode',
-            value: 'test',
+            value: '27600',
         },
         {
             id: 'city',
@@ -49,6 +49,8 @@ const destination1 = {
         },
     ],
 };
+
+// TODO make more test cases with phone number and real data
 
 const destinationTests = [destination1];
 

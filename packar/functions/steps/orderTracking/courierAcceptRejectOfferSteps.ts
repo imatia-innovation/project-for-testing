@@ -20,13 +20,13 @@ import OfferTestResult from '../../../interfaces/OfferTestResult';
 import { assertTextInRow } from '../../utils/assertTextInRow';
 
 const LABELS_AND_COLUMNS: string[] = [
-    'Nº REFERENCIA CLIENTE:',
+    'Nº REFERENCIA CLIENTE',
     'Información de recogida',
     'Fecha de recogida estimada',
-    'Precio:',
-    'Fecha de respuesta:',
+    'Precio',
+    'Fecha de respuesta',
     'Características de la mercancía',
-    'Tipo de mercancia:',
+    'Tipo de mercancia',
     'Paquetería',
     'Nº bulto',
     'Ancho',
@@ -36,13 +36,13 @@ const LABELS_AND_COLUMNS: string[] = [
     'Registros por página',
     'Datos del remitente',
     'Nombre de la empresa',
-    'Dirección:',
-    'Localidad:',
-    'País:',
-    'Correo Electrónico:',
-    'Notas/Observaciones:',
-    'C.P:',
-    'Teléfono:',
+    'Dirección',
+    'Localidad',
+    'País',
+    'Correo Electrónico',
+    'Notas/Observaciones',
+    'C.P',
+    'Teléfono',
     'Respuesta',
     'Introduce tu oferta para llevar este envío',
     'Precio',
@@ -62,13 +62,13 @@ const LABELS_AND_COLUMNS_DRIVER: string[] = [
 ];
 
 const LABELS_AND_COLUMNS_FIXED_PRICE: string[] = [
-    'Nº REFERENCIA CLIENTE:',
+    'Nº REFERENCIA CLIENTE',
     'Información de recogida',
     'Fecha de recogida estimada',
-    'Precio:',
-    'Fecha de respuesta:',
+    'Precio',
+    'Fecha de respuesta',
     'Características de la mercancía',
-    'Tipo de mercancia:',
+    'Tipo de mercancia',
     'Paquetería',
     'Nº bulto',
     'Ancho',
@@ -78,13 +78,13 @@ const LABELS_AND_COLUMNS_FIXED_PRICE: string[] = [
     'Registros por página',
     'Datos del remitente',
     'Nombre de la empresa',
-    'Dirección:',
-    'Localidad:',
-    'País:',
-    'Correo Electrónico:',
-    'Notas/Observaciones:',
-    'C.P:',
-    'Teléfono:',
+    'Dirección',
+    'Localidad',
+    'País',
+    'Correo Electrónico',
+    'Notas/Observaciones',
+    'C.P',
+    'Teléfono',
     'Respuesta',
     '¿Aceptas las condiciones del envío por el precio propuesto?',
     'Rechazar',
@@ -98,7 +98,7 @@ const LABELS_AND_COLUMNS_REJECT: string[] = [
     'Enviar',
 ];
 
-const LABELS_AND_COLUMNS_REJECTED: string[] = ['Nº REFERENCIA CLIENTE:'];
+const LABELS_AND_COLUMNS_REJECTED: string[] = ['Nº REFERENCIA CLIENTE'];
 
 const LABELS_AND_COLUMNS_REJECTED_EXCLUDED: string[] = [
     'Por favor, especifique el motivo por el que rechaza la oferta.',
@@ -123,10 +123,10 @@ const LABELS_AND_COLUMNS_REJECTED_EXCLUDED: string[] = [
 const LABELS_AND_COLUMNS_REJECTED_EXCLUDED_2: string[] = [
     'Información de recogida',
     'Fecha de recogida estimada',
-    'Precio:',
-    'Fecha de respuesta:',
+    'Precio',
+    'Fecha de respuesta',
     'Características de la mercancía',
-    'Tipo de mercancia:',
+    'Tipo de mercancia',
     'Paquetería',
     'Nº bulto',
     'Ancho',
@@ -136,13 +136,13 @@ const LABELS_AND_COLUMNS_REJECTED_EXCLUDED_2: string[] = [
     'Registros por página',
     'Datos del remitente',
     'Nombre de la empresa',
-    'Dirección:',
-    'Localidad:',
-    'País:',
-    'Correo Electrónico:',
-    'Notas/Observaciones:',
-    'C.P:',
-    'Teléfono:',
+    'Dirección',
+    'Localidad',
+    'País',
+    'Correo Electrónico',
+    'Notas/Observaciones',
+    'C.P',
+    'Teléfono',
     'Respuesta',
 ];
 
@@ -162,7 +162,7 @@ export async function getOrderId(page: Page, reference: string): Promise<string>
         orderId = match[1]; // "1268"
     }
 
-    logger.info(' courierAcceptRejectOfferSteps.spec.ts getOrderId url and orderId', url, orderId);
+    logger.info(' courierAcceptRejectOfferSteps.ts getOrderId url and orderId', url, orderId);
     return orderId;
 }
 
@@ -176,9 +176,10 @@ export async function createOrderAndGoToOfferDetailPage(
 
     await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ACCEPT);
     const orderId = await getOrderId(page, reference);
+
     await logout(page);
 
-    logger.info(`courierAcceptRejectOfferSteps.spec.ts createOrderAndGoToOfferDetailPage orderId: ${orderId}`);
+    logger.info(`courierAcceptRejectOfferSteps.ts createOrderAndGoToOfferDetailPage orderId: ${orderId}`);
 
     await page.waitForTimeout(TIMEOUT);
 
@@ -212,7 +213,9 @@ export async function acceptOffer(page: Page, courierHasFixedPrice?: boolean, se
         await clickOnText(page, 'Aceptar');
     } else {
         await offerDetailPageAssertions(page);
-        if (setPrice) await getByIdAndFill(page, 'response', setPrice);
+        if (setPrice) {
+            await getByIdAndFill(page, 'response', setPrice);
+        }
         await clickOnText(page, 'Aceptar');
     }
 }
@@ -232,35 +235,35 @@ export async function rejectOffer(page: Page, rejectText: string): Promise<void>
 }
 
 export async function offerDetailPageAssertions(page: Page): Promise<void> {
-    logger.info(' Start courierAcceptRejectOfferSteps.spec.ts offerDetailPageAssertions');
+    logger.info(' Start courierAcceptRejectOfferSteps.ts offerDetailPageAssertions');
     await assertList(page, LABELS_AND_COLUMNS);
-    logger.info(' Finish courierAcceptRejectOfferSteps.spec.ts offerDetailPageAssertions');
+    logger.info(' Finish courierAcceptRejectOfferSteps.ts offerDetailPageAssertions');
 }
 
 export async function offerDetailPageAssertionsDriver(page: Page): Promise<void> {
-    logger.info(' Start courierAcceptRejectOfferSteps.spec.ts offerDetailPageAssertionsDriver');
+    logger.info(' Start courierAcceptRejectOfferSteps.ts offerDetailPageAssertionsDriver');
     await assertList(page, LABELS_AND_COLUMNS_DRIVER);
-    logger.info(' Finish courierAcceptRejectOfferSteps.spec.ts offerDetailPageAssertionsDriver');
+    logger.info(' Finish courierAcceptRejectOfferSteps.ts offerDetailPageAssertionsDriver');
 }
 
 export async function offerDetailPageAssertionsFixedPrice(page: Page): Promise<void> {
-    logger.info(' Start courierAcceptRejectOfferSteps.spec.ts offerDetailPageAssertionsFixedPrice');
+    logger.info(' Start courierAcceptRejectOfferSteps.ts offerDetailPageAssertionsFixedPrice');
     await assertList(page, LABELS_AND_COLUMNS_FIXED_PRICE);
-    logger.info(' Finish courierAcceptRejectOfferSteps.spec.ts offerDetailPageAssertionsFixedPrice');
+    logger.info(' Finish courierAcceptRejectOfferSteps.ts offerDetailPageAssertionsFixedPrice');
 }
 
 export async function offerDetailPageRejectAssertions(page: Page): Promise<void> {
-    logger.info(' Start courierAcceptRejectOfferSteps.spec.ts offerDetailPageRejectAssertions');
+    logger.info(' Start courierAcceptRejectOfferSteps.ts offerDetailPageRejectAssertions');
     await assertList(page, LABELS_AND_COLUMNS_REJECT);
-    logger.info(' Finish courierAcceptRejectOfferSteps.spec.ts offerDetailPageRejectAssertions');
+    logger.info(' Finish courierAcceptRejectOfferSteps.ts offerDetailPageRejectAssertions');
 }
 
 export async function rejectedOfferDetailPageAssertions(page: Page): Promise<void> {
-    logger.info(' Start courierAcceptRejectOfferSteps.spec.ts rejectedOfferDetailPageAssertions');
+    logger.info(' Start courierAcceptRejectOfferSteps.ts rejectedOfferDetailPageAssertions');
     await assertList(page, LABELS_AND_COLUMNS_REJECTED);
 
     await assertListExcluded(page, LABELS_AND_COLUMNS_REJECTED_EXCLUDED);
 
     if (process.env.ENVIRONMENT === 'dev') await assertListExcluded(page, LABELS_AND_COLUMNS_REJECTED_EXCLUDED_2);
-    logger.info(' Finish courierAcceptRejectOfferSteps.spec.ts rejectedOfferDetailPageAssertions');
+    logger.info(' Finish courierAcceptRejectOfferSteps.ts rejectedOfferDetailPageAssertions');
 }

@@ -1,14 +1,16 @@
-import { Locator, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { baserUrl, courierNOFixedPrice, TIMEOUT } from '../../../constants';
 import assertList from '../../utils/assertList';
 import ExpeditionTestResult from '../../../interfaces/ExpeditionTestResult';
 import login from '../login';
 import { clickOnText } from '../../utils/clickOnText';
 import logger from '../../utils/logger';
+import assertByText from '../../utils/assertByText';
+import { ORDER_STATUS } from '../../../constants/orderStatus';
 
 const MY_EXPEDITIONS_HOME_PAGE: string[] = ['Mis expediciones', 'Dirección recogida', 'Fecha recogida:'];
 
-const MY_EXPEDITIONS_DETAIL_PAGE: string[] = ['Bultos', 'Destino', 'Incidencia', 'Confirmar entrega'];
+const MY_EXPEDITIONS_DETAIL_PAGE: string[] = ['Bultos', 'Destino', 'Incidencia', 'Confirmar entrega', 'ASIGNADO'];
 
 const INCIDENCE_MODAL: string[] = [
     'Incidencia',
@@ -31,7 +33,7 @@ const STATUS_COMBOBOX: string[] = ['ASIGNADO', 'RECOGIDO', 'EN RUTA'];
 export async function navigateToExpeditionHomePage(page: Page): Promise<void> {
     await page.goto(baserUrl + '/app/main/my-pickups');
     await page.waitForURL(baserUrl + '/app/main/my-pickups');
-    await page.waitForTimeout(TIMEOUT);
+    await page.waitForTimeout(TIMEOUT * 2);
 }
 
 export async function myExpeditionsHomePageAssertions(
@@ -45,7 +47,10 @@ export async function myExpeditionsHomePageAssertions(
 }
 
 export async function expeditionHomePageRoutine(page: Page, expeditionReferences: ExpeditionTestResult): Promise<void> {
-    await login(page, courierNOFixedPrice);
+    //await login(page, courierNOFixedPrice);
+
+    await page.waitForTimeout(TIMEOUT);
+
     await navigateToExpeditionHomePage(page);
 
     await myExpeditionsHomePageAssertions(page, expeditionReferences);
@@ -71,6 +76,9 @@ export async function expeditionDetailPageRoutine(
     await page.waitForURL((url: any) => url != baserUrl + '/app/main/my-pickups', {
         waitUntil: 'load',
     });
+    await page.waitForTimeout(TIMEOUT * 2);
+
+    await clickOnText(page, 'Destino');
     await page.waitForTimeout(TIMEOUT);
 
     await myExpeditionsDetailPageAssertions(page, expeditionReferences);
@@ -98,6 +106,9 @@ export async function selectOrderAndStatus(page: Page, orderIndex: number, statu
 
     await optionLocators[statusIndex].click();
     await page.waitForTimeout(TIMEOUT);
+
+    await clickOnText(page, 'Destino');
+    await page.waitForTimeout(TIMEOUT);
 }
 
 export async function confirmDeliveryModalAssertions(page: Page): Promise<void> {
@@ -116,4 +127,61 @@ export async function saveIncidence(page: Page, incidenceIndex: number, incidenc
     await clickOnText(page, 'Guardar');
 
     await page.waitForTimeout(TIMEOUT);
+    await clickOnText(page, 'Destino');
+    await page.waitForTimeout(TIMEOUT * 2);
+}
+
+export async function selectReceivedStatus(page: Page) {
+    const orderIndex: number = 0; // first order
+    const statusIndex: number = 1; // received
+
+    await selectOrderAndStatus(page, orderIndex, statusIndex);
+    await assertByText(page, ORDER_STATUS.RECEIVED);
+}
+
+export async function selectOnRouteStatus(page: Page) {
+    const orderIndex: number = 0; // first order
+    const statusIndex: number = 2; // on route
+
+    await selectOrderAndStatus(page, orderIndex, statusIndex);
+    await assertByText(page, ORDER_STATUS.ON_ROUTE);
+}
+
+export async function selectSentStatus(page: Page, expeditionReferences?: ExpeditionTestResult) {
+    const confirmDeliveryTextLocator: Locator = page.getByText('Confirmar entrega');
+    const confirmDeliveryBtnLocators: Locator[] = await confirmDeliveryTextLocator.all();
+    logger.info('orderExpeditionTrackingSteps.ts Incidence buttons number: ', confirmDeliveryBtnLocators.length);
+
+    if (expeditionReferences) {
+        expect(confirmDeliveryBtnLocators.length).toEqual(expeditionReferences.orderReferences.length);
+    }
+
+    await confirmDeliveryBtnLocators[0].click();
+    await confirmDeliveryModalAssertions(page);
+
+    await page.getByText('DNI').nth(0).fill('03915150K');
+    await clickOnText(page, 'Guardar');
+
+    await page.waitForTimeout(TIMEOUT);
+
+    await assertByText(page, ORDER_STATUS.SENT);
+}
+
+export async function changeOfferStatus(page: Page, setStatus: string, expeditionReferences?: ExpeditionTestResult) {
+    switch (setStatus) {
+        case ORDER_STATUS.RECEIVED:
+            await selectReceivedStatus(page);
+            break;
+        case ORDER_STATUS.ON_ROUTE:
+            await selectReceivedStatus(page);
+            await selectOnRouteStatus(page);
+            break;
+        case ORDER_STATUS.SENT:
+            await selectReceivedStatus(page);
+            await selectOnRouteStatus(page);
+            await selectSentStatus(page, expeditionReferences);
+            break;
+        default:
+            break;
+    }
 }

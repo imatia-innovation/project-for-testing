@@ -1,4 +1,4 @@
-// These orders reaches the rules created in courierRules.spec.ts
+// These orders reaches the rules created in 1.courierRules.spec.ts
 
 import test, { Page } from '@playwright/test';
 import {

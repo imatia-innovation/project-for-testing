@@ -32,7 +32,7 @@ test(`should make login with admin user and see the Home page ${ITEM_LIST_ADMIN.
 
         const count = await locator.count();
 
-        logger.info(`validating count of: ${ITEM_LIST_ADMIN[index]} in the Home page is: ${count}`);
+        logger.info(`1.Home.spec.ts validating count of: ${ITEM_LIST_ADMIN[index]} in the Home page is: ${count}`);
 
         if (ITEM_LIST_ADMIN[index].includes('Expediciones')) {
             expect(count).toEqual(4);
@@ -55,7 +55,7 @@ test(`should make login with demo user and see the Home page ${ITEM_LIST_DEMO.le
 
         const count = await locator.count();
 
-        logger.info(`validating count of: ${ITEM_LIST_DEMO[index]} in the Home page is: ${count}`);
+        logger.info(`1.Home.spec.ts validating count of: ${ITEM_LIST_DEMO[index]} in the Home page is: ${count}`);
 
         expect(count).toEqual(2);
 
@@ -74,7 +74,7 @@ test(`should make login with courier user and see the Home page ${ITEM_LIST_COUR
 
         const count = await locator.count();
 
-        logger.info(`validating count of: ${ITEM_LIST_COURIER[index]} in the Home page is: ${count}`);
+        logger.info(`1.Home.spec.ts validating count of: ${ITEM_LIST_COURIER[index]} in the Home page is: ${count}`);
 
         expect(count).toEqual(2);
 

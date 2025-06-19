@@ -22,7 +22,7 @@ export async function createOrderOpenPricingAndGetOrderId(
     const orderId = await getOrderId(page, reference);
     await logout(page);
 
-    logger.info(`courierAcceptRejectOfferSteps.spec.ts createOrderAndGoToOfferDetailPage orderId: ${orderId}`);
+    logger.info(`clientAssignOfferPriceSteps.ts createOrderAndGoToOfferDetailPage orderId: ${orderId}`);
 
     await page.waitForTimeout(TIMEOUT);
 

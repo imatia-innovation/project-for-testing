@@ -7,7 +7,7 @@ import { Condition } from '../../interfaces/CreateNewRuleOrderTest';
 import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../../constants/rulesPropertiesAndOperations';
 
 export async function selectCondition(page: Page, condition: Condition) {
-    logger.info(' Start couriersAssignedByRulesSteps.ts selectCondition', condition);
+    logger.info(' Start couriersRulesSteps.ts selectCondition', condition);
 
     const property = getByAttribute(page, 'attr', 'property_id');
     await property.click();
@@ -30,5 +30,5 @@ export async function selectCondition(page: Page, condition: Condition) {
     const addCondition = page.getByText('Añadir condición');
     await addCondition.click();
 
-    logger.info(' Finish couriersAssignedByRulesSteps.ts selectCondition', condition);
+    logger.info(' Finish couriersRulesSteps.ts selectCondition', condition);
 }

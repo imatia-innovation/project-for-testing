@@ -16,6 +16,8 @@ import {
     getOrderId,
 } from './orderTracking/courierAcceptRejectOfferSteps';
 import OfferTest from '../../interfaces/OfferTest';
+import { changeOfferStatus } from './orderTracking/orderExpeditionTrackingSteps';
+import { navigateToMyExpeditionsPage } from './myExpeditionsSteps';
 
 export async function reassignOrder(
     page: Page,
@@ -110,4 +112,33 @@ export async function cancelOrderSuccessfully(page: Page, orderId: string): Prom
     await navigateToOrderDetailPage(page, orderId);
     await assertOrderDetailPageData(page);
     await assertByText(page, ORDER_STATUS.CANCELLED);
+}
+
+export async function changeOfferStatusAndLogout(
+    page: Page,
+    orderIdRef: OfferTestResult,
+    status: string,
+    makeLogout: boolean = true
+) {
+    await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderIdRef.orderId}`, {
+        waitUntil: 'load',
+    });
+
+    await navigateToMyExpeditionsPage(page);
+    await page.waitForTimeout(TIMEOUT * 2);
+
+    await clickOnText(page, orderIdRef.reference);
+    await page.waitForTimeout(TIMEOUT * 2);
+
+    await clickOnText(page, 'Destino');
+    await page.waitForTimeout(TIMEOUT);
+
+    await changeOfferStatus(page, status);
+
+    await page.waitForTimeout(TIMEOUT);
+
+    if (makeLogout) {
+        await logout(page);
+        await page.waitForTimeout(TIMEOUT);
+    }
 }
