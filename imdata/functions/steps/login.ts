@@ -5,9 +5,7 @@ import { getById } from '../utils/getById';
 import assertList from '../utils/assertList';
 import { clickOnText, clickOnTextNth } from '../utils/clickOnText';
 import { getByIdAndFill } from '../utils/getByIdAndFill';
-import assertListExcluded from '../utils/assertListExcluded';
 import logger from '../utils/logger';
-import { ROLES } from '../../constants/roles';
 
 const LOGIN_TEXTS: string[] = [
     'Log in to your account:',
@@ -32,95 +30,14 @@ const LOGIN_TEXTS_2: string[] = [
     'All rights reserved',
 ];
 
-const HOME_TEXTS_IMATIA_ADMIN = [
-    'Home',
-    'Administration',
-    'Imatia administration',
-    'Analysis',
-    'Transformation Rules',
-    'Validation Rules',
-    'Logout',
-    //
-    'DataSources',
-    'Users',
-    'Groups',
-    'Roles',
-    'Attributes',
-    'Entities',
-    'Single View',
-    'Users Datasources',
-    'Transformation Rules',
-    'Validation Rules'
-];
-
-const HOME_TEXTS_DS_ADMIN = [
-    'Home',
-    'Administration',
-    'Analysis',
-    'Transformation Rules',
-    'Validation Rules',
-    'Logout',
-    //
-    'DataSources',
-    'Users',
-    'Groups',
-    'Attributes',
-    'Entities',
-    'Single View',
-    'Users Datasources',
-    'Transformation Rules',
-    'Validation Rules'
-];
-
-const HOME_TEXTS_DS_ADMIN_EXCLUDES = [
-    'Imatia administration',
-    'User Datasources',
-    'Roles',
-];
-
-const HOME_TEXTS_USER = [
-    'Home',
-    'Analysis',
-    'Transformation Rules',
-    'Validation Rules',
-    'Logout',
-    //
-    'Attributes',
-    'Entities',
-    'Single View',
-    'Users Datasources',
-    'Transformation Rules',
-    'Validation Rules'
-];
-
-const HOME_TEXTS_USER_EXCLUDES = [
-    'Administration',
-    'Imatia administration',
-    //
-    'Roles',
-    'User Datasources',
-    'Groups',
-];
-
-const LOGOUT_TEXTS = [
-    'Confirm',
-    'Are you sure you want to leave?',
-    'Ok',
-    'Cancel'
-]
-
-export default async function login(page: Page, user: User) {
-    await page.goto(baserUrl + '/app/login');
-
-    await fillLoginInputs(page, user);
-}
+const LOGOUT_TEXTS = ['Confirm', 'Are you sure you want to leave?', 'Ok', 'Cancel'];
 
 export async function fillLoginInputs(page: Page, user: User) {
     logger.info('Start login.ts fillLoginInputs user: ', {
         email: user.credentials.email,
         role: user.credentials.role,
         tenants: user.tenants,
-        mainTenant: user.mainTenant
+        mainTenant: user.mainTenant,
     });
     const userSelector = getById(page, 'username');
     await userSelector.click();
@@ -149,7 +66,7 @@ export async function fillLoginInputs(page: Page, user: User) {
     await clickOnText(page, 'Next');
 
     await page.waitForTimeout(TIMEOUT);
-    logger.info('Finish login.ts fillLoginInputs ')
+    logger.info('Finish login.ts fillLoginInputs ');
 }
 
 export async function loginPageAssertions2(page: Page, user: User) {
@@ -161,29 +78,8 @@ export async function loginPageAssertions(page: Page) {
 }
 
 async function assertUserTenants(page: Page, user: User) {
-    const tenants = user.tenants.map(t=>(t.name));
+    const tenants = user.tenants.map((t) => t.name);
     await assertList(page, tenants);
-}
-
-
-export async function homeAssertions(page: Page, userRole: string) {
-    logger.info('Start login.ts homeAssertions userRole: ', userRole);
-    switch (userRole) {
-        case  ROLES.ADMINISTRATOR_IMATIA:
-            await assertList(page, HOME_TEXTS_IMATIA_ADMIN);
-            break;
-        case  ROLES.ADMINISTRATOR_DS:
-            await assertList(page, HOME_TEXTS_DS_ADMIN);
-            await assertListExcluded(page, HOME_TEXTS_DS_ADMIN_EXCLUDES);
-            break;
-        case ROLES.REGULAR_USER:
-            await assertList(page, HOME_TEXTS_USER);
-            await assertListExcluded(page, HOME_TEXTS_USER_EXCLUDES);
-            break;
-        default:
-            break;
-    }
-    logger.info('Finish login.ts homeAssertions');
 }
 
 async function logoutAssertions(page: Page) {
@@ -200,4 +96,13 @@ export async function logout(page: Page) {
     await page.waitForTimeout(TIMEOUT);
 
     await loginPageAssertions(page);
+}
+
+export async function login(page: Page, user: User) {
+    await page.goto(baserUrl + '/app/login');
+    await page.waitForTimeout(TIMEOUT);
+
+    await loginPageAssertions(page);
+
+    await fillLoginInputs(page, user);
 }
