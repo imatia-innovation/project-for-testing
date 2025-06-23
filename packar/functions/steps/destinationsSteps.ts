@@ -16,8 +16,8 @@ const DESTINATIONS_PAGE: string[] = [
     'Nombre de Dirección',
     'Dirección',
     'Localidad',
-    'Codigo postal', // Bug
-    'Email',
+    'Código postal',
+    'Mail',
     'País',
     'Teléfono',
     'Teléfono Secundario',
@@ -35,8 +35,8 @@ const NEW_DESTINATION_FORM = [
     'Teléfono',
     'Teléfono Secundario',
     'Dirección',
-    'Codigo postal',
-    'Población',
+    'Código postal',
+    'Localidad',
     'País',
     'Observaciones',
 ];

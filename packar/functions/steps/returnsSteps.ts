@@ -2,6 +2,7 @@ import { Page } from '@playwright/test';
 import assertList from '../utils/assertList';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import { getById } from '../utils/getById';
+import { TIMEOUT } from '../../constants';
 
 const RETURNS_PAGE: string[] = [
     'Inicio',
@@ -9,7 +10,6 @@ const RETURNS_PAGE: string[] = [
     //
     'Buscar devoluciones',
     'Seleccionar fechas',
-    'Fecha inicio - Fecha fin',
     'Nº Referencia Transportista',
     'Transportista',
     'País',
@@ -34,6 +34,7 @@ export async function navigateToReturnsPage(page: Page) {
     await locator.click();
 
     await waitUntilUrlLoads(page, '/app/main/return');
+    await page.waitForTimeout(TIMEOUT);
 
     await assertReturnsPage(page);
 }

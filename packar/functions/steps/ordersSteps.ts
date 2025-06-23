@@ -175,9 +175,7 @@ async function setLimitPrice(page: Page, orderLimitPrice: number) {
 async function selectPickUpLocation(page: Page, pickUpLocation: string) {
     logger.info(' Start ordersSteps.ts selectPickUpLocation: ', pickUpLocation);
     await clickOnElementById(page, 'pickup_location');
-    pickUpLocation === PICKUP_LOCATION
-        ? await clickOnTextNth(page, pickUpLocation, 1)
-        : await clickOnText(page, pickUpLocation);
+    await clickOnText(page, pickUpLocation);
     logger.info(' Finish ordersSteps.ts selectPickUpLocation');
 }
 
@@ -278,7 +276,7 @@ export async function selectBox(page: Page, { length, width, height, weight }: D
 
     await clickOnButton(page, ' Asignar Bulto ');
 
-    await assertByText(page, 'BOX');
+    await assertByText(page, 'Caja');
 
     await assertByText(page, `${length} cm x ${width} cm x ${height} cm`);
 
@@ -296,7 +294,7 @@ export async function selectCompleteOrder(page: Page, { boxQty, weight }: Comple
 
     const weightSplitted = (weight / boxQty).toFixed(2);
 
-    await assertByText(page, 'BOX');
+    await assertByText(page, 'Caja');
 
     await assertByText(page, 'Pedido Completo');
 
@@ -380,7 +378,7 @@ export async function selectEnvelope(page: Page, { length, width, height, weight
 
     await clickOnButton(page, ' Asignar Bulto ');
 
-    await assertByText(page, 'ENVELOPE');
+    await assertByText(page, 'Sobre');
 
     await assertByText(page, `${length} cm x ${width} cm x ${height} cm`);
 
