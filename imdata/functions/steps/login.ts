@@ -48,15 +48,14 @@ const HOME_TEXTS_IMATIA_ADMIN = [
     'Attributes',
     'Entities',
     'Single View',
-    'User Datasources',
+    'Users Datasources',
     'Transformation Rules',
     'Validation Rules'
 ];
 
-const HOME_TEXTS_ADMIN = [
+const HOME_TEXTS_DS_ADMIN = [
     'Home',
     'Administration',
-    'Imatia administration',
     'Analysis',
     'Transformation Rules',
     'Validation Rules',
@@ -65,40 +64,42 @@ const HOME_TEXTS_ADMIN = [
     'DataSources',
     'Users',
     'Groups',
-    'Roles',
     'Attributes',
     'Entities',
     'Single View',
+    'Users Datasources',
     'Transformation Rules',
     'Validation Rules'
 ];
 
-const HOME_TEXTS_ADMIN_EXCLUDES = [
+const HOME_TEXTS_DS_ADMIN_EXCLUDES = [
+    'Imatia administration',
     'User Datasources',
+    'Roles',
 ];
 
 const HOME_TEXTS_USER = [
-'Home',
-    'Administration',
-    'Imatia administration',
+    'Home',
     'Analysis',
     'Transformation Rules',
     'Validation Rules',
     'Logout',
     //
-    'DataSources',
-    'Users',
-    'Groups',
-    'Roles',
     'Attributes',
     'Entities',
     'Single View',
+    'Users Datasources',
     'Transformation Rules',
     'Validation Rules'
 ];
 
 const HOME_TEXTS_USER_EXCLUDES = [
-    'User Datasources'
+    'Administration',
+    'Imatia administration',
+    //
+    'Roles',
+    'User Datasources',
+    'Groups',
 ];
 
 const LOGOUT_TEXTS = [
@@ -168,12 +169,12 @@ async function assertUserTenants(page: Page, user: User) {
 export async function homeAssertions(page: Page, userRole: string) {
     logger.info('Start login.ts homeAssertions userRole: ', userRole);
     switch (userRole) {
-        case  ROLES.ADMINISTRATOR_DS:
+        case  ROLES.ADMINISTRATOR_IMATIA:
             await assertList(page, HOME_TEXTS_IMATIA_ADMIN);
             break;
-        case  ROLES.ADMINISTRATOR_IMATIA:
-            await assertList(page, HOME_TEXTS_ADMIN);
-            await assertListExcluded(page, HOME_TEXTS_ADMIN_EXCLUDES);
+        case  ROLES.ADMINISTRATOR_DS:
+            await assertList(page, HOME_TEXTS_DS_ADMIN);
+            await assertListExcluded(page, HOME_TEXTS_DS_ADMIN_EXCLUDES);
             break;
         case ROLES.REGULAR_USER:
             await assertList(page, HOME_TEXTS_USER);
