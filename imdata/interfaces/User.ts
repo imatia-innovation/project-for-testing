@@ -7,7 +7,7 @@ export default interface User {
     credentials: {
         email: string,
         pass: string,
-        rol: string,
+        role: string,
     }
     tenants: Tenant[],
     mainTenant: string,
