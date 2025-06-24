@@ -1,11 +1,12 @@
 import { Page } from '@playwright/test';
-import { baserUrl, TIMEOUT } from '../../constants';
+import { baserUrl } from '../../constants';
 import User from '../../interfaces/User';
-import { getById } from '../utils/getById';
 import assertList from '../utils/assertList';
 import { clickOnText, clickOnTextNth } from '../utils/clickOnText';
+import { getById } from '../utils/getById';
 import { getByIdAndFill } from '../utils/getByIdAndFill';
 import logger from '../utils/logger';
+import { waitForTimeout } from '../utils/waitforTimeout';
 
 const LOGIN_TEXTS: string[] = [
     'Log in to your account:',
@@ -43,13 +44,13 @@ export async function fillLoginInputs(page: Page, user: User) {
     await userSelector.click();
     await userSelector.fill(user.credentials.email);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     const organizationSelector = getById(page, 'tenant');
     await organizationSelector.click();
     await organizationSelector.click();
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await assertUserTenants(page, user);
 
@@ -57,7 +58,7 @@ export async function fillLoginInputs(page: Page, user: User) {
 
     await clickOnText(page, 'Login');
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await loginPageAssertions2(page, user);
 
@@ -65,7 +66,7 @@ export async function fillLoginInputs(page: Page, user: User) {
 
     await clickOnText(page, 'Next');
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
     logger.info('Finish login.ts fillLoginInputs ');
 }
 
@@ -93,14 +94,14 @@ export async function logout(page: Page) {
 
     await clickOnText(page, 'Ok');
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await loginPageAssertions(page);
 }
 
 export async function login(page: Page, user: User) {
     await page.goto(baserUrl + '/app/login');
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await loginPageAssertions(page);
 

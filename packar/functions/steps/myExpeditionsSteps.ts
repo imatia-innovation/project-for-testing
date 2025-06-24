@@ -1,9 +1,9 @@
 import { Page } from '@playwright/test';
 import assertList from '../utils/assertList';
-import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
-import { getById } from '../utils/getById';
 import assertListExcluded from '../utils/assertListExcluded';
-import { TIMEOUT } from '../../constants';
+import { getById } from '../utils/getById';
+import { waitForTimeout } from '../utils/waitforTimeout';
+import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 
 const EXPEDITION_PAGE_ERROR: string[] = [
     ' No se han obtenido resultados ',
@@ -22,14 +22,14 @@ export async function navigateToMyExpeditionsPage(page: Page) {
 }
 
 export async function assertMyExpeditionsPageError(page: Page) {
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
     await assertList(page, [...MY_EXPEDITION_PAGE, ...EXPEDITION_PAGE_ERROR]);
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 }
 
 export async function assertMyExpeditionsPage(page: Page) {
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
     await assertList(page, MY_EXPEDITION_PAGE);
     await assertListExcluded(page, EXPEDITION_PAGE_ERROR);
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 }

@@ -1,8 +1,8 @@
 import { Page } from '@playwright/test';
 import assertList from '../utils/assertList';
-import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
-import { getById } from '../utils/getById';
 import { clickOnText } from '../utils/clickOnText';
+import { getById } from '../utils/getById';
+import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 
 const DESTINATIONS_PAGE: string[] = [
     'Inicio',

@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { admin, baserUrl, demo, courier } from '../constants';
-import { getById } from '../functions/utils/getById';
-import logout from '../functions/steps/logout';
+import { expect, test } from '@playwright/test';
+import { admin, baserUrl, courier, demo } from '../constants';
 import { loginPageAssertions } from '../functions/steps/login';
+import logout from '../functions/steps/logout';
+import { getById } from '../functions/utils/getById';
 
 test.afterEach(async ({ page }) => {
     page.close();

@@ -1,9 +1,9 @@
 import { Page } from '@playwright/test';
 import assertList from '../utils/assertList';
-import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
-import { getById } from '../utils/getById';
 import { clickOnText } from '../utils/clickOnText';
-import { TIMEOUT } from '../../constants';
+import { getById } from '../utils/getById';
+import { waitForTimeout } from '../utils/waitforTimeout';
+import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 
 const REPORTS_PAGE: string[] = ['Informes generados', 'Nuevo informe'];
 
@@ -43,7 +43,7 @@ export async function navigateToReportsPage(page: Page) {
 
     await waitUntilUrlLoads(page, '/app/main/reports');
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await assertReportsPage(page);
 }

@@ -1,8 +1,8 @@
 import { Page } from '@playwright/test';
+import { DESTINATION_FAVORITE, PICKUP_LOCATION, PROVIDER_SERVICES } from '../constants';
 import { getProviderService, ProviderServices } from '../constants/dev-providers';
 import { selectBox } from '../functions/steps/ordersSteps';
 import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
-import { DESTINATION_FAVORITE, PICKUP_LOCATION, PROVIDER_SERVICES } from '../constants';
 
 interface Combination {
     provider: string;

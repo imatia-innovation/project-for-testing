@@ -1,4 +1,6 @@
 import test, { Page } from '@playwright/test';
+import { OrderProviderMapper } from '../classes/OrderProviderMapper';
+import { DESTINATION_FAVORITE, PICKUP_LOCATION } from '../constants';
 import {
     assertOrderDetailPageData,
     createNewOrder,
@@ -12,10 +14,8 @@ import {
     selectEnvelope,
     selectPallet,
 } from '../functions/steps/ordersSteps';
-import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
 import logger from '../functions/utils/logger';
-import { OrderProviderMapper } from '../classes/OrderProviderMapper';
-import { DESTINATION_FAVORITE, PICKUP_LOCATION } from '../constants';
+import CreateNewOrderTest from '../interfaces/CreateNewOrderTest';
 
 const ORDER_ID = '140';
 

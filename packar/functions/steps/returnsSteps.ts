@@ -1,8 +1,8 @@
 import { Page } from '@playwright/test';
 import assertList from '../utils/assertList';
-import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import { getById } from '../utils/getById';
-import { TIMEOUT } from '../../constants';
+import { waitForTimeout } from '../utils/waitforTimeout';
+import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 
 const RETURNS_PAGE: string[] = [
     'Inicio',
@@ -34,7 +34,7 @@ export async function navigateToReturnsPage(page: Page) {
     await locator.click();
 
     await waitUntilUrlLoads(page, '/app/main/return');
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await assertReturnsPage(page);
 }

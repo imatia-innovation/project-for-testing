@@ -4,22 +4,22 @@
 // Assign a provider following the assignment rules
 
 import test, { Locator } from '@playwright/test';
+import { courierFixedPrice, courierNOFixedPrice, PROVIDER_SERVICES } from '../../constants';
+import { getProviderService } from '../../constants/dev-providers';
+import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../../constants/rulesPropertiesAndOperations';
+import { selectCondition } from '../../functions/steps/couriersRulesSteps';
 import {
     assertRuleCreated,
     navigateToRulesPageRoutine,
     openNewRuleForm,
     selectProvider,
 } from '../../functions/steps/rulesSteps';
-import logger from '../../functions/utils/logger';
-import { clickOnText } from '../../functions/utils/clickOnText';
 import assertByText from '../../functions/utils/assertByText';
-import CreateNewRuleOrderTest from '../../interfaces/CreateNewRuleOrderTest';
-import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../../constants/rulesPropertiesAndOperations';
-import { getProviderService } from '../../constants/dev-providers';
+import { clickOnText } from '../../functions/utils/clickOnText';
 import { getByIdAndFill } from '../../functions/utils/getByIdAndFill';
-import { selectCondition } from '../../functions/steps/couriersRulesSteps';
-import { courierFixedPrice, courierNOFixedPrice, PROVIDER_SERVICES } from '../../constants';
+import logger from '../../functions/utils/logger';
 import { selectRegisterPerPage } from '../../functions/utils/pagination';
+import CreateNewRuleOrderTest from '../../interfaces/CreateNewRuleOrderTest';
 
 const rule1: CreateNewRuleOrderTest = {
     name: 'Si el alto es igual que 100, asignar a GLS Estándar 24H',

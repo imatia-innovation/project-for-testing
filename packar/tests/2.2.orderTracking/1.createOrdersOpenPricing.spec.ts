@@ -1,12 +1,12 @@
 // create Orders with Open Pricing Provider
 
 import test, { Page } from '@playwright/test';
-import { createNewOrder, selectBox } from '../../functions/steps/ordersSteps';
-import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
+import { DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import { ORDER_STATUS } from '../../constants/orderStatus';
-import { DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
+import { createNewOrder, selectBox } from '../../functions/steps/ordersSteps';
 import { assertTextInRow } from '../../functions/utils/assertTextInRow';
+import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 
 const provider: string = 'BAJO COTIZACIÓN';
 

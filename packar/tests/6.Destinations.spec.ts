@@ -1,10 +1,11 @@
 import test from '@playwright/test';
-import { admin, TIMEOUT } from '../constants';
-import login from '../functions/steps/login';
+import { admin } from '../constants';
 import { assertNewDestinationForm, navigateToDestinationsPage } from '../functions/steps/destinationsSteps';
+import login from '../functions/steps/login';
+import assertList from '../functions/utils/assertList';
 import { clickOnText } from '../functions/utils/clickOnText';
 import { getByIdAndFill } from '../functions/utils/getByIdAndFill';
-import assertList from '../functions/utils/assertList';
+import { waitForTimeout } from '../functions/utils/waitforTimeout';
 
 test('should go to Destinations page and make text assertions', async ({ page }) => {
     await login(page, admin);
@@ -69,7 +70,7 @@ destinationTests.forEach((destination) => {
 
         await clickOnText(page, 'Guardar');
 
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
 
         await clickOnText(page, 'test');
         await clickOnText(page, 'Eliminar');
@@ -81,6 +82,6 @@ destinationTests.forEach((destination) => {
         ]);
         await clickOnText(page, 'Ok');
 
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
     });
 });

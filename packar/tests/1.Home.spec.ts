@@ -1,5 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { admin, demo, courier } from '../constants';
+import { expect, test } from '@playwright/test';
+import { admin, courier, demo } from '../constants';
 import login from '../functions/steps/login';
 import logger from '../functions/utils/logger';
 

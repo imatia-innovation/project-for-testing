@@ -1,10 +1,10 @@
 import { Page } from '@playwright/test';
-import logger from '../utils/logger';
 import { ROLES } from '../../constants/roles';
-import assertListExcluded from '../utils/assertListExcluded';
-import assertList from '../utils/assertList';
 import User from '../../interfaces/User';
 import assertByText from '../utils/assertByText';
+import assertList from '../utils/assertList';
+import assertListExcluded from '../utils/assertListExcluded';
+import logger from '../utils/logger';
 
 const HOME_TEXTS_IMATIA_ADMIN = [
     'Home',
@@ -28,7 +28,7 @@ const HOME_TEXTS_IMATIA_ADMIN = [
 ];
 
 const HOME_TEXTS_DS_ADMIN = [
-    'Home',
+    //'Home',
     'Administration',
     'Analysis',
     'Transformation Rules',

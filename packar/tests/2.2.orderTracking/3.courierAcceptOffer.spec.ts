@@ -4,21 +4,21 @@
 // Reject order
 
 import test, { Page } from '@playwright/test';
-import { selectBox } from '../../functions/steps/ordersSteps';
-import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import {
     baserUrl,
-    courierNOFixedPrice,
     courierFixedPrice,
-    PICKUP_LOCATION,
+    courierNOFixedPrice,
     DESTINATION_FAVORITE,
-    TIMEOUT,
+    PICKUP_LOCATION,
 } from '../../constants';
+import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
+import { selectBox } from '../../functions/steps/ordersSteps';
 import {
     acceptOffer,
     createOrderAndGoToOfferDetailPage,
     offerDetailPageAssertionsDriver,
 } from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps';
+import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 import OfferTest from '../../interfaces/OfferTest';
 import OfferTestResult from '../../interfaces/OfferTestResult';
 
@@ -186,15 +186,15 @@ createOfferTests.forEach((orderTest, testIndex) => {
 
         await acceptOffer(page, orderTest.courierHasFixedPrice, orderTest.setPrice);
 
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
 
         await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {
             waitUntil: 'load',
         });
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
 
         await offerDetailPageAssertionsDriver(page);
 
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
     });
 });

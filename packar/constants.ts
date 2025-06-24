@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import User from './interfaces/User';
-import { PRE_PROVIDER_SERVICES } from './constants/pre-providers';
 import { DEV_PROVIDER_SERVICES } from './constants/dev-providers';
+import { PRE_PROVIDER_SERVICES } from './constants/pre-providers';
+import User from './interfaces/User';
 
 export const admin: User = {
     username: process.env.USER_ADMIN_NAME!,

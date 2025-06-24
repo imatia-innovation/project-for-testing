@@ -1,9 +1,9 @@
 import { Page } from '@playwright/test';
 import { admin } from '../../constants';
-import login from './login';
 import assertList from '../utils/assertList';
-import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import { getById } from '../utils/getById';
+import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
+import login from './login';
 
 const ANALYTICS_PAGE: string[] = [
     'Inicio',

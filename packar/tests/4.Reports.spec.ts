@@ -1,21 +1,22 @@
 import test from '@playwright/test';
-import {
-    navigateToReportsPage,
-    navigateToReportsGeneratedPage,
-    navigateToCreateNewReportForm,
-} from '../functions/steps/reportsSteps';
+import { admin } from '../constants';
 import { DATE_TYPES } from '../constants/dateTypes';
-import { getDateByType } from '../functions/utils/getDateByType';
-import ReportTest from '../interfaces/ReportTest';
-import { getByIdAndFill } from '../functions/utils/getByIdAndFill';
-import { getById } from '../functions/utils/getById';
-import { clickOnText } from '../functions/utils/clickOnText';
-import { getByAttribute } from '../functions/utils/getByAttribute';
-import { waitUntilUrlLoads } from '../functions/utils/waitUntilUrlLoads';
-import assertList from '../functions/utils/assertList';
-import { formatDate } from '../functions/utils/formatDate';
 import login from '../functions/steps/login';
-import { admin, TIMEOUT } from '../constants';
+import {
+    navigateToCreateNewReportForm,
+    navigateToReportsGeneratedPage,
+    navigateToReportsPage,
+} from '../functions/steps/reportsSteps';
+import assertList from '../functions/utils/assertList';
+import { clickOnText } from '../functions/utils/clickOnText';
+import { formatDate } from '../functions/utils/formatDate';
+import { getByAttribute } from '../functions/utils/getByAttribute';
+import { getById } from '../functions/utils/getById';
+import { getByIdAndFill } from '../functions/utils/getByIdAndFill';
+import { getDateByType } from '../functions/utils/getDateByType';
+import { waitForTimeout } from '../functions/utils/waitforTimeout';
+import { waitUntilUrlLoads } from '../functions/utils/waitUntilUrlLoads';
+import ReportTest from '../interfaces/ReportTest';
 
 test('should go to Reports page and make text assertions', async ({ page }) => {
     await login(page, admin);
@@ -130,13 +131,13 @@ reportsTest.forEach((report) => {
         await clickOnText(page, 'Guardar');
 
         await waitUntilUrlLoads(page, '/app/main/reports');
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
 
         await navigateToReportsGeneratedPage(page);
 
         await clickOnText(page, 'Fecha del informe');
 
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
 
         await assertList(page, [
             formatDate(now),

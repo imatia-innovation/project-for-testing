@@ -1,12 +1,12 @@
 import { Page } from '@playwright/test';
+import { ORDER_STATUS } from '../../../constants/orderStatus';
+import OfferOpenPriceTest from '../../../interfaces/OfferOpenPriceTest';
+import { assertTextInRow } from '../../utils/assertTextInRow';
 import logger from '../../utils/logger';
+import { waitForTimeout } from '../../utils/waitforTimeout';
+import logout from '../logout';
 import { createNewOrder } from '../ordersSteps';
 import { getOrderId } from './courierAcceptRejectOfferSteps';
-import OfferOpenPriceTest from '../../../interfaces/OfferOpenPriceTest';
-import { TIMEOUT } from '../../../constants';
-import logout from '../logout';
-import { assertTextInRow } from '../../utils/assertTextInRow';
-import { ORDER_STATUS } from '../../../constants/orderStatus';
 
 export async function createOrderOpenPricingAndGetOrderId(
     page: Page,
@@ -16,7 +16,7 @@ export async function createOrderOpenPricingAndGetOrderId(
 ): Promise<string> {
     const reference: string = await createNewOrder(page, offerTest, testIndex);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await assertTextInRow(page, reference, isOpenPricing ? ORDER_STATUS.PENDING_PRICING : ORDER_STATUS.PENDING_ACCEPT);
     const orderId = await getOrderId(page, reference);
@@ -24,7 +24,7 @@ export async function createOrderOpenPricingAndGetOrderId(
 
     logger.info(`clientAssignOfferPriceSteps.ts createOrderAndGoToOfferDetailPage orderId: ${orderId}`);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     return orderId;
 }

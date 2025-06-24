@@ -1,9 +1,9 @@
 import { expect, Page } from '@playwright/test';
 import { baserUrl } from '../../constants';
 import User from '../../interfaces/User';
-import { getById } from '../utils/getById';
 import assertList from '../utils/assertList';
 import { getByAttribute } from '../utils/getByAttribute';
+import { getById } from '../utils/getById';
 
 const LOGIN_TEXTS: string[] = [
     'Inicia sesión en tu cuenta:',

@@ -1,23 +1,24 @@
 import { Page } from '@playwright/test';
+import { baserUrl } from '../../constants';
 import { ORDER_STATUS } from '../../constants/orderStatus';
+import OfferTest from '../../interfaces/OfferTest';
+import OfferTestResult from '../../interfaces/OfferTestResult';
+import Provider from '../../interfaces/Provider';
 import assertByText from '../utils/assertByText';
 import { assertTextInRow } from '../utils/assertTextInRow';
 import { clickOnText, clickOnTextLast, clickOnTextNth } from '../utils/clickOnText';
 import { getById } from '../utils/getById';
+import { waitForTimeout } from '../utils/waitforTimeout';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
-import { assertOrderDetailPageData, navigateToOrderDetailPage, navigateToOrdersPageRoutine } from './ordersSteps';
-import { baserUrl, TIMEOUT } from '../../constants';
-import Provider from '../../interfaces/Provider';
-import OfferTestResult from '../../interfaces/OfferTestResult';
 import logout from './logout';
+import { navigateToMyExpeditionsPage } from './myExpeditionsSteps';
+import { assertOrderDetailPageData, navigateToOrderDetailPage, navigateToOrdersPageRoutine } from './ordersSteps';
 import {
-    createOrderAndGoToOfferDetailPage,
     acceptOffer,
+    createOrderAndGoToOfferDetailPage,
     getOrderId,
 } from './orderTracking/courierAcceptRejectOfferSteps';
-import OfferTest from '../../interfaces/OfferTest';
 import { changeOfferStatus } from './orderTracking/orderExpeditionTrackingSteps';
-import { navigateToMyExpeditionsPage } from './myExpeditionsSteps';
 
 export async function reassignOrder(
     page: Page,
@@ -46,7 +47,7 @@ export async function reassignOrder(
 
     await clickOnText(page, 'Guardar');
 
-    await page.waitForTimeout(TIMEOUT * 2);
+    await waitForTimeout(page, 2);
 }
 
 export async function reassignOrderSuccessfully(
@@ -60,7 +61,7 @@ export async function reassignOrderSuccessfully(
 
     // Expected result:
     await waitUntilUrlLoads(page, '/app/main/order');
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
     await assertTextInRow(page, orderIdRef.reference, orderStatusExpected);
 
     const newOrderId = await getOrderId(page, orderIdRef.reference);
@@ -89,10 +90,10 @@ export async function acceptOfferAndLogout(
     await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {
         waitUntil: 'load',
     });
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await logout(page);
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 }
 
 export async function cancelOrder(page: Page, orderId: string): Promise<void> {
@@ -102,7 +103,7 @@ export async function cancelOrder(page: Page, orderId: string): Promise<void> {
     await assertByText(page, 'Al confirmar este cambio, se cancelará el pedido actual.');
 
     await clickOnTextNth(page, 'Cancelar', 4);
-    await page.waitForTimeout(TIMEOUT * 2);
+    await waitForTimeout(page, 2);
 }
 
 export async function cancelOrderSuccessfully(page: Page, orderId: string): Promise<void> {
@@ -125,20 +126,20 @@ export async function changeOfferStatusAndLogout(
     });
 
     await navigateToMyExpeditionsPage(page);
-    await page.waitForTimeout(TIMEOUT * 2);
+    await waitForTimeout(page, 2);
 
     await clickOnText(page, orderIdRef.reference);
-    await page.waitForTimeout(TIMEOUT * 2);
+    await waitForTimeout(page, 2);
 
     await clickOnText(page, 'Destino');
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await changeOfferStatus(page, status);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     if (makeLogout) {
         await logout(page);
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
     }
 }

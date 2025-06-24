@@ -1,18 +1,18 @@
 import { expect, Page } from '@playwright/test';
-import { admin } from '../../constants';
-import assertList from '../utils/assertList';
-import login from './login';
-import isAlertDialogText from '../utils/isAlertDialogText';
 import Calculator from '../../classes/Calculator';
+import { admin } from '../../constants';
 import RuleService from '../../core/RuleService';
-import getMaxColumnNumericValue from '../utils/getMaxColumnNumericValue';
 import Combination from '../../interfaces/Combination';
 import Provider from '../../interfaces/Provider';
-import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
+import assertList from '../utils/assertList';
 import { clickOnText } from '../utils/clickOnText';
 import { getByAttribute } from '../utils/getByAttribute';
 import { getById } from '../utils/getById';
+import getMaxColumnNumericValue from '../utils/getMaxColumnNumericValue';
+import isAlertDialogText from '../utils/isAlertDialogText';
 import logger from '../utils/logger';
+import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
+import login from './login';
 
 const RULES_PAGE_TEXT: string[] = [
     'Reglas de asignación',

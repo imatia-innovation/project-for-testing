@@ -4,20 +4,21 @@
 // Reject order
 
 import { Page } from '@playwright/test';
+import { baserUrl } from '../../../constants';
 import { ORDER_STATUS } from '../../../constants/orderStatus';
-import { clickOnText } from '../../utils/clickOnText';
-import { createNewOrder } from '../ordersSteps';
-import logger from '../../utils/logger';
+import OfferTest from '../../../interfaces/OfferTest';
+import OfferTestResult from '../../../interfaces/OfferTestResult';
+import User from '../../../interfaces/User';
 import assertList from '../../utils/assertList';
 import assertListExcluded from '../../utils/assertListExcluded';
-import { baserUrl, TIMEOUT } from '../../../constants';
-import { loginAfterLogout } from '../login';
-import OfferTest from '../../../interfaces/OfferTest';
-import User from '../../../interfaces/User';
-import { getByIdAndFill } from '../../utils/getByIdAndFill';
-import logout from '../logout';
-import OfferTestResult from '../../../interfaces/OfferTestResult';
 import { assertTextInRow } from '../../utils/assertTextInRow';
+import { clickOnText } from '../../utils/clickOnText';
+import { getByIdAndFill } from '../../utils/getByIdAndFill';
+import logger from '../../utils/logger';
+import { waitForTimeout } from '../../utils/waitforTimeout';
+import { loginAfterLogout } from '../login';
+import logout from '../logout';
+import { createNewOrder } from '../ordersSteps';
 
 const LABELS_AND_COLUMNS: string[] = [
     'Nº REFERENCIA CLIENTE',
@@ -149,7 +150,7 @@ const LABELS_AND_COLUMNS_REJECTED_EXCLUDED_2: string[] = [
 export async function getOrderId(page: Page, reference: string): Promise<string> {
     await clickOnText(page, reference);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await page.waitForURL((url: any) => url != baserUrl + '/app/main/order', {
         waitUntil: 'load',
@@ -172,7 +173,7 @@ export async function createOrderAndGoToOfferDetailPage(
     testIndex: number
 ): Promise<OfferTestResult> {
     const reference: string = await createNewOrder(page, offerTest, testIndex);
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ACCEPT);
     const orderId = await getOrderId(page, reference);
@@ -181,7 +182,7 @@ export async function createOrderAndGoToOfferDetailPage(
 
     logger.info(`courierAcceptRejectOfferSteps.ts createOrderAndGoToOfferDetailPage orderId: ${orderId}`);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await goToOfferDetailPage(page, offerTest.courier, orderId);
 
@@ -198,13 +199,13 @@ export async function goToOfferDetailPage(page: Page, courier: User, orderId: st
         waitUntil: 'load',
     });
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await page.goto(`${baserUrl}/app/main/offertDetail/${orderId}`);
     await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {
         waitUntil: 'load',
     });
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 }
 
 export async function acceptOffer(page: Page, courierHasFixedPrice?: boolean, setPrice?: string): Promise<void> {
@@ -223,7 +224,7 @@ export async function acceptOffer(page: Page, courierHasFixedPrice?: boolean, se
 export async function rejectOffer(page: Page, rejectText: string): Promise<void> {
     await clickOnText(page, 'Rechazar');
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await offerDetailPageRejectAssertions(page);
 
@@ -231,7 +232,7 @@ export async function rejectOffer(page: Page, rejectText: string): Promise<void>
 
     await clickOnText(page, 'Enviar');
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 }
 
 export async function offerDetailPageAssertions(page: Page): Promise<void> {

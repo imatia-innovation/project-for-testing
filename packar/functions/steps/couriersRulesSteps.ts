@@ -1,10 +1,10 @@
 import { Page } from '@playwright/test';
+import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../../constants/rulesPropertiesAndOperations';
+import { Condition } from '../../interfaces/CreateNewRuleOrderTest';
 import assertList from '../utils/assertList';
 import { getByAttribute } from '../utils/getByAttribute';
 import { getById } from '../utils/getById';
 import logger from '../utils/logger';
-import { Condition } from '../../interfaces/CreateNewRuleOrderTest';
-import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../../constants/rulesPropertiesAndOperations';
 
 export async function selectCondition(page: Page, condition: Condition) {
     logger.info(' Start couriersRulesSteps.ts selectCondition', condition);

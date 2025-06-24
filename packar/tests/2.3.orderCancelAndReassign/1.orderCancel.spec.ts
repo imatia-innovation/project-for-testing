@@ -1,40 +1,32 @@
-import test, { Locator, Page } from '@playwright/test';
-import {
-    navigateToOrdersPageRoutine,
-    navigateToOrderDetailPage,
-    assertOrderDetailPageData,
-    selectBox,
-    createNewOrder,
-} from '../../functions/steps/ordersSteps';
-import { PICKUP_LOCATION, DESTINATION_FAVORITE, TIMEOUT, courierNOFixedPrice, baserUrl } from '../../constants';
-import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
-import { assertTextInRow } from '../../functions/utils/assertTextInRow';
+import test, { Page } from '@playwright/test';
+import { DESTINATION_FAVORITE, PICKUP_LOCATION, courierNOFixedPrice } from '../../constants';
+import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import { ORDER_STATUS } from '../../constants/orderStatus';
+import logout from '../../functions/steps/logout';
+import {
+    cancelOrderSuccessfully,
+    changeOfferStatusAndLogout,
+    createOrderWithAssignedStatus,
+} from '../../functions/steps/orderCancelAndReassingSteps';
+import {
+    assertOrderDetailPageData,
+    createNewOrder,
+    navigateToOrderDetailPage,
+    navigateToOrdersPageRoutine,
+    selectBox,
+} from '../../functions/steps/ordersSteps';
 import {
     acceptOffer,
     createOrderAndGoToOfferDetailPage,
     getOrderId,
 } from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps';
-import { clickOnText } from '../../functions/utils/clickOnText';
-import assertByText from '../../functions/utils/assertByText';
-import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
-import OfferTestResult from '../../interfaces/OfferTestResult';
-import OfferTest from '../../interfaces/OfferTest';
-import logout from '../../functions/steps/logout';
-import { navigateToMyExpeditionsPage } from '../../functions/steps/myExpeditionsSteps';
-import {
-    confirmDeliveryModalAssertions,
-    saveIncidence,
-    selectOrderAndStatus,
-} from '../../functions/steps/orderTracking/orderExpeditionTrackingSteps';
+import { saveIncidence } from '../../functions/steps/orderTracking/orderExpeditionTrackingSteps';
 import assertListExcluded from '../../functions/utils/assertListExcluded';
-import logger from '../../functions/utils/logger';
-import {
-    cancelOrder,
-    cancelOrderSuccessfully,
-    changeOfferStatusAndLogout,
-    createOrderWithAssignedStatus,
-} from '../../functions/steps/orderCancelAndReassingSteps';
+import { assertTextInRow } from '../../functions/utils/assertTextInRow';
+import { waitForTimeout } from '../../functions/utils/waitforTimeout';
+import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
+import OfferTest from '../../interfaces/OfferTest';
+import OfferTestResult from '../../interfaces/OfferTestResult';
 
 const provider: string = courierNOFixedPrice.providerName!;
 
@@ -158,7 +150,7 @@ test("should go to an order with status 'Recogido' detail page and it can not be
     const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 4);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await changeOfferStatusAndLogout(page, { orderId, reference }, ORDER_STATUS.RECEIVED);
 
@@ -170,7 +162,7 @@ test("should go to an order with status 'Recogido' detail page and it can not be
 
     await navigateToOrderDetailPage(page, orderId);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
     await assertOrderDetailPageData(page);
 
     await assertListExcluded(page, ['Cancelar envío']);
@@ -182,7 +174,7 @@ test("should go to an order with status 'En ruta' detail page and it can not be 
     const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 5);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await changeOfferStatusAndLogout(page, { orderId, reference }, ORDER_STATUS.ON_ROUTE);
 
@@ -194,7 +186,7 @@ test("should go to an order with status 'En ruta' detail page and it can not be 
 
     await navigateToOrderDetailPage(page, orderId);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
     await assertOrderDetailPageData(page);
 
     await assertListExcluded(page, ['Cancelar envío']);
@@ -206,7 +198,7 @@ test("should go to an order with status 'Entregado' detail page and it can not b
     const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 6);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await changeOfferStatusAndLogout(page, { orderId, reference }, ORDER_STATUS.SENT);
 
@@ -218,7 +210,7 @@ test("should go to an order with status 'Entregado' detail page and it can not b
 
     await navigateToOrderDetailPage(page, orderId);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
     await assertOrderDetailPageData(page);
 
     await assertListExcluded(page, ['Cancelar envío']);
@@ -230,15 +222,15 @@ test("should go to an order with status 'Incidencia' detail page and it can not 
     const { orderId, reference }: OfferTestResult = await createOrderAndGoToOfferDetailPage(page, order3, 7);
 
     await acceptOffer(page, order3.courierHasFixedPrice, order3.setPrice);
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await changeOfferStatusAndLogout(page, { orderId, reference }, ORDER_STATUS.RECEIVED, false);
 
     await saveIncidence(page, 0, 'Esto es un test automatizado');
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await logout(page);
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     test.slow();
 
@@ -248,7 +240,7 @@ test("should go to an order with status 'Incidencia' detail page and it can not 
 
     await navigateToOrderDetailPage(page, orderId);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
     await assertOrderDetailPageData(page);
 
     await assertListExcluded(page, ['Cancelar envío', 'Reasignar pedido']);

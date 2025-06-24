@@ -1,7 +1,7 @@
 import test from '@playwright/test';
 import { USER_DS_ADMIN, USER_IMATIA_ADMIN, USER_ONE } from '../constants';
-import { login, logout } from '../functions/steps/login';
 import { homeAssertions } from '../functions/steps/home';
+import { login, logout } from '../functions/steps/login';
 
 const homeTests = [
     {

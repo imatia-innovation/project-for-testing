@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 import assertList from '../utils/assertList';
-import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import { getById } from '../utils/getById';
+import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import { EXPEDITION_TABLE_COLUMNS } from './orderTracking/createExpeditionSteps';
 
 const EXPEDITION_PAGE: string[] = [

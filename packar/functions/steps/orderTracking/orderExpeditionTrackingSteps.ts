@@ -1,12 +1,12 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { baserUrl, courierNOFixedPrice, TIMEOUT } from '../../../constants';
-import assertList from '../../utils/assertList';
+import { baserUrl } from '../../../constants';
+import { ORDER_STATUS } from '../../../constants/orderStatus';
 import ExpeditionTestResult from '../../../interfaces/ExpeditionTestResult';
-import login from '../login';
+import assertByText from '../../utils/assertByText';
+import assertList from '../../utils/assertList';
 import { clickOnText } from '../../utils/clickOnText';
 import logger from '../../utils/logger';
-import assertByText from '../../utils/assertByText';
-import { ORDER_STATUS } from '../../../constants/orderStatus';
+import { waitForTimeout } from '../../utils/waitforTimeout';
 
 const MY_EXPEDITIONS_HOME_PAGE: string[] = ['Mis expediciones', 'Dirección recogida', 'Fecha recogida:'];
 
@@ -33,7 +33,7 @@ const STATUS_COMBOBOX: string[] = ['ASIGNADO', 'RECOGIDO', 'EN RUTA'];
 export async function navigateToExpeditionHomePage(page: Page): Promise<void> {
     await page.goto(baserUrl + '/app/main/my-pickups');
     await page.waitForURL(baserUrl + '/app/main/my-pickups');
-    await page.waitForTimeout(TIMEOUT * 2);
+    await waitForTimeout(page, 2);
 }
 
 export async function myExpeditionsHomePageAssertions(
@@ -49,7 +49,7 @@ export async function myExpeditionsHomePageAssertions(
 export async function expeditionHomePageRoutine(page: Page, expeditionReferences: ExpeditionTestResult): Promise<void> {
     //await login(page, courierNOFixedPrice);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await navigateToExpeditionHomePage(page);
 
@@ -76,10 +76,10 @@ export async function expeditionDetailPageRoutine(
     await page.waitForURL((url: any) => url != baserUrl + '/app/main/my-pickups', {
         waitUntil: 'load',
     });
-    await page.waitForTimeout(TIMEOUT * 2);
+    await waitForTimeout(page, 2);
 
     await clickOnText(page, 'Destino');
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await myExpeditionsDetailPageAssertions(page, expeditionReferences);
 }
@@ -105,10 +105,10 @@ export async function selectOrderAndStatus(page: Page, orderIndex: number, statu
     logger.info('orderExpeditionTrackingSteps.ts optionLocators: ', optionLocators.length);
 
     await optionLocators[statusIndex].click();
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await clickOnText(page, 'Destino');
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 }
 
 export async function confirmDeliveryModalAssertions(page: Page): Promise<void> {
@@ -126,9 +126,9 @@ export async function saveIncidence(page: Page, incidenceIndex: number, incidenc
     await page.getByText('Motivo incidencia').nth(0).fill(incidenceText);
     await clickOnText(page, 'Guardar');
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
     await clickOnText(page, 'Destino');
-    await page.waitForTimeout(TIMEOUT * 2);
+    await waitForTimeout(page, 2);
 }
 
 export async function selectReceivedStatus(page: Page) {
@@ -162,7 +162,7 @@ export async function selectSentStatus(page: Page, expeditionReferences?: Expedi
     await page.getByText('DNI').nth(0).fill('03915150K');
     await clickOnText(page, 'Guardar');
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await assertByText(page, ORDER_STATUS.SENT);
 }

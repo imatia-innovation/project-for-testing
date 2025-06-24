@@ -1,24 +1,25 @@
-import test, { Page, expect } from '@playwright/test';
-import { admin, baserUrl, PICKUP_LOCATION, PROVIDER_SERVICES, TIMEOUT } from '../../constants';
-import assertList from '../utils/assertList';
-import login from './login';
-import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
-import { clickOnButton, clickOnElementById, clickOnText, clickOnTextNth } from '../utils/clickOnText';
-import Provider from '../../interfaces/Provider';
-import { getById } from '../utils/getById';
-import Dimension, { CompleteOrderDimension } from '../../interfaces/Dimension';
-import { getByLabelAndFill } from '../utils/getByLabelAndFill';
-import assertByText from '../utils/assertByText';
+import test, { expect, Page } from '@playwright/test';
+import { admin, baserUrl, PROVIDER_SERVICES } from '../../constants';
+import { ASSIGNMENT_METHOD_DEFAULT } from '../../constants/assignmentMethod';
+import { getProviderService } from '../../constants/dev-providers';
+import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import Destination from '../../interfaces/Destination';
+import Dimension, { CompleteOrderDimension } from '../../interfaces/Dimension';
+import Provider from '../../interfaces/Provider';
+import User from '../../interfaces/User';
+import assertByText from '../utils/assertByText';
+import assertList from '../utils/assertList';
+import { locateRow } from '../utils/assertTextInRow';
+import { clickOnButton, clickOnElementById, clickOnText, clickOnTextNth } from '../utils/clickOnText';
 import { formatDate } from '../utils/formatDate';
 import { getByAttribute } from '../utils/getByAttribute';
+import { getById } from '../utils/getById';
 import { getByIdAndFill } from '../utils/getByIdAndFill';
+import { getByLabelAndFill } from '../utils/getByLabelAndFill';
 import logger from '../utils/logger';
-import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
-import { getProviderService } from '../../constants/dev-providers';
-import { ASSIGNMENT_METHOD_DEFAULT } from '../../constants/assignmentMethod';
-import User from '../../interfaces/User';
-import { locateRow } from '../utils/assertTextInRow';
+import { waitForTimeout } from '../utils/waitforTimeout';
+import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
+import login from './login';
 
 const LABELS_AND_COLUMNS: string[] = [
     'Buscar envíos',
@@ -432,7 +433,7 @@ export async function fillDestinationOrders(page: Page, destination: Destination
 export async function navigateToOrderDetailPage(page: Page, orderId: string) {
     await page.goto(baserUrl + `/app/main/order/${orderId}?isdetail=true`);
     await page.waitForURL(baserUrl + `/app/main/order/${orderId}?isdetail=true`);
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 }
 
 export async function assertOrderDetailPageData(page: Page, expectedStatus?: string) {
@@ -464,20 +465,20 @@ export async function assertTextIsNotInRow(page: Page, reference: string, text: 
 export async function gotToOrderDetailPage(page: Page, user: User, orderId: string): Promise<void> {
     await login(page, user);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await page.waitForURL(`${baserUrl}/app/main/home`, {
         waitUntil: 'load',
     });
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await page.goto(`${baserUrl}/app/main/order/${orderId}?isdetail=true`);
 
     await page.waitForURL(`${baserUrl}/app/main/order/${orderId}?isdetail=true`, {
         waitUntil: 'load',
     });
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 }
 
 export async function orderDetailPageAssertions(page: Page, order: CreateNewOrderTest, orderStatus: string) {

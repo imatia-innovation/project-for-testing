@@ -1,17 +1,6 @@
 import 'dotenv/config';
 import User from './interfaces/User';
 
-export const USER_MAIN: User = {
-    credentials: {
-        email: process.env.USER_MAIN_EMAIL!,
-        pass: process.env.USER_MAIN_PASS!,
-        role: process.env.USER_MAIN_ROLE!,
-    },
-    tenants: JSON.parse(process.env.USER_MAIN_TENANTS!),
-    mainTenant: process.env.USER_MAIN_MAIN_TENANT!,
-    displayName: process.env.USER_MAIN_DISPLAY_NAME!,
-};
-
 export const USER_ONE: User = {
     credentials: {
         email: process.env.USER_ONE_EMAIL!,

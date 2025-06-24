@@ -1,27 +1,27 @@
-import { test, expect } from '@playwright/test';
-import isAlertDialogText from '../functions/utils/isAlertDialogText';
+import { expect, test } from '@playwright/test';
 import Calculator from '../classes/Calculator';
+import { RuleProviderMapper } from '../classes/RuleProviderMapper';
+import { PROVIDER_SERVICES } from '../constants';
+import { getProviderService } from '../constants/dev-providers';
+import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../constants/rulesPropertiesAndOperations';
 import RuleService from '../core/RuleService';
 import {
+    assertRuleCreated,
     conditionRoutine,
+    deleteRule,
+    getLastPriorityRoutine,
+    navigateToRulesPageRoutine,
     openNewRuleForm,
-    setPriorityRoutine as setPriorityRoutine,
     selectAnotherCondition,
     selectCondition,
     selectProvider,
-    getLastPriorityRoutine,
-    navigateToRulesPageRoutine,
-    assertRuleCreated,
-    deleteRule,
+    setPriorityRoutine,
 } from '../functions/steps/rulesSteps';
-import CreateNewRuleTest from '../interfaces/CreateNewRuleTest';
-import { getProviderService } from '../constants/dev-providers';
 import { getById } from '../functions/utils/getById';
 import { getByIdAndFill } from '../functions/utils/getByIdAndFill';
+import isAlertDialogText from '../functions/utils/isAlertDialogText';
 import logger from '../functions/utils/logger';
-import { RuleProviderMapper } from '../classes/RuleProviderMapper';
-import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../constants/rulesPropertiesAndOperations';
-import { PROVIDER_SERVICES } from '../constants';
+import CreateNewRuleTest from '../interfaces/CreateNewRuleTest';
 
 const ruleService = new RuleService();
 

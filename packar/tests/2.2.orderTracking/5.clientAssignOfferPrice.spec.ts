@@ -6,21 +6,22 @@
 // Accept the better price with client
 
 import test, { Locator, Page } from '@playwright/test';
+import { admin, courier, courierNOFixedPrice, DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
 import { gotToOrderDetailPage, orderDetailPageAssertions, selectBox } from '../../functions/steps/ordersSteps';
-import { courierNOFixedPrice, PICKUP_LOCATION, DESTINATION_FAVORITE, courier, admin, TIMEOUT } from '../../constants';
+import { createOrderOpenPricingAndGetOrderId } from '../../functions/steps/orderTracking/clientAssignOfferPriceSteps';
 import {
     acceptOffer,
     goToOfferDetailPage,
     rejectOffer,
 } from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps';
 import OfferOpenPriceTest from '../../interfaces/OfferOpenPriceTest';
-import { createOrderOpenPricingAndGetOrderId } from '../../functions/steps/orderTracking/clientAssignOfferPriceSteps';
 
-import { ORDER_STATUS } from '../../constants/orderStatus';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
+import { ORDER_STATUS } from '../../constants/orderStatus';
 import logout from '../../functions/steps/logout';
-import logger from '../../functions/utils/logger';
 import { getEnabledButtonExcludingText, getEnabledButtonsByText } from '../../functions/utils/getEnabledButton';
+import logger from '../../functions/utils/logger';
+import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 
 const provider = 'BAJO COTIZACIÓN';
 
@@ -91,7 +92,7 @@ createOfferTests.forEach((orderTest, testIndex) => {
     test(orderTest.title, async ({ page }) => {
         const orderId = await createOrderOpenPricingAndGetOrderId(page, orderTest, testIndex, true);
 
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
 
         test.slow();
 
@@ -106,16 +107,16 @@ createOfferTests.forEach((orderTest, testIndex) => {
                 await rejectOffer(page, 'Test reject offer open price');
             }
 
-            await page.waitForTimeout(TIMEOUT);
+            await waitForTimeout(page);
 
             await logout(page);
 
-            await page.waitForTimeout(TIMEOUT);
+            await waitForTimeout(page);
         }
 
         await gotToOrderDetailPage(page, admin, orderId); // assertions on detail page then assign a price
 
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
 
         logger.info('5.clientAssignOfferPrice.spec.ts orderTest.assignmentMethod: ', orderTest.assignmentMethod);
 
@@ -124,7 +125,7 @@ createOfferTests.forEach((orderTest, testIndex) => {
 
             await orderDetailPageAssertions(page, orderTest, ORDER_STATUS.PENDING_PRICING);
 
-            await page.waitForTimeout(TIMEOUT);
+            await waitForTimeout(page);
 
             logger.info(
                 "Start 5.clientAssignOfferPrice.spec.ts searching enabled button with text: 'local_shipping Asignar '"

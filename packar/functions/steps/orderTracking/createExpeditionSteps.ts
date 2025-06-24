@@ -1,17 +1,18 @@
 import { Page } from '@playwright/test';
-import { admin, baserUrl, PICKUP_LOCATION, TIMEOUT } from '../../../constants';
-import { clickOnElementById, clickOnText, clickOnTextLast } from '../../utils/clickOnText';
-import assertList from '../../utils/assertList';
-import { getById } from '../../utils/getById';
-import logger from '../../utils/logger';
-import { acceptOffer, createOrderAndGoToOfferDetailPage } from './courierAcceptRejectOfferSteps';
-import OfferTest from '../../../interfaces/OfferTest';
-import { getByAttribute } from '../../utils/getByAttribute';
-import login from '../login';
+import { admin, baserUrl, PICKUP_LOCATION } from '../../../constants';
 import ExpeditionTest from '../../../interfaces/ExpeditionTest';
 import ExpeditionTestResult from '../../../interfaces/ExpeditionTestResult';
+import OfferTest from '../../../interfaces/OfferTest';
 import OfferTestResult from '../../../interfaces/OfferTestResult';
+import assertList from '../../utils/assertList';
+import { clickOnElementById, clickOnText, clickOnTextLast } from '../../utils/clickOnText';
+import { getByAttribute } from '../../utils/getByAttribute';
+import { getById } from '../../utils/getById';
+import logger from '../../utils/logger';
 import { selectRegisterPerPage } from '../../utils/pagination';
+import { waitForTimeout } from '../../utils/waitforTimeout';
+import login from '../login';
+import { acceptOffer, createOrderAndGoToOfferDetailPage } from './courierAcceptRejectOfferSteps';
 
 export const EXPEDITION_TABLE_COLUMNS = [
     'Expedición',
@@ -55,7 +56,7 @@ export async function createExpedition(page: Page, provider: string): Promise<st
 
     await clickOnTextLast(page, 'Solicitar');
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     logger.info('createExpeditionSteps.ts createExpedition', { pickupCode });
     return pickupCode;
@@ -64,7 +65,7 @@ export async function createExpedition(page: Page, provider: string): Promise<st
 export async function selectExpedition(page: Page, pickupCode: string): Promise<void> {
     await clickOnText(page, pickupCode);
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await assertList(page, SELECT_EXPEDITION_ORDERS);
 }
@@ -74,7 +75,7 @@ export async function navigateToClientExpeditionPage(page: Page) {
 
     await page.waitForURL(baserUrl + '/app/main/pickups');
 
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await assertList(page, EXPEDITION_TABLE_COLUMNS);
 }
@@ -119,7 +120,7 @@ export async function createExpeditionWithOrders(
 
         expeditionCode = await createExpedition(page, expeditionTest.courier.providerName!);
 
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
 
         // select 100 registers per page
         await selectRegisterPerPage(page);

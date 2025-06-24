@@ -1,34 +1,27 @@
-import test, { Locator, Page } from '@playwright/test';
+import test, { Page } from '@playwright/test';
+import { courierFixedPrice, courierNOFixedPrice, DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
+import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import { ORDER_STATUS } from '../../constants/orderStatus';
+import logout from '../../functions/steps/logout';
 import {
-    navigateToOrdersPageRoutine,
+    assertOrderDetailPageData,
     createNewOrder,
     navigateToOrderDetailPage,
-    assertOrderDetailPageData,
+    navigateToOrdersPageRoutine,
     selectBox,
 } from '../../functions/steps/ordersSteps';
 import { getOrderId, goToOfferDetailPage } from '../../functions/steps/orderTracking/courierAcceptRejectOfferSteps';
 import { assertTextInRow } from '../../functions/utils/assertTextInRow';
-import {
-    courierNOFixedPrice,
-    PICKUP_LOCATION,
-    DESTINATION_FAVORITE,
-    TIMEOUT,
-    baserUrl,
-    PROVIDER_SERVICES,
-    courierFixedPrice,
-} from '../../constants';
-import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import OfferTest from '../../interfaces/OfferTest';
 import OfferTestResult from '../../interfaces/OfferTestResult';
-import logout from '../../functions/steps/logout';
 
 import {
     acceptOfferAndLogout,
     createOrderWithAssignedStatus,
     reassignOrderSuccessfully,
 } from '../../functions/steps/orderCancelAndReassingSteps';
+import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 import Provider from '../../interfaces/Provider';
 
 const provider: string = courierNOFixedPrice.providerName!;
@@ -199,7 +192,7 @@ test('should reassign an order by second time', async ({ page }) => {
     await assertOrderDetailPageData(page, ORDER_STATUS.PENDING_ACCEPT);
 
     await logout(page);
-    await page.waitForTimeout(TIMEOUT);
+    await waitForTimeout(page);
 
     await goToOfferDetailPage(page, courierFixedPrice, orderId2);
     await acceptOfferAndLogout(page, orderId2, true, order3.setPrice);

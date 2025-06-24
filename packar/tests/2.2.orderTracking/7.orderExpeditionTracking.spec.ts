@@ -1,10 +1,11 @@
 // Change status with Provider and assert status with Client user
 
 import test, { expect, Locator, Page } from '@playwright/test';
-import { createExpeditionWithOrders } from '../../functions/steps/orderTracking/createExpeditionSteps';
-import { courierNOFixedPrice, PICKUP_LOCATION, DESTINATION_FAVORITE } from '../../constants';
+import { courierNOFixedPrice, DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
+import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
+import { ORDER_STATUS } from '../../constants/orderStatus';
 import { selectBox } from '../../functions/steps/ordersSteps';
-import ExpeditionTest from '../../interfaces/ExpeditionTest';
+import { createExpeditionWithOrders } from '../../functions/steps/orderTracking/createExpeditionSteps';
 import {
     changeOfferStatus,
     expeditionDetailPageRoutine,
@@ -14,10 +15,9 @@ import {
     selectReceivedStatus,
     selectSentStatus,
 } from '../../functions/steps/orderTracking/orderExpeditionTrackingSteps';
-import ExpeditionTestResult from '../../interfaces/ExpeditionTestResult';
 import logger from '../../functions/utils/logger';
-import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
-import { ORDER_STATUS } from '../../constants/orderStatus';
+import ExpeditionTest from '../../interfaces/ExpeditionTest';
+import ExpeditionTestResult from '../../interfaces/ExpeditionTestResult';
 
 const expedition1: ExpeditionTest = {
     title: 'should create an Expedition for courier No fixed price',

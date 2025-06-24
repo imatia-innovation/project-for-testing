@@ -4,10 +4,10 @@
 
 import test, { Page } from '@playwright/test';
 import { courierFixedPrice, courierNOFixedPrice, DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
+import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import { createExpeditionWithOrders } from '../../functions/steps/orderTracking/createExpeditionSteps';
 import { selectBox } from '../../functions/steps/ordersSteps';
 import ExpeditionTest from '../../interfaces/ExpeditionTest';
-import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 
 const expedition1: ExpeditionTest = {
     title: 'should create an Expedition for courier No fixed price',

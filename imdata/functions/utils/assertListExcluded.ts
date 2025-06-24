@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
-import logger from './logger';
 import assertTextExcluded from './assertTextExcluded';
+import logger from './logger';
 
 export default async function assertListExcluded(page: Page, list: string[]) {
     logger.info('Start assertListExcluded.ts assertList excluded', { list });

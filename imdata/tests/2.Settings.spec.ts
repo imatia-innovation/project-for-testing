@@ -1,10 +1,11 @@
 import test from '@playwright/test';
-import { TIMEOUT, USER_DS_ADMIN, USER_IMATIA_ADMIN, USER_ONE } from '../constants';
-import { login, logout } from '../functions/steps/login';
+import { USER_DS_ADMIN, USER_IMATIA_ADMIN, USER_ONE } from '../constants';
 import { homeAssertions } from '../functions/steps/home';
-import { clickOnText } from '../functions/utils/clickOnText';
+import { login, logout } from '../functions/steps/login';
 import { settingsAssertions } from '../functions/steps/settings';
+import { clickOnText } from '../functions/utils/clickOnText';
 import { getById } from '../functions/utils/getById';
+import { waitForTimeout } from '../functions/utils/waitforTimeout';
 
 const settingsTests = [
     {
@@ -41,7 +42,7 @@ settingsTests.forEach((testCase) => {
         const radioLocators = page.getByRole('radio');
         await radioLocators.nth(0).click();
 
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
 
         await settingsAssertions(page, 'es');
 
@@ -51,7 +52,7 @@ settingsTests.forEach((testCase) => {
         await radioLocators.nth(1).click();
         await settingsAssertions(page, 'en');
 
-        await page.waitForTimeout(TIMEOUT);
+        await waitForTimeout(page);
 
         await logout(page);
     });
