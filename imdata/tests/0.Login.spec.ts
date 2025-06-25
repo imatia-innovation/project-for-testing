@@ -1,6 +1,7 @@
 import test from '@playwright/test';
 import { USER_DS_ADMIN, USER_IMATIA_ADMIN, USER_ONE } from '../constants';
 import { login, logout } from '../functions/steps/login';
+import { prepareTestDescriptions } from '../functions/utils/prepareTestDescriptions';
 
 const loginTests = [
     {
@@ -21,11 +22,8 @@ const loginTests = [
 ];
 
 loginTests.forEach((testCase) => {
+    const testDescription = prepareTestDescriptions(testCase);
     const user = testCase.user;
-
-    const testDescription = testCase.testDescription
-        .replace('{{username}}', user.credentials.email)
-        .replace('{{role}}', user.credentials.role);
 
     test(testDescription, async ({ page }) => {
         await login(page, user);

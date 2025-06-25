@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test';
 import { DB_NAMES } from '../../../constants/dbNames';
+import DBName from '../../../interfaces/DBName';
 import User from '../../../interfaces/User';
 import assertList from '../../utils/assertList';
 import { getById } from '../../utils/getById';
@@ -9,9 +10,6 @@ import { login } from '../login';
 
 export async function dataSourceAssertions(page: Page) {
     await assertList(page, [
-        'New',
-        'Refresh',
-        //
         'Name',
         'Explore',
         //
@@ -19,8 +17,8 @@ export async function dataSourceAssertions(page: Page) {
     ]);
 }
 
-export async function dataSourceDetailAssertions(page: Page) {
-    await assertList(page, []);
+export async function dataSourceDetailAssertions(page: Page, db: DBName) {
+    await assertList(page, ['HIDE TABLES', db.name, ...db.tables]);
 }
 
 export async function loginAndGoToDataSourcesPage(page: Page, user: User) {

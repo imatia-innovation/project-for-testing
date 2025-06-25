@@ -37,6 +37,22 @@ test('should go to Administration Datasources page with ds admin user', async ({
     let qtyRows = (await rowLocator.all()).length;
 
     logger.info('  1.Datasources.spec.ts qtyRows: ', qtyRows);
+});
+
+test.skip('should go to Administration Datasources page, and delete all DS if exists', async ({ page }) => {
+    await login(page, USER_DS_ADMIN);
+    await homeAssertions(page, USER_DS_ADMIN);
+
+    await getById(page, 'datasources-gridItem').click();
+    await waitForTimeout(page);
+    await datasourcesAssertions(page);
+
+    let rowLocator = page.getByText('POSTGRESQL');
+    let qtyRows = (await rowLocator.all()).length;
+
+    logger.info('  1.Datasources.spec.ts qtyRows: ', qtyRows);
+
+    test.slow();
 
     for (let index = qtyRows; index > 0; index--) {
         await rowLocator.first().click();
@@ -55,13 +71,30 @@ test('should go to Administration Datasources page with ds admin user', async ({
         logger.info('  1.Datasources.spec.ts qtyRows: ', qtyRows);
     }
 
+    await waitForTimeout(page);
+});
+
+test.skip('should go to Administration Datasources page, and create 3 new DS', async ({ page }) => {
+    await login(page, USER_DS_ADMIN);
+    await homeAssertions(page, USER_DS_ADMIN);
+
+    await getById(page, 'datasources-gridItem').click();
+    await waitForTimeout(page);
+    await datasourcesAssertions(page);
+
+    let rowLocator = page.getByText('POSTGRESQL');
+    let qtyRows = (await rowLocator.all()).length;
+
+    logger.info('  1.Datasources.spec.ts qtyRows: ', qtyRows);
+
     test.slow();
 
-    await createNewDS(page, datasourceLoan);
+    const datasources = [datasourceLoan, datasourceMortgage, datasourceCard];
 
-    await createNewDS(page, datasourceMortgage);
+    for (let index = 0; index < datasources.length; index++) {
+        const datasource = datasources[index];
+        await createNewDS(page, datasource);
+    }
 
-    await createNewDS(page, datasourceCard);
-
-    await page.waitForTimeout(5000);
+    await waitForTimeout(page);
 });

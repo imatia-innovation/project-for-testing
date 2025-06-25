@@ -9,7 +9,18 @@ import { getByIdAndFill } from '../../functions/utils/getByIdAndFill';
 import logger from '../../functions/utils/logger';
 import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 
-test('should go to Analysis > Entities page with ds admin user and delete one by one if exists', async ({ page }) => {
+test('should go to Analysis > Entities page with ds admin user', async ({ page }) => {
+    await loginAndGoToEntitiesPage(page, USER_DS_ADMIN);
+
+    let entityCardLocator = getByAttribute(page, 'class', 'entity-data');
+    let qtyEntities = (await entityCardLocator.all()).length;
+
+    logger.info('  1.Attributes.spec.ts qtyRows: ', qtyEntities);
+
+    await assertByText(page, 'No results found');
+});
+
+test('should go to Analysis > Entities and delete all if exists', async ({ page }) => {
     await loginAndGoToEntitiesPage(page, USER_DS_ADMIN);
 
     let entityCardLocator = getByAttribute(page, 'class', 'entity-data');
@@ -56,7 +67,7 @@ entityTests.forEach((entityTest) => {
 
         await getByIdAndFill(page, 'name', entityTest.name);
 
-        await page.waitForTimeout(5000);
+        await waitForTimeout(page);
 
         // UNCOMPLETED: attributes creation fails with general error currently, so we can´t continue
     });

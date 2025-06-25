@@ -5,9 +5,11 @@ import { login, logout } from '../functions/steps/login';
 import { settingsAssertions } from '../functions/steps/settings';
 import { clickOnText } from '../functions/utils/clickOnText';
 import { getById } from '../functions/utils/getById';
+import { prepareTestDescriptions } from '../functions/utils/prepareTestDescriptions';
 import { waitForTimeout } from '../functions/utils/waitforTimeout';
+import { TestCase } from '../interfaces/TestCase';
 
-const settingsTests = [
+const settingsTests: TestCase[] = [
     {
         testDescription: 'should assert default settings for user: "{{username}}" role: {{role}}',
         user: USER_ONE,
@@ -22,12 +24,9 @@ const settingsTests = [
     },
 ];
 
-settingsTests.forEach((testCase) => {
+settingsTests.forEach((testCase: TestCase) => {
+    const testDescription = prepareTestDescriptions(testCase);
     const user = testCase.user;
-
-    const testDescription = testCase.testDescription
-        .replace('{{username}}', user.credentials.email)
-        .replace('{{role}}', user.credentials.role);
 
     test(testDescription, async ({ page }) => {
         await login(page, user);
