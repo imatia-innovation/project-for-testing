@@ -1,8 +1,9 @@
 import { Page } from '@playwright/test';
-import { DB_NAMES } from '../../../constants/dbNames';
+import { getColumnNamesByTable, getDbNames, getTableNamesByDB } from '../../../constants/dbNames';
 import DBName from '../../../interfaces/DBName';
 import User from '../../../interfaces/User';
 import assertList from '../../utils/assertList';
+import { clickOnText, clickOnTextNth } from '../../utils/clickOnText';
 import { getById } from '../../utils/getById';
 import { waitForTimeout } from '../../utils/waitforTimeout';
 import { homeAssertions } from '../home';
@@ -13,12 +14,30 @@ export async function dataSourceAssertions(page: Page) {
         'Name',
         'Explore',
         //
-        ...DB_NAMES.map((db) => db.name),
+        ...getDbNames(),
     ]);
 }
 
 export async function dataSourceDetailAssertions(page: Page, db: DBName) {
-    await assertList(page, ['HIDE TABLES', db.name, ...db.tables]);
+    await assertList(page, ['HIDE TABLES', db.name, ...getTableNamesByDB(db)]);
+}
+
+export async function dataSourceDetailAssertionsColumns(page: Page, db: DBName) {
+    const tableNames = getTableNamesByDB(db);
+
+    for (let index = 0; index < tableNames.length; index++) {
+        const tableName = tableNames[index];
+
+        if (tableName === 'mortgage') {
+            await clickOnTextNth(page, tableName, 1);
+        } else {
+            await clickOnText(page, tableName);
+        }
+        await waitForTimeout(page);
+
+        await assertList(page, getColumnNamesByTable(db, tableName));
+        await waitForTimeout(page);
+    }
 }
 
 export async function loginAndGoToDataSourcesPage(page: Page, user: User) {

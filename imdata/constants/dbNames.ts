@@ -1,3 +1,4 @@
+import logger from '../functions/utils/logger';
 import DBName from '../interfaces/DBName';
 import TableColumns from '../interfaces/TableColumns';
 
@@ -98,3 +99,46 @@ export const DB_NAMES: DBName[] = [
     //     tables: CARD_TABLES,
     // },
 ];
+
+export function getDbNames(): string[] {
+    return DB_NAMES.map((dbName) => dbName.name);
+}
+
+export function getTableNamesByDB(dbName: DBName): string[] {
+    return dbName.tables.map((t) => t.name);
+}
+
+export function getAllTableNames(): string[] {
+    let tableNames: string[] = [];
+    DB_NAMES.forEach((dbName) => {
+        dbName.tables.forEach((tableName) => {
+            tableNames.push(tableName.name);
+        });
+    });
+    return tableNames;
+}
+
+export function getAllColumnsNames(): string[] {
+    let columnNames: string[] = [];
+    DB_NAMES.forEach((dbName) => {
+        dbName.tables.forEach((tableName) => {
+            tableName.columns.forEach((column) => {
+                columnNames.push(column);
+            });
+        });
+    });
+    return columnNames;
+}
+
+export function getColumnNamesByTable(dbName: DBName, tableName: string): string[] {
+    const filteredTableCol = dbName.tables
+        .map((table) => table)
+        .filter((tableCol) => tableCol.name === tableName)
+        .pop();
+    const columns = filteredTableCol?.columns || [];
+    logger.info(' dbNames.ts ', {
+        filteredTableCol,
+        columns,
+    });
+    return columns;
+}

@@ -454,3 +454,89 @@ export const transactionAmount: AttributeTestCase = {
         },
     ],
 };
+
+// Utils Functions
+
+export function getAllAttributeNames(): string[] {
+    const createdAttributeTests: AttributeTestCase[] = [
+        // Account
+        accountPK,
+        accountCustomerFK,
+        accountStartDate,
+        accountEndDate,
+        accountBalance,
+        accountDueDate,
+        accountStatus,
+        accountAmount,
+        // Address
+        addressPK,
+        addressCustomerFK,
+        addressStreet,
+        addressCity,
+        addressZipCode,
+        addressState,
+        addressCountry,
+        // Customer
+        customerPK,
+        customerFirstName,
+        customerLastName,
+        customerBirthDate,
+        customerGender,
+        customerMarriageStatus,
+        // Payment
+        transactionPK,
+        transactionAccountFK,
+        transactionDate,
+        transactionAmount,
+    ];
+
+    return createdAttributeTests.map((attr) => attr.name);
+}
+
+export function getEntityAttributeNames(entityName: string): string[] {
+    let createdAttributeTests: AttributeTestCase[] = [];
+
+    switch (entityName) {
+        case 'Account':
+            createdAttributeTests = [
+                accountPK,
+                accountCustomerFK,
+                accountStartDate,
+                accountEndDate,
+                accountBalance,
+                accountDueDate,
+                accountStatus,
+                accountAmount,
+            ];
+            break;
+        case 'Address':
+            createdAttributeTests = [
+                addressPK,
+                addressCustomerFK,
+                addressStreet,
+                addressCity,
+                addressZipCode,
+                addressState,
+                addressCountry,
+            ];
+            break;
+        case 'Customer':
+            createdAttributeTests = [
+                customerPK,
+                customerFirstName,
+                customerLastName,
+                customerBirthDate,
+                customerGender,
+                customerMarriageStatus,
+            ];
+            break;
+        case 'Transaction':
+            createdAttributeTests = [transactionPK, transactionAccountFK, transactionDate, transactionAmount];
+            break;
+
+        default:
+            break;
+    }
+
+    return createdAttributeTests.map((attr) => attr.name);
+}

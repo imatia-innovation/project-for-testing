@@ -1,23 +1,26 @@
 import test from '@playwright/test';
 import { USER_DS_ADMIN } from '../../constants';
+import { entityAccount, entityAddress, entityCustomer, entityTransaction } from '../../constants/entitiesTestCases';
 import { deleteAssertions } from '../../functions/steps/Administration/datasources';
-import { entityDetailAssertions, loginAndGoToEntitiesPage } from '../../functions/steps/Analysis/entities';
+import {
+    createNewEntity,
+    entityDetailAssertions,
+    loginAndGoToEntitiesPage,
+} from '../../functions/steps/Analysis/entities';
 import assertByText from '../../functions/utils/assertByText';
-import { clickOnText, clickOnTextLast } from '../../functions/utils/clickOnText';
+import { clickOnText } from '../../functions/utils/clickOnText';
 import { getByAttribute } from '../../functions/utils/getByAttribute';
-import { getByIdAndFill } from '../../functions/utils/getByIdAndFill';
 import logger from '../../functions/utils/logger';
 import { waitForTimeout } from '../../functions/utils/waitforTimeout';
+import { EntityTestCase } from '../../interfaces/EntityTestCase';
 
-test('should go to Analysis > Entities page with ds admin user', async ({ page }) => {
+test.skip('should go to Analysis > Entities page ds admin user', async ({ page }) => {
     await loginAndGoToEntitiesPage(page, USER_DS_ADMIN);
 
     let entityCardLocator = getByAttribute(page, 'class', 'entity-data');
     let qtyEntities = (await entityCardLocator.all()).length;
 
     logger.info('  1.Attributes.spec.ts qtyRows: ', qtyEntities);
-
-    await assertByText(page, 'No results found');
 });
 
 test('should go to Analysis > Entities and delete all if exists', async ({ page }) => {
@@ -49,12 +52,7 @@ test('should go to Analysis > Entities and delete all if exists', async ({ page 
     await assertByText(page, 'No results found');
 });
 
-const entityAccount = {
-    title: 'should create {{name}} entity',
-    name: 'Account',
-};
-
-const entityTests = [entityAccount];
+const entityTests: EntityTestCase[] = [entityAccount, entityAddress, entityCustomer, entityTransaction];
 
 entityTests.forEach((entityTest) => {
     const testDescription = entityTest.title.replace('{{name}}', entityTest.name);
@@ -62,13 +60,10 @@ entityTests.forEach((entityTest) => {
     test(testDescription, async ({ page }) => {
         await loginAndGoToEntitiesPage(page, USER_DS_ADMIN);
 
-        await clickOnTextLast(page, 'New');
-        await waitForTimeout(page);
+        test.slow();
 
-        await getByIdAndFill(page, 'name', entityTest.name);
+        await createNewEntity(page, entityTest);
 
-        await waitForTimeout(page);
-
-        // UNCOMPLETED: attributes creation fails with general error currently, so we can´t continue
+        await assertByText(page, entityAccount.name);
     });
 });

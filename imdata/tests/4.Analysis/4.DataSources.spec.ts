@@ -1,7 +1,11 @@
 import test from '@playwright/test';
 import { USER_DS_ADMIN } from '../../constants';
 import { DB_NAMES } from '../../constants/dbNames';
-import { dataSourceDetailAssertions, loginAndGoToDataSourcesPage } from '../../functions/steps/Analysis/dataSources';
+import {
+    dataSourceDetailAssertions,
+    dataSourceDetailAssertionsColumns,
+    loginAndGoToDataSourcesPage,
+} from '../../functions/steps/Analysis/dataSources';
 import { clickOnTextNth } from '../../functions/utils/clickOnText';
 import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 
@@ -17,5 +21,18 @@ DB_NAMES.forEach((db, index) => {
         await waitForTimeout(page);
 
         await dataSourceDetailAssertions(page, db);
+    });
+
+    test(`should go Single View detail page and make assertions on datasource ${db.name} with columns`, async ({
+        page,
+    }) => {
+        await loginAndGoToDataSourcesPage(page, USER_DS_ADMIN);
+
+        await clickOnTextNth(page, 'Explore', index);
+        await waitForTimeout(page);
+
+        await dataSourceDetailAssertions(page, db);
+
+        await dataSourceDetailAssertionsColumns(page, db);
     });
 });

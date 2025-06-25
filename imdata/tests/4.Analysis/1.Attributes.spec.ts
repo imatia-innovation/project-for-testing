@@ -1,11 +1,13 @@
-import test, { Locator } from '@playwright/test';
+import test from '@playwright/test';
 import { USER_DS_ADMIN } from '../../constants';
-import { DB_NAMES } from '../../constants/dbNames';
 import { deleteAssertions } from '../../functions/steps/Administration/datasources';
-import { attributeDetailAssertions, loginAndGoToAttributesPage } from '../../functions/steps/Analysis/attributes';
+import {
+    attributeDetailAssertions,
+    createAttribute,
+    loginAndGoToAttributesPage,
+} from '../../functions/steps/Analysis/attributes';
 import assertByText from '../../functions/utils/assertByText';
-import assertList from '../../functions/utils/assertList';
-import { clickOnText, clickOnTextLast, clickOnTextNth } from '../../functions/utils/clickOnText';
+import { clickOnText, clickOnTextLast } from '../../functions/utils/clickOnText';
 import { getByAttribute } from '../../functions/utils/getByAttribute';
 import { getByIdAndFill } from '../../functions/utils/getByIdAndFill';
 import logger from '../../functions/utils/logger';
@@ -95,67 +97,7 @@ attributeTests.forEach((attTest) => {
 
         test.slow();
 
-        if (attTest.assistedSearch) {
-        } else {
-            await page.getByRole('switch').uncheck();
-            await waitForTimeout(page);
-
-            await assertList(
-                page,
-                DB_NAMES.map((dbName) => dbName.name) // watch only dbNames
-            );
-
-            for (let index = 0; index < DB_NAMES.length; index++) {
-                const chevronRightLocator: Locator = page.getByText(' chevron_right ');
-
-                const chevronRightLocators: Locator[] = await chevronRightLocator.all();
-                logger.info(' 1.Attributes.spec.ts ', {
-                    index,
-                    chevronRightQty: chevronRightLocators.length,
-                });
-
-                await chevronRightLocator.nth(chevronRightLocators.length - 1).click();
-                await waitForTimeout(page);
-            }
-
-            for (let index = 0; index < DB_NAMES.length; index++) {
-                const dbName = DB_NAMES[index];
-
-                const tableNames = dbName.tables.map((t) => t.name);
-
-                await assertList(page, tableNames); // watch only all tableNames
-
-                const selectColumn = attTest.selectColumns[index];
-
-                if (selectColumn.tableName === 'mortgage') {
-                    await clickOnTextNth(page, selectColumn.tableName, 1);
-                } else {
-                    await clickOnText(page, selectColumn.tableName);
-                }
-                await waitForTimeout(page);
-
-                // Assertions of columns
-                const filteredTableCol = dbName.tables
-                    .map((table) => table)
-                    .filter((tableCol) => tableCol.name === selectColumn.tableName)
-                    .pop();
-                const columns = filteredTableCol?.columns || [];
-                logger.info(' 1.Attributes.spec.ts ', {
-                    filteredTableCol,
-                    columns,
-                });
-                await assertList(page, columns);
-
-                await clickOnText(page, selectColumn.columnName);
-                await waitForTimeout(page);
-            }
-
-            await clickOnText(page, 'Ok');
-            await waitForTimeout(page);
-
-            await assertByText(page, attTest.name);
-            await waitForTimeout(page);
-        }
+        await createAttribute(page, attTest);
     });
 });
 
