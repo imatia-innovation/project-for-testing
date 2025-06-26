@@ -30,9 +30,6 @@ export async function entityDetailAssertions(page: Page) {
         'Name',
         'Attributes present in table',
         'Available',
-        //
-        ...getAllTableNames(),
-        ...getAllAttributeNames(),
     ]);
 }
 

@@ -10,6 +10,7 @@ import logger from '../../utils/logger';
 import { waitForTimeout } from '../../utils/waitforTimeout';
 import { homeAssertions } from '../home';
 import { login } from '../login';
+import DBName from '../../../interfaces/DBName';
 
 export async function attributesAssertions(page: Page) {
     await assertList(page, ['New']);
@@ -36,6 +37,7 @@ export async function loginAndGoToAttributesPage(page: Page, user: User) {
 }
 
 export async function createAttribute(page: Page, attTest: AttributeTestCase) {
+    logger.info(' Start attributes.ts createAttribute ')
     if (attTest.assistedSearch) {
         // TODO here should be tested the assisted search
     } else {
@@ -57,12 +59,15 @@ export async function createAttribute(page: Page, attTest: AttributeTestCase) {
             await waitForTimeout(page);
         }
 
-        for (let index = 0; index < DB_NAMES.length; index++) {
-            const dbName = DB_NAMES[index];
+        logger.info(' Start attributes.ts createAttribute 2nd for loop')
 
+        for (let index = 0; index < DB_NAMES.length; index++) {
+            const dbName: DBName = DB_NAMES[index];
             await assertList(page, getTableNamesByDB(dbName));
 
-            const selectColumn = attTest.selectColumns[index];
+            const selectColumn = attTest.selectColumns[index]; // this is an object
+            logger.info('   attributes.ts createAttribute 2nd for loop', {selectColumn})
+            if(!selectColumn) continue;
 
             if (selectColumn.tableName === 'mortgage') {
                 await clickOnTextNth(page, selectColumn.tableName, 1);
@@ -71,7 +76,7 @@ export async function createAttribute(page: Page, attTest: AttributeTestCase) {
             }
             await waitForTimeout(page);
 
-            // Assertions of columns
+            //Assertions of columns
             const columns = getColumnNamesByTable(dbName, selectColumn.tableName);
             await assertList(page, columns);
 
@@ -79,10 +84,16 @@ export async function createAttribute(page: Page, attTest: AttributeTestCase) {
             await waitForTimeout(page);
         }
 
+        logger.info(' Finish attributes.ts createAttribute 2nd for loop')
+
         await clickOnText(page, 'Ok');
+        await waitForTimeout(page);
+
+        await clickOnText(page, 'Show more');
         await waitForTimeout(page);
 
         await assertByText(page, attTest.name);
         await waitForTimeout(page);
+        logger.info(' Finish attributes.ts createAttribute ')
     }
 }

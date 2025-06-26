@@ -13,7 +13,7 @@ import assertList from '../../functions/utils/assertList';
 import { clickOnTextLast } from '../../functions/utils/clickOnText';
 import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 
-test.skip('should go to Analysis > DataSources page with ds admin user and make assertions without Entities created', async ({
+test('should go to Analysis > DataSources page with ds admin user and make assertions without Entities created', async ({
     page,
 }) => {
     await loginAndGoToSingleViewPage(page, USER_DS_ADMIN);

@@ -41,19 +41,50 @@ export const LOAN_TABLES: TableColumns[] = [
 export const CARD_TABLES: TableColumns[] = [
     {
         name: 'card_account',
-        columns: [],
+        columns: [
+            'card_acct_pk',
+            'card_cust_fk',
+            'cc_open',
+            'cc_close',
+            'cc_curr_bal',
+            'cc_due_date',
+            'cc_status',
+            'cc_min_pmt',
+            'cc_credit_limit',
+        ],
     },
     {
         name: 'card_customer',
-        columns: [],
+        columns: [
+            'card_cust_pk',
+            'cc_first',
+            'cc_last',
+            'cc_dob',
+            'cc_gender',
+            'cc_marital',
+        ],
     },
     {
         name: 'card_transaction',
-        columns: [],
+        columns: [
+            'card_tran_pk',
+            'card_acct_fk',
+            'cc_dat_purchase',
+            'cc_amt_purchase',
+            'cc_tran_country',
+        ],
     },
     {
         name: 'card_address',
-        columns: [],
+        columns: [
+            'card_addr_pk',
+            'card_cust_fk',
+            'cc_road',
+            'cc_city',
+            'cc_post',
+            'cc_province',
+            'cc_country',
+        ],
     },
 ];
 
@@ -87,6 +118,10 @@ export const MORTGAGE_TABLES: TableColumns[] = [
 
 export const DB_NAMES: DBName[] = [
     {
+        name: 'Card',
+        tables: CARD_TABLES,
+    },
+    {
         name: 'Loan',
         tables: LOAN_TABLES,
     },
@@ -94,10 +129,6 @@ export const DB_NAMES: DBName[] = [
         name: 'Mortgage',
         tables: MORTGAGE_TABLES,
     },
-    // {
-    //     name: 'Card',
-    //     tables: CARD_TABLES,
-    // },
 ];
 
 export function getDbNames(): string[] {
@@ -131,14 +162,16 @@ export function getAllColumnsNames(): string[] {
 }
 
 export function getColumnNamesByTable(dbName: DBName, tableName: string): string[] {
+    logger.info(' Start dbNames.ts getColumnNamesByTable', {dbName, tableName})
     const filteredTableCol = dbName.tables
         .map((table) => table)
         .filter((tableCol) => tableCol.name === tableName)
         .pop();
     const columns = filteredTableCol?.columns || [];
-    logger.info(' dbNames.ts ', {
+    logger.info('  dbNames.ts getColumnNamesByTable ', {
         filteredTableCol,
         columns,
     });
+    logger.info(' Finish dbNames.ts getColumnNamesByTable')
     return columns;
 }

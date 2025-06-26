@@ -176,7 +176,9 @@ async function setLimitPrice(page: Page, orderLimitPrice: number) {
 async function selectPickUpLocation(page: Page, pickUpLocation: string) {
     logger.info(' Start ordersSteps.ts selectPickUpLocation: ', pickUpLocation);
     await clickOnElementById(page, 'pickup_location');
-    await clickOnText(page, pickUpLocation);
+    process.env.ENVIRONMENT === 'dev'
+        ? await clickOnText(page, pickUpLocation)
+        : await clickOnTextNth(page, pickUpLocation, 1);
     logger.info(' Finish ordersSteps.ts selectPickUpLocation');
 }
 
@@ -482,6 +484,8 @@ export async function gotToOrderDetailPage(page: Page, user: User, orderId: stri
 }
 
 export async function orderDetailPageAssertions(page: Page, order: CreateNewOrderTest, orderStatus: string) {
+    await waitForTimeout(page, 2);
+
     await assertList(page, COLUMNS_AND_LABELS_DETAIL_PAGE);
 
     await assertList(page, [orderStatus, order.pickUpLocation, order.reference]);

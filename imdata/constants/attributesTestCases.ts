@@ -17,6 +17,11 @@ export const accountPK: AttributeTestCase = {
             tableName: 'mortgage',
             columnName: 'mort_acct_pk',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_account',
+            columnName: 'card_acct_pk',
+        },
     ],
 };
 
@@ -34,6 +39,11 @@ export const accountCustomerFK: AttributeTestCase = {
             dbName: 'Mortgage',
             tableName: 'mortgage',
             columnName: 'mort_cust_fk',
+        },
+        {
+            dbName: 'Card',
+            tableName: 'card_account',
+            columnName: 'card_cust_fk',
         },
     ],
 };
@@ -53,6 +63,11 @@ export const accountStartDate: AttributeTestCase = {
             tableName: 'mortgage',
             columnName: 'mg_open',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_account',
+            columnName: 'cc_open',
+        },
     ],
 };
 
@@ -70,6 +85,11 @@ export const accountEndDate: AttributeTestCase = {
             dbName: 'Mortgage',
             tableName: 'mortgage',
             columnName: 'mg_close',
+        },
+        {
+            dbName: 'Card',
+            tableName: 'card_account',
+            columnName: 'cc_close',
         },
     ],
 };
@@ -89,6 +109,11 @@ export const accountBalance: AttributeTestCase = {
             tableName: 'mortgage',
             columnName: 'mg_bal',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_account',
+            columnName: 'cc_curr_bal',
+        },
     ],
 };
 
@@ -107,6 +132,11 @@ export const accountDueDate: AttributeTestCase = {
             tableName: 'mortgage',
             columnName: 'mg_date_due',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_account',
+            columnName: 'cc_due_date',
+        },
     ],
 };
 
@@ -124,6 +154,37 @@ export const accountStatus: AttributeTestCase = {
             dbName: 'Mortgage',
             tableName: 'mortgage',
             columnName: 'mg_status',
+        },
+        {
+            dbName: 'Card',
+            tableName: 'card_account',
+            columnName: 'cc_status',
+        },
+    ],
+};
+
+export const accountMinPmt: AttributeTestCase = {
+    title: 'should create {{name}} attribute',
+    name: 'account_min_pmt',
+    assistedSearch: false,
+    selectColumns: [
+        {
+            dbName: 'Card',
+            tableName: 'card_account',
+            columnName: 'cc_min_pmt',
+        },
+    ],
+};
+
+export const accountCreditLimit: AttributeTestCase = {
+    title: 'should create {{name}} attribute',
+    name: 'account_credit_limit',
+    assistedSearch: false,
+    selectColumns: [
+        {
+            dbName: 'Card',
+            tableName: 'card_account',
+            columnName: 'cc_credit_limit',
         },
     ],
 };
@@ -163,6 +224,11 @@ export const addressPK: AttributeTestCase = {
             tableName: 'mort_address',
             columnName: 'mort_addr_pk',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_address',
+            columnName: 'card_addr_pk',
+        },
     ],
 };
 
@@ -180,6 +246,11 @@ export const addressCustomerFK: AttributeTestCase = {
             dbName: 'Mortgage',
             tableName: 'mort_address',
             columnName: 'mort_cust_fk',
+        },
+        {
+            dbName: 'Card',
+            tableName: 'card_address',
+            columnName: 'card_cust_fk',
         },
     ],
 };
@@ -199,6 +270,11 @@ export const addressStreet: AttributeTestCase = {
             tableName: 'mort_address',
             columnName: 'mg_str',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_address',
+            columnName: 'cc_road',
+        },
     ],
 };
 
@@ -216,6 +292,11 @@ export const addressCity: AttributeTestCase = {
             dbName: 'Mortgage',
             tableName: 'mort_address',
             columnName: 'mg_city',
+        },
+        {
+            dbName: 'Card',
+            tableName: 'card_address',
+            columnName: 'cc_city',
         },
     ],
 };
@@ -235,6 +316,11 @@ export const addressZipCode: AttributeTestCase = {
             tableName: 'mort_address',
             columnName: 'mg_pcode',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_address',
+            columnName: 'cc_post',
+        },
     ],
 };
 
@@ -253,6 +339,11 @@ export const addressState: AttributeTestCase = {
             tableName: 'mort_address',
             columnName: 'mg_state',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_address',
+            columnName: 'cc_province',
+        },
     ],
 };
 
@@ -270,6 +361,11 @@ export const addressCountry: AttributeTestCase = {
             dbName: 'Mortgage',
             tableName: 'mort_address',
             columnName: 'mg_ctry',
+        },
+        {
+            dbName: 'Card',
+            tableName: 'card_address',
+            columnName: 'cc_country',
         },
     ],
 };
@@ -291,6 +387,11 @@ export const customerPK: AttributeTestCase = {
             tableName: 'mortgagee',
             columnName: 'mort_cust_pk',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_customer',
+            columnName: 'card_cust_pk',
+        },
     ],
 };
 
@@ -309,6 +410,11 @@ export const customerFirstName: AttributeTestCase = {
             tableName: 'mortgagee',
             columnName: 'mg_first',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_customer',
+            columnName: 'cc_first'
+        }
     ],
 };
 
@@ -327,6 +433,11 @@ export const customerLastName: AttributeTestCase = {
             tableName: 'mortgagee',
             columnName: 'mg_last',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_customer',
+            columnName: 'cc_last'
+        }
     ],
 };
 
@@ -345,6 +456,11 @@ export const customerBirthDate: AttributeTestCase = {
             tableName: 'mortgagee',
             columnName: 'mg_birth',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_customer',
+            columnName: 'cc_dob'
+        }
     ],
 };
 
@@ -363,6 +479,11 @@ export const customerGender: AttributeTestCase = {
             tableName: 'mortgagee',
             columnName: 'mg_gender',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_customer',
+            columnName: 'cc_gender'
+        }
     ],
 };
 
@@ -381,6 +502,11 @@ export const customerMarriageStatus: AttributeTestCase = {
             tableName: 'mortgagee',
             columnName: 'mg_marital',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_customer',
+            columnName: 'cc_marital'
+        }
     ],
 };
 
@@ -401,6 +527,11 @@ export const transactionPK: AttributeTestCase = {
             tableName: 'mort_payment',
             columnName: 'mort_tran_pk',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_transaction',
+            columnName: 'card_tran_pk'
+        }
     ],
 };
 export const transactionAccountFK: AttributeTestCase = {
@@ -418,6 +549,11 @@ export const transactionAccountFK: AttributeTestCase = {
             tableName: 'mort_payment',
             columnName: 'mort_acct_fk',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_transaction',
+            columnName: 'card_acct_fk'
+        }
     ],
 };
 export const transactionDate: AttributeTestCase = {
@@ -435,6 +571,11 @@ export const transactionDate: AttributeTestCase = {
             tableName: 'mort_payment',
             columnName: 'mg_date_pmt',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_transaction',
+            columnName: 'cc_dat_purchase'
+        }
     ],
 };
 export const transactionAmount: AttributeTestCase = {
@@ -452,6 +593,23 @@ export const transactionAmount: AttributeTestCase = {
             tableName: 'mort_payment',
             columnName: 'mg_amt_pmt',
         },
+        {
+            dbName: 'Card',
+            tableName: 'card_transaction',
+            columnName: 'cc_amt_purchase'
+        }
+    ],
+};
+export const transactionCountry: AttributeTestCase = {
+    title: 'should create {{name}} attribute',
+    name: 'transaction_country',
+    assistedSearch: false,
+    selectColumns: [
+        {
+            dbName: 'Card',
+            tableName: 'card_transaction',
+            columnName: 'cc_tran_country'
+        }
     ],
 };
 
@@ -468,6 +626,8 @@ export function getAllAttributeNames(): string[] {
         accountDueDate,
         accountStatus,
         accountAmount,
+        accountMinPmt,
+        accountCreditLimit,
         // Address
         addressPK,
         addressCustomerFK,
@@ -488,6 +648,7 @@ export function getAllAttributeNames(): string[] {
         transactionAccountFK,
         transactionDate,
         transactionAmount,
+        transactionCountry
     ];
 
     return createdAttributeTests.map((attr) => attr.name);
@@ -507,6 +668,8 @@ export function getEntityAttributeNames(entityName: string): string[] {
                 accountDueDate,
                 accountStatus,
                 accountAmount,
+                accountMinPmt,
+                accountCreditLimit,
             ];
             break;
         case 'Address':
@@ -531,7 +694,7 @@ export function getEntityAttributeNames(entityName: string): string[] {
             ];
             break;
         case 'Transaction':
-            createdAttributeTests = [transactionPK, transactionAccountFK, transactionDate, transactionAmount];
+            createdAttributeTests = [transactionPK, transactionAccountFK, transactionDate, transactionAmount, transactionCountry];
             break;
 
         default:

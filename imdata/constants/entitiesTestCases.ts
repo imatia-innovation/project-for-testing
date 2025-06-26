@@ -4,12 +4,12 @@ export const entityAccount: EntityTestCase = {
     title: 'should create {{name}} entity',
     name: 'Account',
     attributes: {
-        repeatTimes: 8,
+        repeatTimes: 10,
         position: 0,
     },
     tables: {
-        repeatTimes: 2,
-        position: 17,
+        repeatTimes: 3,
+        position: 18,
     },
 };
 
@@ -18,11 +18,11 @@ export const entityAddress: EntityTestCase = {
     name: 'Address',
     attributes: {
         repeatTimes: 7,
-        position: 8,
+        position: 10,
     },
     tables: {
-        repeatTimes: 2,
-        position: 18,
+        repeatTimes: 3,
+        position: 21,
     },
 };
 
@@ -31,11 +31,11 @@ export const entityCustomer: EntityTestCase = {
     name: 'Customer',
     attributes: {
         repeatTimes: 6,
-        position: 15,
+        position: 17,
     },
     tables: {
-        repeatTimes: 2,
-        position: 19,
+        repeatTimes: 3,
+        position: 22,
     },
 };
 
@@ -43,12 +43,12 @@ export const entityTransaction: EntityTestCase = {
     title: 'should create {{name}} entity',
     name: 'Transaction',
     attributes: {
-        repeatTimes: 4,
-        position: 21,
+        repeatTimes: 5,
+        position: 23,
     },
     tables: {
-        repeatTimes: 2,
-        position: 21,
+        repeatTimes: 3,
+        position: 23,
     },
 };
 

@@ -13,6 +13,7 @@ import { getByIdAndFill } from '../../functions/utils/getByIdAndFill';
 import logger from '../../functions/utils/logger';
 import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 import { AttributeTestCase } from '../../interfaces/AttributeTestCase';
+import { accountPK, accountCustomerFK, accountStartDate, accountEndDate, accountBalance, accountDueDate, accountStatus, accountAmount, addressPK, addressCustomerFK, addressStreet, addressCity, addressZipCode, addressState, addressCountry, customerPK, customerFirstName, customerLastName, customerBirthDate, customerGender, customerMarriageStatus, transactionPK, transactionAccountFK, transactionDate, transactionAmount, accountCreditLimit, accountMinPmt, transactionCountry } from '../../constants/attributesTestCases';
 
 test('should go to Analysis > Attributes page with ds admin user', async ({ page }) => {
     await loginAndGoToAttributesPage(page, USER_DS_ADMIN);
@@ -23,7 +24,7 @@ test('should go to Analysis > Attributes page with ds admin user', async ({ page
     logger.info('  1.Attributes.spec.ts qtyRows: ', qtyAttributes);
 });
 
-test.skip('should go to the Analysis > Attributes page and delete all if exists', async ({ page }) => {
+test('should go to the Analysis > Attributes page and delete all if exists', async ({ page }) => {
     await loginAndGoToAttributesPage(page, USER_DS_ADMIN);
 
     let attributeLocator = getByAttribute(page, 'class', 'attribute-name');
@@ -54,40 +55,43 @@ test.skip('should go to the Analysis > Attributes page and delete all if exists'
 
 const attributeTests: AttributeTestCase[] = [
     // // Account
-    // accountPK,
-    // accountCustomerFK,
-    // accountStartDate,
-    // accountEndDate,
-    // accountBalance,
-    // accountDueDate,
-    // accountStatus,
-    // accountAmount,
-    // // Address
-    // addressPK,
-    // addressCustomerFK,
-    // addressStreet,
-    // addressCity,
-    // addressZipCode,
-    // addressState,
-    // addressCountry,
-    // // Customer
-    // customerPK,
-    // customerFirstName,
-    // customerLastName,
-    // customerBirthDate,
-    // customerGender,
-    // customerMarriageStatus,
-    // // Payment
-    // transactionPK,
-    // transactionAccountFK,
-    // transactionDate,
-    // transactionAmount,
+    accountPK,
+    accountCustomerFK,
+    accountStartDate,
+    accountEndDate,
+    accountBalance,
+    accountDueDate,
+    accountStatus,
+    accountAmount,
+    accountMinPmt,
+    accountCreditLimit,
+    // Address
+    addressPK,
+    addressCustomerFK,
+    addressStreet,
+    addressCity,
+    addressZipCode,
+    addressState,
+    addressCountry,
+    // Customer
+    customerPK,
+    customerFirstName,
+    customerLastName,
+    customerBirthDate,
+    customerGender,
+    customerMarriageStatus,
+    // Payment
+    transactionPK,
+    transactionAccountFK,
+    transactionDate,
+    transactionAmount,
+    transactionCountry
 ];
 
 attributeTests.forEach((attTest) => {
     const testDescription = attTest.title.replace('{{name}}', attTest.name);
 
-    test.skip(testDescription, async ({ page }) => {
+    test(testDescription, async ({ page }) => {
         await loginAndGoToAttributesPage(page, USER_DS_ADMIN);
 
         await clickOnTextLast(page, 'New');
@@ -109,7 +113,10 @@ test('should go to Analysis > Attributes page with ds admin user and watch all c
     let attributeLocator = getByAttribute(page, 'class', 'attribute-name');
     let qtyAttributes = (await attributeLocator.all()).length;
 
-    logger.info('  1.Attributes.spec.ts qtyRows: ', qtyAttributes);
+    logger.info('  1.Attributes.spec.ts qtyAttributes: ', qtyAttributes);
+
+    await clickOnText(page, 'Show more');
+    await waitForTimeout(page);
 
     for (let index = 0; index < attributeTests.length; index++) {
         const attributeTest = attributeTests[index];

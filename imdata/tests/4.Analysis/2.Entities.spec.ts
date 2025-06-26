@@ -52,7 +52,12 @@ test('should go to Analysis > Entities and delete all if exists', async ({ page 
     await assertByText(page, 'No results found');
 });
 
-const entityTests: EntityTestCase[] = [entityAccount, entityAddress, entityCustomer, entityTransaction];
+const entityTests: EntityTestCase[] = [
+    entityAccount, 
+    entityAddress, 
+    entityCustomer, 
+    entityTransaction
+];
 
 entityTests.forEach((entityTest) => {
     const testDescription = entityTest.title.replace('{{name}}', entityTest.name);

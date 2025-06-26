@@ -6,7 +6,14 @@
 // Accept the better price with client
 
 import test, { Locator, Page } from '@playwright/test';
-import { admin, courier, courierNOFixedPrice, DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
+import {
+    admin,
+    courier,
+    courierFixedPrice,
+    courierNOFixedPrice,
+    DESTINATION_FAVORITE,
+    PICKUP_LOCATION,
+} from '../../constants';
 import { gotToOrderDetailPage, orderDetailPageAssertions, selectBox } from '../../functions/steps/ordersSteps';
 import { createOrderOpenPricingAndGetOrderId } from '../../functions/steps/orderTracking/clientAssignOfferPriceSteps';
 import {
@@ -26,7 +33,7 @@ import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 const provider = 'BAJO COTIZACIÓN';
 
 const order1: OfferOpenPriceTest = {
-    title: 'Accept Order with Open Price Courier First Offer without Limit Price',
+    title: 'Accept Order with: Open Price, No Fixed Price Courier, First Offer; without: Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider,
@@ -54,13 +61,13 @@ const order1: OfferOpenPriceTest = {
 };
 
 const order2: OfferOpenPriceTest = {
-    title: 'Accept Order with Open Price Courier Manual Assignment without Limit Price',
+    title: 'Accept Order with: Open Price, No Fixed Price Courier, Manual Assignment; without: Limit Price',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -86,7 +93,184 @@ const order2: OfferOpenPriceTest = {
     assignButtonIndex: 1,
 };
 
-const createOfferTests: OfferOpenPriceTest[] = [order1, order2];
+const order3: OfferOpenPriceTest = {
+    title: 'Accept Order with: Open Price, No Fixed Price Courier, First Offer, Limit Price 9.99',
+    pickUpLocation: PICKUP_LOCATION,
+    reference: 'atest' + new Date().getTime().toString(),
+    provider,
+    service: 0,
+    selectPackage: async (page: Page) => {
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
+    },
+    destination: {
+        favorite: DESTINATION_FAVORITE,
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+    limitPrice: 9.99,
+    couriersTest: [
+        {
+            courier: courier, // if is not setPrice, then reject offer
+        },
+        {
+            courier: courierNOFixedPrice,
+            courierHasFixedPrice: false,
+            setPrice: '9',
+        },
+    ],
+    assignButtonIndex: 1,
+    assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
+};
+
+const order4: OfferOpenPriceTest = {
+    title: 'Accept Order with: Open Price, No Fixed Price Courier, Manual Assignment, Limit Price 9.99',
+    pickUpLocation: PICKUP_LOCATION,
+    reference: 'atest' + new Date().getTime().toString(),
+    provider,
+    service: 0,
+    selectPackage: async (page: Page) => {
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
+    },
+    destination: {
+        favorite: DESTINATION_FAVORITE,
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+    limitPrice: 9.99,
+    couriersTest: [
+        {
+            courier: courier, // if is not setPrice, then reject offer
+        },
+        {
+            courier: courierNOFixedPrice,
+            courierHasFixedPrice: false,
+            setPrice: '9',
+        },
+    ],
+    assignButtonIndex: 1,
+    assignmentMethod: ASSIGNMENT_METHOD.MANUAL_ASSIGNMENT,
+};
+
+const order5: OfferOpenPriceTest = {
+    title: 'Accept Order with: Open Price, Fixed Price Courier, First Offer; without: Limit Price',
+    pickUpLocation: PICKUP_LOCATION,
+    reference: 'atest' + new Date().getTime().toString(),
+    provider,
+    service: 0,
+    selectPackage: async (page: Page) => {
+        await selectBox(page, { length: 10, width: 10, height: 10, weight: 10 });
+    },
+    destination: {
+        favorite: DESTINATION_FAVORITE,
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+    couriersTest: [
+        {
+            courier: courier, // if is not setPrice, then reject offer
+        },
+        {
+            courier: courierFixedPrice,
+            courierHasFixedPrice: false, // for the assert message
+            setPrice: '1',
+        },
+    ],
+    assignButtonIndex: 1,
+    assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
+};
+
+const order6: OfferOpenPriceTest = {
+    title: 'Accept Order with: Open Price, Fixed Price Courier, Manual Assignment; without: Limit Price',
+    pickUpLocation: PICKUP_LOCATION,
+    reference: 'atest' + new Date().getTime().toString(),
+    provider,
+    service: 0,
+    selectPackage: async (page: Page) => {
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
+    },
+    destination: {
+        favorite: DESTINATION_FAVORITE,
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+    assignmentMethod: ASSIGNMENT_METHOD.MANUAL_ASSIGNMENT,
+    couriersTest: [
+        {
+            courier: courier, // if is not setPrice, then reject offer
+        },
+        {
+            courier: courierFixedPrice,
+            courierHasFixedPrice: false, // for the assert message
+            setPrice: '1',
+        },
+        // {
+        //     courier: courierFixedPrice, // on PRE can't do this provider test
+        //     courierHasFixedPrice: false, // it doesn't matter be false here because always it'll be false for Open Price
+        //     setPrice: '75.99',
+        // },
+    ],
+    assignButtonIndex: 1,
+};
+
+const order7: OfferOpenPriceTest = {
+    title: 'Accept Order with: Open Price, Fixed Price Courier, First Offer, Limit Price 9.99',
+    pickUpLocation: PICKUP_LOCATION,
+    reference: 'atest' + new Date().getTime().toString(),
+    provider,
+    service: 0,
+    selectPackage: async (page: Page) => {
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
+    },
+    destination: {
+        favorite: DESTINATION_FAVORITE,
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+    limitPrice: 9.99,
+    couriersTest: [
+        {
+            courier: courier, // if is not setPrice, then reject offer
+        },
+        {
+            courier: courierFixedPrice,
+            courierHasFixedPrice: false, // for the assert message
+            setPrice: '1',
+        },
+    ],
+    assignButtonIndex: 1,
+    assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
+};
+
+const order8: OfferOpenPriceTest = {
+    title: 'Accept Order with: Open Price, Fixed Price Courier, Manual Assignment, Limit Price 9.99',
+    pickUpLocation: PICKUP_LOCATION,
+    reference: 'atest' + new Date().getTime().toString(),
+    provider,
+    service: 0,
+    selectPackage: async (page: Page) => {
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
+    },
+    destination: {
+        favorite: DESTINATION_FAVORITE,
+        saveAsNew: false,
+        remarks: 'This is an automatic test',
+    },
+    limitPrice: 9.99,
+    couriersTest: [
+        {
+            courier: courier, // if is not setPrice, then reject offer
+        },
+        {
+            courier: courierFixedPrice,
+            courierHasFixedPrice: false, // for the assert message
+            setPrice: '1',
+        },
+    ],
+    assignButtonIndex: 1,
+    assignmentMethod: ASSIGNMENT_METHOD.MANUAL_ASSIGNMENT,
+};
+
+const createOfferTests: OfferOpenPriceTest[] = [order1, order2, order3, order4, order5, order6, order7, order8];
 
 createOfferTests.forEach((orderTest, testIndex) => {
     test(orderTest.title, async ({ page }) => {
@@ -139,7 +323,7 @@ createOfferTests.forEach((orderTest, testIndex) => {
                 "Finish 5.clientAssignOfferPrice.spec.ts searching enabled button with text: 'local_shipping Asignar '"
             );
 
-            await page.waitForTimeout(5000);
+            await waitForTimeout(page);
         }
 
         await orderDetailPageAssertions(page, orderTest, ORDER_STATUS.ASSIGNED);
