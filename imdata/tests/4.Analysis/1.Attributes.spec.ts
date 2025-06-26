@@ -1,5 +1,35 @@
 import test from '@playwright/test';
 import { USER_DS_ADMIN } from '../../constants';
+import {
+    accountAmount,
+    accountBalance,
+    accountCreditLimit,
+    accountCustomerFK,
+    accountDueDate,
+    accountEndDate,
+    accountMinPmt,
+    accountPK,
+    accountStartDate,
+    accountStatus,
+    addressCity,
+    addressCountry,
+    addressCustomerFK,
+    addressPK,
+    addressState,
+    addressStreet,
+    addressZipCode,
+    customerBirthDate,
+    customerFirstName,
+    customerGender,
+    customerLastName,
+    customerMarriageStatus,
+    customerPK,
+    transactionAccountFK,
+    transactionAmount,
+    transactionCountry,
+    transactionDate,
+    transactionPK,
+} from '../../constants/attributesTestCases';
 import { deleteAssertions } from '../../functions/steps/Administration/datasources';
 import {
     attributeDetailAssertions,
@@ -13,7 +43,6 @@ import { getByIdAndFill } from '../../functions/utils/getByIdAndFill';
 import logger from '../../functions/utils/logger';
 import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 import { AttributeTestCase } from '../../interfaces/AttributeTestCase';
-import { accountPK, accountCustomerFK, accountStartDate, accountEndDate, accountBalance, accountDueDate, accountStatus, accountAmount, addressPK, addressCustomerFK, addressStreet, addressCity, addressZipCode, addressState, addressCountry, customerPK, customerFirstName, customerLastName, customerBirthDate, customerGender, customerMarriageStatus, transactionPK, transactionAccountFK, transactionDate, transactionAmount, accountCreditLimit, accountMinPmt, transactionCountry } from '../../constants/attributesTestCases';
 
 test('should go to Analysis > Attributes page with ds admin user', async ({ page }) => {
     await loginAndGoToAttributesPage(page, USER_DS_ADMIN);
@@ -85,7 +114,7 @@ const attributeTests: AttributeTestCase[] = [
     transactionAccountFK,
     transactionDate,
     transactionAmount,
-    transactionCountry
+    transactionCountry,
 ];
 
 attributeTests.forEach((attTest) => {

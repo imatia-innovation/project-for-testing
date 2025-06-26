@@ -55,36 +55,15 @@ export const CARD_TABLES: TableColumns[] = [
     },
     {
         name: 'card_customer',
-        columns: [
-            'card_cust_pk',
-            'cc_first',
-            'cc_last',
-            'cc_dob',
-            'cc_gender',
-            'cc_marital',
-        ],
+        columns: ['card_cust_pk', 'cc_first', 'cc_last', 'cc_dob', 'cc_gender', 'cc_marital'],
     },
     {
         name: 'card_transaction',
-        columns: [
-            'card_tran_pk',
-            'card_acct_fk',
-            'cc_dat_purchase',
-            'cc_amt_purchase',
-            'cc_tran_country',
-        ],
+        columns: ['card_tran_pk', 'card_acct_fk', 'cc_dat_purchase', 'cc_amt_purchase', 'cc_tran_country'],
     },
     {
         name: 'card_address',
-        columns: [
-            'card_addr_pk',
-            'card_cust_fk',
-            'cc_road',
-            'cc_city',
-            'cc_post',
-            'cc_province',
-            'cc_country',
-        ],
+        columns: ['card_addr_pk', 'card_cust_fk', 'cc_road', 'cc_city', 'cc_post', 'cc_province', 'cc_country'],
     },
 ];
 
@@ -162,7 +141,7 @@ export function getAllColumnsNames(): string[] {
 }
 
 export function getColumnNamesByTable(dbName: DBName, tableName: string): string[] {
-    logger.info(' Start dbNames.ts getColumnNamesByTable', {dbName, tableName})
+    logger.info(' Start dbNames.ts getColumnNamesByTable', { dbName, tableName });
     const filteredTableCol = dbName.tables
         .map((table) => table)
         .filter((tableCol) => tableCol.name === tableName)
@@ -172,6 +151,6 @@ export function getColumnNamesByTable(dbName: DBName, tableName: string): string
         filteredTableCol,
         columns,
     });
-    logger.info(' Finish dbNames.ts getColumnNamesByTable')
+    logger.info(' Finish dbNames.ts getColumnNamesByTable');
     return columns;
 }

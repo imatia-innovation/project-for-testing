@@ -413,8 +413,8 @@ export const customerFirstName: AttributeTestCase = {
         {
             dbName: 'Card',
             tableName: 'card_customer',
-            columnName: 'cc_first'
-        }
+            columnName: 'cc_first',
+        },
     ],
 };
 
@@ -436,8 +436,8 @@ export const customerLastName: AttributeTestCase = {
         {
             dbName: 'Card',
             tableName: 'card_customer',
-            columnName: 'cc_last'
-        }
+            columnName: 'cc_last',
+        },
     ],
 };
 
@@ -459,8 +459,8 @@ export const customerBirthDate: AttributeTestCase = {
         {
             dbName: 'Card',
             tableName: 'card_customer',
-            columnName: 'cc_dob'
-        }
+            columnName: 'cc_dob',
+        },
     ],
 };
 
@@ -482,8 +482,8 @@ export const customerGender: AttributeTestCase = {
         {
             dbName: 'Card',
             tableName: 'card_customer',
-            columnName: 'cc_gender'
-        }
+            columnName: 'cc_gender',
+        },
     ],
 };
 
@@ -505,8 +505,8 @@ export const customerMarriageStatus: AttributeTestCase = {
         {
             dbName: 'Card',
             tableName: 'card_customer',
-            columnName: 'cc_marital'
-        }
+            columnName: 'cc_marital',
+        },
     ],
 };
 
@@ -530,8 +530,8 @@ export const transactionPK: AttributeTestCase = {
         {
             dbName: 'Card',
             tableName: 'card_transaction',
-            columnName: 'card_tran_pk'
-        }
+            columnName: 'card_tran_pk',
+        },
     ],
 };
 export const transactionAccountFK: AttributeTestCase = {
@@ -552,8 +552,8 @@ export const transactionAccountFK: AttributeTestCase = {
         {
             dbName: 'Card',
             tableName: 'card_transaction',
-            columnName: 'card_acct_fk'
-        }
+            columnName: 'card_acct_fk',
+        },
     ],
 };
 export const transactionDate: AttributeTestCase = {
@@ -574,8 +574,8 @@ export const transactionDate: AttributeTestCase = {
         {
             dbName: 'Card',
             tableName: 'card_transaction',
-            columnName: 'cc_dat_purchase'
-        }
+            columnName: 'cc_dat_purchase',
+        },
     ],
 };
 export const transactionAmount: AttributeTestCase = {
@@ -596,8 +596,8 @@ export const transactionAmount: AttributeTestCase = {
         {
             dbName: 'Card',
             tableName: 'card_transaction',
-            columnName: 'cc_amt_purchase'
-        }
+            columnName: 'cc_amt_purchase',
+        },
     ],
 };
 export const transactionCountry: AttributeTestCase = {
@@ -608,8 +608,8 @@ export const transactionCountry: AttributeTestCase = {
         {
             dbName: 'Card',
             tableName: 'card_transaction',
-            columnName: 'cc_tran_country'
-        }
+            columnName: 'cc_tran_country',
+        },
     ],
 };
 
@@ -648,7 +648,7 @@ export function getAllAttributeNames(): string[] {
         transactionAccountFK,
         transactionDate,
         transactionAmount,
-        transactionCountry
+        transactionCountry,
     ];
 
     return createdAttributeTests.map((attr) => attr.name);
@@ -694,7 +694,13 @@ export function getEntityAttributeNames(entityName: string): string[] {
             ];
             break;
         case 'Transaction':
-            createdAttributeTests = [transactionPK, transactionAccountFK, transactionDate, transactionAmount, transactionCountry];
+            createdAttributeTests = [
+                transactionPK,
+                transactionAccountFK,
+                transactionDate,
+                transactionAmount,
+                transactionCountry,
+            ];
             break;
 
         default:

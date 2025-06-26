@@ -1,6 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { DB_NAMES, getColumnNamesByTable, getDbNames, getTableNamesByDB } from '../../../constants/dbNames';
 import { AttributeTestCase } from '../../../interfaces/AttributeTestCase';
+import DBName from '../../../interfaces/DBName';
 import User from '../../../interfaces/User';
 import assertByText from '../../utils/assertByText';
 import assertList from '../../utils/assertList';
@@ -10,7 +11,6 @@ import logger from '../../utils/logger';
 import { waitForTimeout } from '../../utils/waitforTimeout';
 import { homeAssertions } from '../home';
 import { login } from '../login';
-import DBName from '../../../interfaces/DBName';
 
 export async function attributesAssertions(page: Page) {
     await assertList(page, ['New']);
@@ -37,7 +37,7 @@ export async function loginAndGoToAttributesPage(page: Page, user: User) {
 }
 
 export async function createAttribute(page: Page, attTest: AttributeTestCase) {
-    logger.info(' Start attributes.ts createAttribute ')
+    logger.info(' Start attributes.ts createAttribute ');
     if (attTest.assistedSearch) {
         // TODO here should be tested the assisted search
     } else {
@@ -59,15 +59,15 @@ export async function createAttribute(page: Page, attTest: AttributeTestCase) {
             await waitForTimeout(page);
         }
 
-        logger.info(' Start attributes.ts createAttribute 2nd for loop')
+        logger.info(' Start attributes.ts createAttribute 2nd for loop');
 
         for (let index = 0; index < DB_NAMES.length; index++) {
             const dbName: DBName = DB_NAMES[index];
             await assertList(page, getTableNamesByDB(dbName));
 
             const selectColumn = attTest.selectColumns[index]; // this is an object
-            logger.info('   attributes.ts createAttribute 2nd for loop', {selectColumn})
-            if(!selectColumn) continue;
+            logger.info('   attributes.ts createAttribute 2nd for loop', { selectColumn });
+            if (!selectColumn) continue;
 
             if (selectColumn.tableName === 'mortgage') {
                 await clickOnTextNth(page, selectColumn.tableName, 1);
@@ -84,7 +84,7 @@ export async function createAttribute(page: Page, attTest: AttributeTestCase) {
             await waitForTimeout(page);
         }
 
-        logger.info(' Finish attributes.ts createAttribute 2nd for loop')
+        logger.info(' Finish attributes.ts createAttribute 2nd for loop');
 
         await clickOnText(page, 'Ok');
         await waitForTimeout(page);
@@ -94,6 +94,6 @@ export async function createAttribute(page: Page, attTest: AttributeTestCase) {
 
         await assertByText(page, attTest.name);
         await waitForTimeout(page);
-        logger.info(' Finish attributes.ts createAttribute ')
+        logger.info(' Finish attributes.ts createAttribute ');
     }
 }
