@@ -1,7 +1,9 @@
-import test, { expect, Page } from '@playwright/test';
+import test, { expect, Locator, Page } from '@playwright/test';
 import { admin, baserUrl, PROVIDER_SERVICES } from '../../constants';
 import { ASSIGNMENT_METHOD_DEFAULT } from '../../constants/assignmentMethod';
 import { getProviderService } from '../../constants/dev-providers';
+import { ORDER_STATUS } from '../../constants/orderStatus';
+import { CourierResponseOffer } from '../../interfaces/AccRejAssByRulesTest';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import Destination from '../../interfaces/Destination';
 import Dimension, { CompleteOrderDimension } from '../../interfaces/Dimension';
@@ -9,17 +11,21 @@ import Provider from '../../interfaces/Provider';
 import User from '../../interfaces/User';
 import assertByText from '../utils/assertByText';
 import assertList from '../utils/assertList';
-import { locateRow } from '../utils/assertTextInRow';
+import { assertTextInRow, locateRow } from '../utils/assertTextInRow';
 import { clickOnButton, clickOnElementById, clickOnText, clickOnTextNth } from '../utils/clickOnText';
 import { formatDate } from '../utils/formatDate';
 import { getByAttribute } from '../utils/getByAttribute';
 import { getById } from '../utils/getById';
 import { getByIdAndFill } from '../utils/getByIdAndFill';
 import { getByLabelAndFill } from '../utils/getByLabelAndFill';
+import { getEnabledButtonExcludingText, getEnabledButtonsByText } from '../utils/getEnabledButton';
 import logger from '../utils/logger';
+import { markCheckboxRow } from '../utils/markCheckboxRow';
 import { waitForTimeout } from '../utils/waitforTimeout';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import login from './login';
+import { acceptOfferAndLogout } from './orderCancelAndReassingSteps';
+import { goToOfferDetailPage, rejectOfferAndLogout } from './orderTracking/courierAcceptRejectOfferSteps';
 
 const LABELS_AND_COLUMNS: string[] = [
     'Buscar envíos',
@@ -489,4 +495,47 @@ export async function orderDetailPageAssertions(page: Page, order: CreateNewOrde
     await assertList(page, COLUMNS_AND_LABELS_DETAIL_PAGE);
 
     await assertList(page, [orderStatus, order.pickUpLocation, order.reference]);
+}
+
+export async function assertValuesInRow(page: Page, reference: string, expectedRowValues: Record<string, string>) {
+    await waitForTimeout(page);
+    await navigateToOrdersPageRoutine(page);
+    await waitForTimeout(page);
+
+    for (const key in expectedRowValues) {
+        await assertTextInRow(page, reference, expectedRowValues[key]);
+    }
+    await waitForTimeout(page);
+}
+
+export async function goToOrderDetailPageAndAssignOfferPrice(page: Page, orderId: string) {
+    await page.goto(`${baserUrl}/app/main/order/${orderId}?isdetail=true`);
+    await page.waitForURL(`${baserUrl}/app/main/order/${orderId}?isdetail=true`, {
+        waitUntil: 'load',
+    });
+    await waitForTimeout(page);
+
+    const assignButtonLocators: Locator[] = await getEnabledButtonsByText(page, 'local_shipping Asignar ');
+    const assignButtonLocator = await getEnabledButtonExcludingText(assignButtonLocators, 'Reasignar pedido');
+    await assignButtonLocator?.click();
+
+    await waitForTimeout(page);
+}
+
+export async function checkOrderAndAssignCourier(page: Page, reference: string) {
+    await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ASSIGNMENT);
+
+    await markCheckboxRow(page, reference);
+    await clickOnText(page, 'Asignar');
+    await waitForTimeout(page, 4);
+}
+
+export async function acceptOrReject(page: Page, courierResponse: CourierResponseOffer, orderId: string) {
+    await goToOfferDetailPage(page, courierResponse.courier, orderId);
+
+    if (courierResponse.sendResponse === 'ACCEPT') {
+        await acceptOfferAndLogout(page, orderId, courierResponse.hasFixedPrice, courierResponse.setPrice);
+    } else {
+        await rejectOfferAndLogout(page, orderId);
+    }
 }

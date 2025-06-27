@@ -8,4 +8,5 @@ export const ORDER_STATUS = {
     ON_ROUTE: 'En ruta',
     SENT: 'Entregado',
     INCIDENCE: 'Incidencia',
+    REJECTED: 'Rechazado',
 };

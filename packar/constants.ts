@@ -13,7 +13,7 @@ export const demo: User = {
     password: process.env.USER_DEMO_PASS!,
 };
 
-export const courier: User = {
+export const courierOther: User = {
     username: process.env.USER_COURIER_NAME!,
     providerName: process.env.USER_COURIER_PROVIDER_NAME!,
     password: process.env.USER_COURIER_PASS!,

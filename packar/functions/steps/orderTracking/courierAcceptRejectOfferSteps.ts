@@ -235,6 +235,22 @@ export async function rejectOffer(page: Page, rejectText: string): Promise<void>
     await waitForTimeout(page);
 }
 
+export async function rejectOfferAndLogout(page: Page, orderId: string) {
+    await rejectOffer(page, 'Test reject offer');
+    await waitForTimeout(page);
+
+    await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {
+        waitUntil: 'load',
+    });
+    await waitForTimeout(page);
+
+    await rejectedOfferDetailPageAssertions(page);
+    await waitForTimeout(page);
+
+    await logout(page);
+    await waitForTimeout(page);
+}
+
 export async function offerDetailPageAssertions(page: Page): Promise<void> {
     logger.info(' Start courierAcceptRejectOfferSteps.ts offerDetailPageAssertions');
     await assertList(page, LABELS_AND_COLUMNS);

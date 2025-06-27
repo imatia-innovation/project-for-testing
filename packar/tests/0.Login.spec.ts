@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { admin, baserUrl, courier, demo } from '../constants';
+import { admin, baserUrl, courierOther, demo } from '../constants';
 import { loginPageAssertions } from '../functions/steps/login';
 import logout from '../functions/steps/logout';
 import { getById } from '../functions/utils/getById';
@@ -104,11 +104,11 @@ test('should go to login Page, and make login successfully with courier user and
 
     const userSelector = getById(page, 'username');
     await userSelector.click();
-    await userSelector.fill(courier.username);
+    await userSelector.fill(courierOther.username);
 
     const passwordInput = getById(page, 'password');
     await passwordInput.click();
-    await passwordInput.fill(courier.password);
+    await passwordInput.fill(courierOther.password);
 
     await page.getByText('Iniciar sesión').click();
 

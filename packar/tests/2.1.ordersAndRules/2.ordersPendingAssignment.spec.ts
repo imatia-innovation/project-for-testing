@@ -12,6 +12,7 @@ import {
 } from '../../functions/steps/ordersSteps';
 import { assertTextInRow } from '../../functions/utils/assertTextInRow';
 import { clickOnText } from '../../functions/utils/clickOnText';
+import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 
 // Pending to assignment
@@ -265,8 +266,7 @@ test('it should mark all pending tests and assign a provider', async ({ page }) 
     await checkHeaderRow(page);
 
     await clickOnText(page, 'Asignar'); // if it throws error, means that it does not reaches a rule, so you must create a rule before this test
-
-    test.slow();
+    await waitForTimeout(page);
 
     await navigateToOrdersPageRoutine(page);
 });

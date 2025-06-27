@@ -3,22 +3,10 @@
 // Create Orders without provider
 // Assign a provider following the assignment rules
 
-import test, { Locator } from '@playwright/test';
-import { courierFixedPrice, courierNOFixedPrice, PROVIDER_SERVICES } from '../../constants';
-import { getProviderService } from '../../constants/dev-providers';
+import test from '@playwright/test';
+import { courierFixedPrice, courierNOFixedPrice } from '../../constants';
 import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../../constants/rulesPropertiesAndOperations';
-import { selectCondition } from '../../functions/steps/couriersRulesSteps';
-import {
-    assertRuleCreated,
-    navigateToRulesPageRoutine,
-    openNewRuleForm,
-    selectProvider,
-} from '../../functions/steps/rulesSteps';
-import assertByText from '../../functions/utils/assertByText';
-import { clickOnText } from '../../functions/utils/clickOnText';
-import { getByIdAndFill } from '../../functions/utils/getByIdAndFill';
-import logger from '../../functions/utils/logger';
-import { selectRegisterPerPage } from '../../functions/utils/pagination';
+import { createRule, deleteRules, navigateToRulesPageRoutine } from '../../functions/steps/rulesSteps';
 import CreateNewRuleOrderTest from '../../interfaces/CreateNewRuleOrderTest';
 
 const rule1: CreateNewRuleOrderTest = {
@@ -149,65 +137,15 @@ const rule9: CreateNewRuleOrderTest = {
 let newRuleTests: CreateNewRuleOrderTest[] = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9];
 
 test('Delete all rules test', async ({ page }) => {
-    await navigateToRulesPageRoutine(page);
-
-    await selectRegisterPerPage(page);
-
-    const checkAllLocator: Locator = page.getByRole('checkbox');
-
-    const checkboxes: Locator[] = await checkAllLocator.all();
-    logger.info('1.courierRules.spec.spec.ts checkboxes.length: ', checkboxes.length);
-
-    await checkAllLocator.first().click();
-
-    await clickOnText(page, 'Eliminar');
-
-    const deleteLocator: Locator = page.getByText(' Eliminar ');
-
-    const deleteButtons: Locator[] = await deleteLocator.all();
-    logger.info('1.courierRules.spec.spec.ts deleteButtons.length ', deleteButtons.length);
-
-    await assertByText(
-        page,
-        'Las reglas eliminadas dejarán de utilizarse en la asignación automática de proveedores. ¿Desea continuar?'
-    );
-
-    await deleteLocator.last().click();
+    await deleteRules(page);
 });
 
-test('Create rules', async ({ page }) => {
-    await navigateToRulesPageRoutine(page);
+newRuleTests.forEach((rule) => {
+    test(`Create rule "${rule.name}" `, async ({ page }) => {
+        await navigateToRulesPageRoutine(page);
 
-    for (let index = 0; index < newRuleTests.length; index++) {
-        const rule = newRuleTests[index];
-
-        logger.info(
-            `1.couriersAssignedByRules.spec.ts rule${index} parameters: ${rule.name}, ${rule.conditions} provider: ${rule.provider}, priority: ${rule.priority}`
-        );
-
-        await openNewRuleForm(page);
-
-        // Start fill form
         test.slow();
 
-        await getByIdAndFill(page, 'name', rule.name);
-
-        await selectProvider(page, getProviderService(rule.provider, rule.service, PROVIDER_SERVICES)!);
-
-        await getByIdAndFill(page, 'priority', rule.priority);
-
-        for (let i = 0; i < rule.conditions.length; i++) {
-            const condition = rule.conditions[i];
-            await selectCondition(page, condition);
-        }
-
-        const saveButton = page.getByText('Guardar');
-        await saveButton.click();
-
-        await page.reload({
-            waitUntil: 'load',
-        });
-
-        await assertRuleCreated(page, rule.name);
-    }
+        await createRule(page, rule);
+    });
 });

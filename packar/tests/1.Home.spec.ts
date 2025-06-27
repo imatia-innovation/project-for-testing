@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { admin, courier, demo } from '../constants';
+import { admin, courierOther, demo } from '../constants';
 import login from '../functions/steps/login';
 import logger from '../functions/utils/logger';
 
@@ -67,7 +67,7 @@ test(`should make login with demo user and see the Home page ${ITEM_LIST_DEMO.le
 test(`should make login with courier user and see the Home page ${ITEM_LIST_COURIER.length} content cards`, async ({
     page,
 }) => {
-    await login(page, courier);
+    await login(page, courierOther);
 
     for (let index = 0; index < ITEM_LIST_COURIER.length; index++) {
         const locator = page.getByText(ITEM_LIST_COURIER[index]);

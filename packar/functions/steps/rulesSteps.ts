@@ -1,16 +1,22 @@
-import { expect, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import Calculator from '../../classes/Calculator';
-import { admin } from '../../constants';
+import { admin, PROVIDER_SERVICES } from '../../constants';
+import { getProviderService } from '../../constants/dev-providers';
 import RuleService from '../../core/RuleService';
+import { selectCondition as selectCondit } from '../../functions/steps/couriersRulesSteps';
 import Combination from '../../interfaces/Combination';
+import CreateNewRuleOrderTest from '../../interfaces/CreateNewRuleOrderTest';
 import Provider from '../../interfaces/Provider';
+import assertByText from '../utils/assertByText';
 import assertList from '../utils/assertList';
 import { clickOnText } from '../utils/clickOnText';
 import { getByAttribute } from '../utils/getByAttribute';
 import { getById } from '../utils/getById';
+import { getByIdAndFill } from '../utils/getByIdAndFill';
 import getMaxColumnNumericValue from '../utils/getMaxColumnNumericValue';
 import isAlertDialogText from '../utils/isAlertDialogText';
 import logger from '../utils/logger';
+import { selectRegisterPerPage } from '../utils/pagination';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import login from './login';
 
@@ -186,6 +192,63 @@ export async function assertRuleCreated(page: Page, uniqueRuleName: string) {
 
 export async function deleteRule(uniqueRuleName: string, ruleService: RuleService) {
     await ruleService.deleteRule(admin.username, admin.password, uniqueRuleName);
+}
+
+export async function deleteRules(page: Page) {
+    await navigateToRulesPageRoutine(page);
+
+    await selectRegisterPerPage(page);
+
+    const checkAllLocator: Locator = page.getByRole('checkbox');
+
+    const checkboxes: Locator[] = await checkAllLocator.all();
+    logger.info('1.courierRules.spec.spec.ts checkboxes.length: ', checkboxes.length);
+
+    await checkAllLocator.first().click();
+
+    await clickOnText(page, 'Eliminar');
+
+    const deleteLocator: Locator = page.getByText(' Eliminar ');
+
+    const deleteButtons: Locator[] = await deleteLocator.all();
+    logger.info('1.courierRules.spec.spec.ts deleteButtons.length ', deleteButtons.length);
+
+    await assertByText(
+        page,
+        'Las reglas eliminadas dejarán de utilizarse en la asignación automática de proveedores. ¿Desea continuar?'
+    );
+
+    await deleteLocator.last().click();
+}
+
+export async function createRule(page: Page, rule: CreateNewRuleOrderTest) {
+    logger.info(
+        `1.couriersAssignedByRules.spec.ts parameters: ${rule.name}, ${rule.conditions} provider: ${rule.provider}, priority: ${rule.priority}`
+    );
+
+    await openNewRuleForm(page);
+
+    // Start fill form
+
+    await getByIdAndFill(page, 'name', rule.name);
+
+    await selectProvider(page, getProviderService(rule.provider, rule.service, PROVIDER_SERVICES)!);
+
+    await getByIdAndFill(page, 'priority', rule.priority);
+
+    for (let i = 0; i < rule.conditions.length; i++) {
+        const condition = rule.conditions[i];
+        await selectCondit(page, condition);
+    }
+
+    const saveButton = page.getByText('Guardar');
+    await saveButton.click();
+
+    await page.reload({
+        waitUntil: 'load',
+    });
+
+    await assertRuleCreated(page, rule.name);
 }
 
 export async function selectAnotherCondition(

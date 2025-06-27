@@ -8,9 +8,9 @@
 import test, { Locator, Page } from '@playwright/test';
 import {
     admin,
-    courier,
     courierFixedPrice,
     courierNOFixedPrice,
+    courierOther,
     DESTINATION_FAVORITE,
     PICKUP_LOCATION,
 } from '../../constants';
@@ -48,7 +48,7 @@ const order1: OfferOpenPriceTest = {
     },
     couriersTest: [
         {
-            courier: courier, // if is not setPrice, then reject offer
+            courier: courierOther, // if is not setPrice, then reject offer
         },
         {
             courier: courierNOFixedPrice,
@@ -77,7 +77,7 @@ const order2: OfferOpenPriceTest = {
     assignmentMethod: ASSIGNMENT_METHOD.MANUAL_ASSIGNMENT,
     couriersTest: [
         {
-            courier: courier, // if is not setPrice, then reject offer
+            courier: courierOther, // if is not setPrice, then reject offer
         },
         {
             courier: courierNOFixedPrice,
@@ -110,7 +110,7 @@ const order3: OfferOpenPriceTest = {
     limitPrice: 9.99,
     couriersTest: [
         {
-            courier: courier, // if is not setPrice, then reject offer
+            courier: courierOther, // if is not setPrice, then reject offer
         },
         {
             courier: courierNOFixedPrice,
@@ -139,7 +139,7 @@ const order4: OfferOpenPriceTest = {
     limitPrice: 9.99,
     couriersTest: [
         {
-            courier: courier, // if is not setPrice, then reject offer
+            courier: courierOther, // if is not setPrice, then reject offer
         },
         {
             courier: courierNOFixedPrice,
@@ -167,7 +167,7 @@ const order5: OfferOpenPriceTest = {
     },
     couriersTest: [
         {
-            courier: courier, // if is not setPrice, then reject offer
+            courier: courierOther, // if is not setPrice, then reject offer
         },
         {
             courier: courierFixedPrice,
@@ -196,7 +196,7 @@ const order6: OfferOpenPriceTest = {
     assignmentMethod: ASSIGNMENT_METHOD.MANUAL_ASSIGNMENT,
     couriersTest: [
         {
-            courier: courier, // if is not setPrice, then reject offer
+            courier: courierOther, // if is not setPrice, then reject offer
         },
         {
             courier: courierFixedPrice,
@@ -229,7 +229,7 @@ const order7: OfferOpenPriceTest = {
     limitPrice: 9.99,
     couriersTest: [
         {
-            courier: courier, // if is not setPrice, then reject offer
+            courier: courierOther, // if is not setPrice, then reject offer
         },
         {
             courier: courierFixedPrice,
@@ -258,7 +258,7 @@ const order8: OfferOpenPriceTest = {
     limitPrice: 9.99,
     couriersTest: [
         {
-            courier: courier, // if is not setPrice, then reject offer
+            courier: courierOther, // if is not setPrice, then reject offer
         },
         {
             courier: courierFixedPrice,
