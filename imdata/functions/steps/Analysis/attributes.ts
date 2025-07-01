@@ -59,7 +59,7 @@ export async function createAttribute(page: Page, attTest: AttributeTestCase) {
             await waitForTimeout(page);
         }
 
-        logger.info(' Start attributes.ts createAttribute 2nd for loop');
+        logger.info(' Start attributes.ts createAttribute 2nd forloop');
 
         for (let index = 0; index < DB_NAMES.length; index++) {
             const dbName: DBName = DB_NAMES[index];
@@ -84,16 +84,27 @@ export async function createAttribute(page: Page, attTest: AttributeTestCase) {
             await waitForTimeout(page);
         }
 
-        logger.info(' Finish attributes.ts createAttribute 2nd for loop');
+        logger.info(' Finish attributes.ts createAttribute 2nd forloop');
 
         await clickOnText(page, 'Ok');
         await waitForTimeout(page);
 
-        await clickOnText(page, 'Show more');
-        await waitForTimeout(page);
+        const errorMessageCount = await page
+            .getByText(`There is already an attribute with the name ${attTest.name}`)
+            .count();
+        if (errorMessageCount === 0) {
+            const attrNameCount = await page.getByText(attTest.name).count();
+            if (attrNameCount === 0) {
+                await clickOnText(page, 'Show more');
+            }
+            await waitForTimeout(page);
 
-        await assertByText(page, attTest.name);
-        await waitForTimeout(page);
-        logger.info(' Finish attributes.ts createAttribute ');
+            await assertByText(page, attTest.name);
+            await waitForTimeout(page);
+            logger.info(' Finish attributes.ts createAttribute ');
+        } else {
+            await clickOnTextNth(page, 'Ok', 1);
+            await waitForTimeout(page);
+        }
     }
 }

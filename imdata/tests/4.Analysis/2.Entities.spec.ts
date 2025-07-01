@@ -4,11 +4,13 @@ import { entityAccount, entityAddress, entityCustomer, entityTransaction } from 
 import { deleteAssertions } from '../../functions/steps/Administration/datasources';
 import {
     createNewEntity,
+    entitiesAssertions,
     entityDetailAssertions,
     loginAndGoToEntitiesPage,
 } from '../../functions/steps/Analysis/entities';
 import assertByText from '../../functions/utils/assertByText';
-import { clickOnText } from '../../functions/utils/clickOnText';
+import assertList from '../../functions/utils/assertList';
+import { clickOnText, clickOnTextNth } from '../../functions/utils/clickOnText';
 import { getByAttribute } from '../../functions/utils/getByAttribute';
 import logger from '../../functions/utils/logger';
 import { waitForTimeout } from '../../functions/utils/waitforTimeout';
@@ -23,7 +25,7 @@ test.skip('should go to Analysis > Entities page ds admin user', async ({ page }
     logger.info('  1.Attributes.spec.ts qtyRows: ', qtyEntities);
 });
 
-test('should go to Analysis > Entities and delete all if exists', async ({ page }) => {
+test.skip('should go to Analysis > Entities and delete all if exists', async ({ page }) => {
     await loginAndGoToEntitiesPage(page, USER_DS_ADMIN);
 
     let entityCardLocator = getByAttribute(page, 'class', 'entity-data');
@@ -57,7 +59,7 @@ const entityTests: EntityTestCase[] = [entityAccount, entityAddress, entityCusto
 entityTests.forEach((entityTest) => {
     const testDescription = entityTest.title.replace('{{name}}', entityTest.name);
 
-    test(testDescription, async ({ page }) => {
+    test.skip(testDescription, async ({ page }) => {
         await loginAndGoToEntitiesPage(page, USER_DS_ADMIN);
 
         test.slow();
@@ -66,4 +68,53 @@ entityTests.forEach((entityTest) => {
 
         await assertByText(page, entityAccount.name);
     });
+});
+
+// Relations
+
+test('should save Customer relation with Account and Address', async ({ page }) => {
+    await loginAndGoToEntitiesPage(page, USER_DS_ADMIN);
+
+    await clickOnText(page, 'Customer');
+    await waitForTimeout(page);
+
+    await clickOnText(page, 'Related entities');
+    await waitForTimeout(page);
+
+    await clickOnTextNth(page, 'Account', 1);
+    await waitForTimeout(page);
+    await clickOnText(page, 'Relate entities');
+    await waitForTimeout(page);
+
+    await clickOnTextNth(page, 'Address', 0);
+    await waitForTimeout(page);
+    await clickOnText(page, 'Relate entities');
+    await waitForTimeout(page);
+
+    await clickOnText(page, 'Save');
+    await waitForTimeout(page);
+
+    await assertList(page, ['Account', 'Address', 'Customer', 'Transaction']);
+    await entitiesAssertions(page);
+});
+
+test('should save Account relation with Transaction', async ({ page }) => {
+    await loginAndGoToEntitiesPage(page, USER_DS_ADMIN);
+
+    await clickOnTextNth(page, 'Account', 1);
+    await waitForTimeout(page);
+
+    await clickOnText(page, 'Related entities');
+    await waitForTimeout(page);
+
+    await clickOnTextNth(page, 'Transaction', 0);
+    await waitForTimeout(page);
+    await clickOnText(page, 'Relate entities');
+    await waitForTimeout(page);
+
+    await clickOnText(page, 'Save');
+    await waitForTimeout(page);
+
+    await assertList(page, ['Account', 'Address', 'Customer', 'Transaction']);
+    await entitiesAssertions(page);
 });

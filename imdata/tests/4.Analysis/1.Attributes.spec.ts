@@ -63,6 +63,8 @@ test('should go to the Analysis > Attributes page and delete all if exists', asy
 
     test.slow();
 
+    test.slow();
+
     // Clean
     for (let index = qtyAttributes; index > 0; index--) {
         await attributeLocator.first().click();

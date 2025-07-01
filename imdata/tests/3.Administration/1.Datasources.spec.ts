@@ -8,6 +8,7 @@ import {
 } from '../../functions/steps/Administration/datasources';
 import { homeAssertions } from '../../functions/steps/home';
 import { login } from '../../functions/steps/login';
+import assertByText from '../../functions/utils/assertByText';
 import { clickOnText, clickOnTextNth } from '../../functions/utils/clickOnText';
 import { getById } from '../../functions/utils/getById';
 import logger from '../../functions/utils/logger';
@@ -71,7 +72,7 @@ test.skip('should go to Administration Datasources page, and delete all DS if ex
         logger.info('  1.Datasources.spec.ts qtyRows: ', qtyRows);
     }
 
-    await waitForTimeout(page);
+    await assertByText(page, 'No results found');
 });
 
 test.skip('should go to Administration Datasources page, and create 3 new DS', async ({ page }) => {
