@@ -31,7 +31,7 @@ const order1: OfferTest = {
     provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -49,7 +49,7 @@ const order2: OfferTest = {
     provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -68,7 +68,7 @@ const order3: OfferTest = {
     provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -86,7 +86,7 @@ const order4: OfferTest = {
     provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -105,7 +105,7 @@ const order5: OfferTest = {
     provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -124,7 +124,7 @@ const order6: OfferTest = {
     provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -144,7 +144,7 @@ const order7: OfferTest = {
     provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -163,7 +163,7 @@ const order8: OfferTest = {
     provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,

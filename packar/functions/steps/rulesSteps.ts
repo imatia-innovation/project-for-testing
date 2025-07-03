@@ -17,6 +17,7 @@ import getMaxColumnNumericValue from '../utils/getMaxColumnNumericValue';
 import isAlertDialogText from '../utils/isAlertDialogText';
 import logger from '../utils/logger';
 import { selectRegisterPerPage } from '../utils/pagination';
+import { waitForTimeout } from '../utils/waitforTimeout';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import login from './login';
 
@@ -107,12 +108,15 @@ export async function openNewRuleForm(page: Page) {
 
 export async function selectProvider(page: Page, provider: Provider) {
     logger.info('Start rulesSteps.ts selectProvider', { provider });
-    const providerLabel = getByAttribute(page, 'attr', 'courier_id');
+    const providerLabel = page.getByRole('combobox').nth(0);
     await providerLabel.click();
+    await waitForTimeout(page);
+
     const providerLocators = page.getByText(provider.name);
     await providerLocators.last().click();
+    await waitForTimeout(page);
 
-    const service = getByAttribute(page, 'attr', 'courier_shipment_type_id');
+    const service = page.getByRole('combobox').nth(1);
     await service.click();
 
     const serviceLocators = page.getByText(provider.service);

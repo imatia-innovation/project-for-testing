@@ -3,7 +3,7 @@ import { admin, baserUrl, PROVIDER_SERVICES } from '../../constants';
 import { ASSIGNMENT_METHOD_DEFAULT } from '../../constants/assignmentMethod';
 import { getProviderService } from '../../constants/dev-providers';
 import { ORDER_STATUS } from '../../constants/orderStatus';
-import { CourierResponseOffer } from '../../interfaces/AccRejAssByRulesTest';
+import { CourierResponseOffer } from '../../interfaces/AccRejAssignByRulesTest';
 import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import Destination from '../../interfaces/Destination';
 import Dimension, { CompleteOrderDimension } from '../../interfaces/Dimension';

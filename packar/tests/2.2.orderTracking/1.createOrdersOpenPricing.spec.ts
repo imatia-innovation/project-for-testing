@@ -17,7 +17,7 @@ const order1: CreateNewOrderTest = {
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -34,7 +34,7 @@ const order2: CreateNewOrderTest = {
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -52,7 +52,7 @@ const order3: CreateNewOrderTest = {
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -69,7 +69,7 @@ const order4: CreateNewOrderTest = {
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,

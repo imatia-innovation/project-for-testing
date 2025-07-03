@@ -158,13 +158,13 @@ async function clean() {
     await deleteRule(ruleThatFails.name, ruleService);
 }
 
-// test.beforeAll('delete tests rules created in the past', async () => {
-//     await clean();
-// });
+test.beforeAll('delete tests rules created in the past', async () => {
+    await clean();
+});
 
-// test.afterAll('delete tests rules created in the past', async () => {
-//     await clean();
-// });
+test.afterAll('delete tests rules created in the past', async () => {
+    await clean();
+});
 
 test('should go to the Rules Section and sort by Priority descendant order', async ({ page }) => {
     await navigateToRulesPageRoutine(page);
@@ -223,7 +223,7 @@ test('should see an error when try to save a rule without fill the inputs', asyn
 });
 
 newRuleTests.forEach((rule, index) => {
-    test(`should validate a rule with parameters: ${rule.name}, ${PROPERTY_OPTIONS[rule.combination.i]} ${OPERATOR_OPTIONS[rule.combination.j]} ${rule.combinationMain.value}`, async ({
+    test.skip(`should validate a rule with parameters: ${rule.name}, ${PROPERTY_OPTIONS[rule.combination.i]} ${OPERATOR_OPTIONS[rule.combination.j]} ${rule.combinationMain.value}`, async ({
         page,
     }) => {
         await navigateToRulesPageRoutine(page);

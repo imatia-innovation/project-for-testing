@@ -168,6 +168,7 @@ const order5: OfferOpenPriceTest = {
     couriersTest: [
         {
             courier: courierOther, // if is not setPrice, then reject offer
+            courierHasFixedPrice: true, // for the assert message
         },
         {
             courier: courierFixedPrice,
@@ -197,17 +198,13 @@ const order6: OfferOpenPriceTest = {
     couriersTest: [
         {
             courier: courierOther, // if is not setPrice, then reject offer
+            courierHasFixedPrice: true, // for the assert message
         },
         {
             courier: courierFixedPrice,
             courierHasFixedPrice: false, // for the assert message
             setPrice: '1',
         },
-        // {
-        //     courier: courierFixedPrice, // on PRE can't do this provider test
-        //     courierHasFixedPrice: false, // it doesn't matter be false here because always it'll be false for Open Price
-        //     setPrice: '75.99',
-        // },
     ],
     assignButtonIndex: 1,
 };
@@ -230,6 +227,7 @@ const order7: OfferOpenPriceTest = {
     couriersTest: [
         {
             courier: courierOther, // if is not setPrice, then reject offer
+            courierHasFixedPrice: true, // for the assert message
         },
         {
             courier: courierFixedPrice,
@@ -259,6 +257,7 @@ const order8: OfferOpenPriceTest = {
     couriersTest: [
         {
             courier: courierOther, // if is not setPrice, then reject offer
+            courierHasFixedPrice: true, // for the assert message
         },
         {
             courier: courierFixedPrice,
@@ -323,7 +322,7 @@ createOfferTests.forEach((orderTest, testIndex) => {
                 "Finish 5.clientAssignOfferPrice.spec.ts searching enabled button with text: 'local_shipping Asignar '"
             );
 
-            await waitForTimeout(page);
+            await waitForTimeout(page, 2);
         }
 
         await orderDetailPageAssertions(page, orderTest, ORDER_STATUS.ASSIGNED);

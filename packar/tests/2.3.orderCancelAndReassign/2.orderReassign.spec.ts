@@ -18,6 +18,7 @@ import OfferTestResult from '../../interfaces/OfferTestResult';
 
 import {
     acceptOfferAndLogout,
+    cancelOrderSuccessfully,
     createOrderWithAssignedStatus,
     reassignOrderSuccessfully,
 } from '../../functions/steps/orderCancelAndReassingSteps';
@@ -48,7 +49,7 @@ const order2: CreateNewOrderTest = {
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -65,7 +66,7 @@ const order3: OfferTest = {
     provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -84,7 +85,7 @@ const order4: CreateNewOrderTest = {
     provider: 'BAJO COTIZACIÓN',
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -158,8 +159,33 @@ test("should go to an order with status 'Pte. aceptación' detail page and reass
     await assertOrderDetailPageData(page, ORDER_STATUS.ASSIGNED);
 });
 
+test("should go to an order with status 'Pte. aceptación' detail page, reassign to other courier, and try to cancel the order", async ({
+    page,
+}) => {
+    await navigateToOrdersPageRoutine(page);
+
+    const reference: string = await createNewOrder(page, order2, 3);
+    await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ACCEPT);
+
+    const orderId = await getOrderId(page, reference);
+    const provider: Provider = { name: 'CORREOS', service: 'PAQUETE ESTÁNDAR DOMICILIO' };
+    const orderIdRef: OfferTestResult = { orderId, reference };
+    const orderStatusExpected = ORDER_STATUS.ASSIGNED;
+    test.slow();
+    const orderId2: string = await reassignOrderSuccessfully(page, provider, orderIdRef, orderStatusExpected);
+
+    await navigateToOrderDetailPage(page, orderId);
+    await assertOrderDetailPageData(page, ORDER_STATUS.CANCELLED);
+
+    await navigateToOrderDetailPage(page, orderId2);
+    await assertOrderDetailPageData(page, ORDER_STATUS.ASSIGNED);
+
+    // try to cancel but there is a bug
+    await cancelOrderSuccessfully(page, orderId2);
+});
+
 test("should go to an order with status 'Asignado' detail page and reassign to other courier", async ({ page }) => {
-    const { orderId, reference }: OfferTestResult = await createOrderWithAssignedStatus(page, order3, 3);
+    const { orderId, reference }: OfferTestResult = await createOrderWithAssignedStatus(page, order3, 4);
 
     test.slow();
 
@@ -176,7 +202,7 @@ test("should go to an order with status 'Asignado' detail page and reassign to o
 });
 
 test('should reassign an order by second time', async ({ page }) => {
-    const { orderId, reference }: OfferTestResult = await createOrderWithAssignedStatus(page, order3, 8);
+    const { orderId, reference }: OfferTestResult = await createOrderWithAssignedStatus(page, order3, 5);
 
     test.slow();
 

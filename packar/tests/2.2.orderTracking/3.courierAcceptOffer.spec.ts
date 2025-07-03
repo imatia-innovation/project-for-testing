@@ -23,13 +23,13 @@ import OfferTest from '../../interfaces/OfferTest';
 import OfferTestResult from '../../interfaces/OfferTestResult';
 
 const order1: OfferTest = {
-    title: 'Accept Order with Traditional Courier First Offer without Limit Price',
+    title: `Accept Order with Traditional Courier No fixed price ${courierNOFixedPrice.providerName} First Offer without Limit Price`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 50, width: 50, height: 50, weight: 50 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -42,13 +42,13 @@ const order1: OfferTest = {
 };
 
 const order2: OfferTest = {
-    title: 'Accept Order with Traditional Courier First Offer with Limit Price 9.99',
+    title: `Accept Order with Traditional Courier No fixed price ${courierNOFixedPrice.providerName} First Offer with Limit Price 9.99`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 50, width: 50, height: 50, weight: 50 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -62,13 +62,13 @@ const order2: OfferTest = {
 };
 
 const order3: OfferTest = {
-    title: 'Accept Order with Traditional Courier Manual Assignment without Limit Price',
+    title: `Accept Order with Traditional Courier No fixed price ${courierNOFixedPrice.providerName} Manual Assignment without Limit Price`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 50, width: 50, height: 50, weight: 50 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -81,13 +81,13 @@ const order3: OfferTest = {
 };
 
 const order4: OfferTest = {
-    title: 'Accept Order with Traditional Courier Manual Assignment with Limit Price 9.99',
+    title: `Accept Order with Traditional Courier No fixed price ${courierNOFixedPrice.providerName} Manual Assignment with Limit Price 9.99`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 50, width: 50, height: 50, weight: 50 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -101,13 +101,13 @@ const order4: OfferTest = {
 };
 
 const order5: OfferTest = {
-    title: 'Accept Order with Traditional Courier Paco First Offer without Limit Price',
+    title: `Accept Order with Traditional Courier Fixed price ${courierFixedPrice.providerName} First Offer without Limit Price`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 500, width: 500, height: 500, weight: 500 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -120,13 +120,13 @@ const order5: OfferTest = {
 };
 
 const order6: OfferTest = {
-    title: 'Accept Order with Traditional Courier Paco First Offer with Limit Price 9.99',
+    title: `Accept Order with Traditional Courier Fixed price ${courierFixedPrice.providerName} First Offer with Limit Price 9.99`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 500, width: 500, height: 500, weight: 500 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -140,13 +140,13 @@ const order6: OfferTest = {
 };
 
 const order7: OfferTest = {
-    title: 'Accept Order with Traditional Courier Paco Manual Assignment without Limit Price',
+    title: `Accept Order with Traditional Courier Fixed price ${courierFixedPrice.providerName} Manual Assignment without Limit Price`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 500, width: 500, height: 500, weight: 500 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -159,13 +159,13 @@ const order7: OfferTest = {
 };
 
 const order8: OfferTest = {
-    title: 'Accept Order with Traditional Courier Paco Manual Assignment with Limit Price 9.99',
+    title: `Accept Order with Traditional Courier Fixed price ${courierFixedPrice.providerName} Manual Assignment with Limit Price 9.99`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 500, width: 500, height: 500, weight: 500 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,

@@ -2,21 +2,20 @@ import { Page } from '@playwright/test';
 import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../../constants/rulesPropertiesAndOperations';
 import { Condition } from '../../interfaces/CreateNewRuleOrderTest';
 import assertList from '../utils/assertList';
-import { getByAttribute } from '../utils/getByAttribute';
 import { getById } from '../utils/getById';
 import logger from '../utils/logger';
 
 export async function selectCondition(page: Page, condition: Condition) {
     logger.info(' Start couriersRulesSteps.ts selectCondition', condition);
 
-    const property = getByAttribute(page, 'attr', 'property_id');
+    const property = page.getByRole('combobox').nth(2); //getByAttribute(page, 'attr', 'property_id');
     await property.click();
     await assertList(page, PROPERTY_OPTIONS);
 
     const propertyLocator = page.getByText(condition.property);
     await propertyLocator.last().click();
 
-    const operator = getByAttribute(page, 'attr', 'operator_id');
+    const operator = page.getByRole('combobox').nth(3); //getByAttribute(page, 'attr', 'operator_id');
     await operator.click();
     await assertList(page, OPERATOR_OPTIONS);
 

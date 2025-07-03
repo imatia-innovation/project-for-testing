@@ -10,7 +10,7 @@ export interface CourierResponseOffer {
     expectedRowValues?: Record<string, string>;
 }
 
-export default interface AccRejAssByRulesTest extends CreateNewOrderTest {
+export default interface AccRejAssignByRulesTest extends CreateNewOrderTest {
     relatedRule: CreateNewRuleOrderTest;
     couriersResponses: CourierResponseOffer[];
     expectedRowValues?: Record<string, string>;

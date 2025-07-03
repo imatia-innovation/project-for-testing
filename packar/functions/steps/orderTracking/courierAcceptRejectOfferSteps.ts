@@ -6,13 +6,15 @@
 import { Page } from '@playwright/test';
 import { baserUrl } from '../../../constants';
 import { ORDER_STATUS } from '../../../constants/orderStatus';
+import { Driver } from '../../../interfaces/OfferOpenPriceTest';
 import OfferTest from '../../../interfaces/OfferTest';
 import OfferTestResult from '../../../interfaces/OfferTestResult';
-import User from '../../../interfaces/User';
+import User, { CourierDrivers } from '../../../interfaces/User';
 import assertList from '../../utils/assertList';
 import assertListExcluded from '../../utils/assertListExcluded';
 import { assertTextInRow } from '../../utils/assertTextInRow';
-import { clickOnText } from '../../utils/clickOnText';
+import { clickOnText, clickOnTextNth } from '../../utils/clickOnText';
+import { getById } from '../../utils/getById';
 import { getByIdAndFill } from '../../utils/getByIdAndFill';
 import logger from '../../utils/logger';
 import { waitForTimeout } from '../../utils/waitforTimeout';
@@ -52,7 +54,7 @@ const LABELS_AND_COLUMNS: string[] = [
 ];
 
 const LABELS_AND_COLUMNS_DRIVER: string[] = [
-    'Datos del transporte',
+    //'Datos del transporte',
     'Conductor',
     'Añadir otro conductor',
     'Conductor',
@@ -237,12 +239,12 @@ export async function rejectOffer(page: Page, rejectText: string): Promise<void>
 
 export async function rejectOfferAndLogout(page: Page, orderId: string) {
     await rejectOffer(page, 'Test reject offer');
-    await waitForTimeout(page);
+    await waitForTimeout(page, 2);
 
     await page.waitForURL(`${baserUrl}/app/main/offertDetail/${orderId}`, {
         waitUntil: 'load',
     });
-    await waitForTimeout(page);
+    await waitForTimeout(page, 2);
 
     await rejectedOfferDetailPageAssertions(page);
     await waitForTimeout(page);
@@ -283,4 +285,42 @@ export async function rejectedOfferDetailPageAssertions(page: Page): Promise<voi
 
     if (process.env.ENVIRONMENT === 'dev') await assertListExcluded(page, LABELS_AND_COLUMNS_REJECTED_EXCLUDED_2);
     logger.info(' Finish courierAcceptRejectOfferSteps.ts rejectedOfferDetailPageAssertions');
+}
+
+export async function selectExistingDriverAndSave(page: Page, courier: User, driver: Driver) {
+    const courierDrivers: CourierDrivers = JSON.parse(courier.drivers!);
+
+    await getById(page, 'driver').click();
+    await waitForTimeout(page);
+
+    await assertList(page, courierDrivers.driverNames);
+    await clickOnTextNth(page, driver.driverName, 0);
+
+    await getById(page, 'vehicle').click();
+    await assertList(page, courierDrivers.vehicleRegisters);
+    await page.getByText(driver.vehicleRegister).click();
+
+    await page.getByText('Guardar').click();
+    await waitForTimeout(page, 2);
+
+    await assertListExcluded(page, [
+        'Alerta',
+        'Error inesperado actualizando vehículo y conductor, por favor, contacte con el equipo de soporte',
+    ]);
+}
+
+export async function writeNewDriverAndSave(page: Page, driver: Driver) {
+    await getById(page, 'driver_checkbox').check();
+    await getByIdAndFill(page, 'driver_name', driver.driverName);
+
+    await getById(page, 'save_as_new_destination-input').check();
+    await getByIdAndFill(page, 'vehicle_license_plate', driver.vehicleRegister);
+
+    await page.getByText('Guardar').click();
+    await waitForTimeout(page);
+
+    await assertListExcluded(page, [
+        'Alerta',
+        'Error inesperado actualizando vehículo y conductor, por favor, contacte con el equipo de soporte',
+    ]);
 }

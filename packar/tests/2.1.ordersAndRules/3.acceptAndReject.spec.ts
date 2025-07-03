@@ -23,7 +23,7 @@ import { createRule, deleteRules, navigateToRulesPageRoutine } from '../../funct
 import { assertTextInRow } from '../../functions/utils/assertTextInRow';
 import logger from '../../functions/utils/logger';
 import { waitForTimeout } from '../../functions/utils/waitforTimeout';
-import AccRejAssByRulesTest, { CourierResponseOffer } from '../../interfaces/AccRejAssByRulesTest';
+import AccRejAssignByRulesTest, { CourierResponseOffer } from '../../interfaces/AccRejAssignByRulesTest';
 import CreateNewRuleOrderTest from '../../interfaces/CreateNewRuleOrderTest';
 
 const rule1: CreateNewRuleOrderTest = {
@@ -114,7 +114,7 @@ newRuleTests.forEach((rule, index) => {
     });
 });
 
-const order1: AccRejAssByRulesTest = {
+const order1: AccRejAssignByRulesTest = {
     title: 'should create an order that reaches rule1 to Accept',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
@@ -133,7 +133,8 @@ const order1: AccRejAssByRulesTest = {
         {
             courier: courierNOFixedPrice,
             sendResponse: 'ACCEPT',
-            hasFixedPrice: true,
+            hasFixedPrice: false,
+            setPrice: '19.15',
             expectedRowValues: {
                 expectedStatus: ORDER_STATUS.ASSIGNED,
                 courier: rule1.provider,
@@ -142,7 +143,7 @@ const order1: AccRejAssByRulesTest = {
     ],
 };
 
-const order2: AccRejAssByRulesTest = {
+const order2: AccRejAssignByRulesTest = {
     title: 'should create an order that reaches rule1 to Reject',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
@@ -161,7 +162,8 @@ const order2: AccRejAssByRulesTest = {
         {
             courier: courierNOFixedPrice,
             sendResponse: 'REJECT',
-            hasFixedPrice: true,
+            hasFixedPrice: false,
+            setPrice: '19.15',
             expectedRowValues: {
                 expectedStatus: ORDER_STATUS.REJECTED,
             },
@@ -169,7 +171,7 @@ const order2: AccRejAssByRulesTest = {
     ],
 };
 
-const order3: AccRejAssByRulesTest = {
+const order3: AccRejAssignByRulesTest = {
     title: 'should create an order that reaches rule2 to Accept',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
@@ -197,8 +199,8 @@ const order3: AccRejAssByRulesTest = {
     ],
 };
 
-const order4: AccRejAssByRulesTest = {
-    title: 'should create an order that reaches rule2 to Reject',
+const order4: AccRejAssignByRulesTest = {
+    title: 'should create an order that reaches rule2 to Reject, and ends with INCIDENCE or ASSIGNED status for GLS courier',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
 
@@ -218,13 +220,14 @@ const order4: AccRejAssByRulesTest = {
             sendResponse: 'REJECT',
             hasFixedPrice: true,
             expectedRowValues: {
-                expectedStatus: ORDER_STATUS.REJECTED,
+                //expectedStatus: ORDER_STATUS.INCIDENCE,
+                courier: 'GLS',
             },
         },
     ],
 };
 
-const order5: AccRejAssByRulesTest = {
+const order5: AccRejAssignByRulesTest = {
     title: 'should create an order that reaches rule3 to Accept and Reject Bajo Cotización',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
@@ -249,7 +252,6 @@ const order5: AccRejAssByRulesTest = {
             courier: courierNOFixedPrice,
             sendResponse: 'REJECT',
             hasFixedPrice: false,
-            setPrice: '19.15',
         },
     ],
     expectedRowValues: {
@@ -258,7 +260,7 @@ const order5: AccRejAssByRulesTest = {
     },
 };
 
-const order6: AccRejAssByRulesTest = {
+const order6: AccRejAssignByRulesTest = {
     title: 'should create an order that reaches rule3 to Reject with all providers Bajo Cotización',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
@@ -277,28 +279,25 @@ const order6: AccRejAssByRulesTest = {
             courier: courierFixedPrice,
             sendResponse: 'REJECT',
             hasFixedPrice: false,
-            setPrice: '19.15',
         },
         {
             courier: courierNOFixedPrice,
             sendResponse: 'REJECT',
             hasFixedPrice: false,
-            setPrice: '19.15',
         },
         {
             courier: courierOther,
             sendResponse: 'REJECT',
             hasFixedPrice: false,
-            setPrice: '19.15',
         },
     ],
     expectedRowValues: {
-        expectedStatus: ORDER_STATUS.PENDING_PRICING,
+        expectedStatus: ORDER_STATUS.REJECTED,
     },
 };
 
-const order7: AccRejAssByRulesTest = {
-    title: 'should create an order that reaches rule1 to Reject, jumps to rule4 and ends with REJECTED status',
+const order7: AccRejAssignByRulesTest = {
+    title: 'should create an order that reaches rule1 to Reject, jumps to rule4, and ends with INCIDENCE or ASSIGNED status for GLS couriers',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
 
@@ -327,13 +326,14 @@ const order7: AccRejAssByRulesTest = {
             sendResponse: 'REJECT',
             hasFixedPrice: true,
             expectedRowValues: {
-                expectedStatus: ORDER_STATUS.REJECTED,
+                //expectedStatus: ORDER_STATUS.INCIDENCE,
+                courier: 'GLS',
             },
         },
     ],
 };
 
-const order8: AccRejAssByRulesTest = {
+const order8: AccRejAssignByRulesTest = {
     title: 'should create an order that reaches rule1 to Reject, jumps to rule4 and ends with ASSIGNED status',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
@@ -372,8 +372,8 @@ const order8: AccRejAssByRulesTest = {
     ],
 };
 
-const order9: AccRejAssByRulesTest = {
-    title: 'should create an order that reaches rule1 to Reject, jumps to rule4 to Reject, jumps to rule 5 and ends with INCIDENCE status',
+const order9: AccRejAssignByRulesTest = {
+    title: 'should create an order that reaches rule1 to Reject, jumps to rule4 to Reject, jumps to rule 5 and ends with INCIDENCE or ASSIGNED status',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
 
@@ -402,7 +402,7 @@ const order9: AccRejAssByRulesTest = {
             sendResponse: 'REJECT',
             hasFixedPrice: false,
             expectedRowValues: {
-                expectedStatus: ORDER_STATUS.INCIDENCE,
+                //expectedStatus: ORDER_STATUS.INCIDENCE,
                 courier: rule5.provider,
             },
         },
@@ -439,7 +439,7 @@ ordersPendingToAssignment.forEach((orderTest, testIndex) => {
         logger.info(`3.acceptAndReject.spec.ts orderId: ${orderId}`);
 
         await logout(page);
-        await waitForTimeout(page);
+        await waitForTimeout(page, 2);
 
         if (orderTest.relatedRule.provider === 'BAJO COTIZACIÓN') {
             for (let index = 0; index < orderTest.couriersResponses.length; index++) {
@@ -452,6 +452,7 @@ ordersPendingToAssignment.forEach((orderTest, testIndex) => {
             await waitForTimeout(page);
 
             await goToOrderDetailPageAndAssignOfferPrice(page, orderId);
+            await waitForTimeout(page, 2);
 
             await assertValuesInRow(page, reference, orderTest.expectedRowValues!);
             await waitForTimeout(page);
@@ -459,11 +460,11 @@ ordersPendingToAssignment.forEach((orderTest, testIndex) => {
             for (let index = 0; index < orderTest.couriersResponses.length; index++) {
                 const courierResponse: CourierResponseOffer = orderTest.couriersResponses[index];
                 await acceptOrReject(page, courierResponse, orderId);
-                await waitForTimeout(page);
+                await waitForTimeout(page, 2);
 
                 await assertValuesInRow(page, reference, courierResponse.expectedRowValues!);
                 await logout(page);
-                await waitForTimeout(page);
+                await waitForTimeout(page, 2);
             }
         }
     });

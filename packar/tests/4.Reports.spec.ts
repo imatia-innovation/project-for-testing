@@ -110,10 +110,11 @@ reportsTest.forEach((report) => {
     const title = report.testTitle
         .replace('{{report_type}}', report.type)
         .replace('{{start_date}}', report.dateRange.startDate)
-        .replace('{{end_date}}', report.dateRange.endDate);
+        .replace('{{end_date}}', report.dateRange.endDatePlusOne);
 
     test(title, async ({ page }) => {
         await login(page, admin);
+        await waitForTimeout(page);
 
         await navigateToCreateNewReportForm(page);
 
@@ -127,8 +128,10 @@ reportsTest.forEach((report) => {
         await getByAttribute(page, 'placeholder', 'Fecha inicio').fill(report.dateRange.startDate);
 
         await getByAttribute(page, 'placeholder', 'Fecha fin').fill(report.dateRange.endDate);
+        await waitForTimeout(page);
 
         await clickOnText(page, 'Guardar');
+        await waitForTimeout(page);
 
         await waitUntilUrlLoads(page, '/app/main/reports');
         await waitForTimeout(page);
@@ -137,14 +140,14 @@ reportsTest.forEach((report) => {
 
         await clickOnText(page, 'Fecha del informe');
 
-        await waitForTimeout(page);
+        await waitForTimeout(page, 2);
 
         await assertList(page, [
             formatDate(now),
             name,
             report.description,
             report.dateRange.startDate,
-            report.dateRange.endDate,
+            report.dateRange.endDatePlusOne, //report.dateRange.endDate,
             report.type,
         ]);
     });

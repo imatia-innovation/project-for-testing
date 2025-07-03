@@ -62,7 +62,7 @@ const order3: CreateNewOrderTest = {
     provider: 'SEUR',
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
 
         await selectCompleteOrder(page, { boxQty: 2, weight: 2 });
 
@@ -209,7 +209,7 @@ const order10: CreateNewOrderTest = {
     provider: 'TRANSPORTES PACO',
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -224,7 +224,7 @@ const order11: CreateNewOrderTest = {
     provider: 'EMILIO SL',
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -239,7 +239,7 @@ const order12: CreateNewOrderTest = {
     provider: 'STEF',
     service: 1,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -254,7 +254,7 @@ const order13: CreateNewOrderTest = {
     provider: 'BAJO COTIZACIÓN',
     service: 0,
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 1, width: 1, height: 1, weight: 1 });
+        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
