@@ -1,4 +1,4 @@
-import test from '@playwright/test';
+import test, { Locator } from '@playwright/test';
 import { USER_DS_ADMIN } from '../../constants';
 import {
     accountAmount,
@@ -38,28 +38,27 @@ import {
 } from '../../functions/steps/Analysis/attributes';
 import assertByText from '../../functions/utils/assertByText';
 import { clickOnText, clickOnTextLast } from '../../functions/utils/clickOnText';
-import { getByAttribute } from '../../functions/utils/getByAttribute';
 import { getByIdAndFill } from '../../functions/utils/getByIdAndFill';
 import logger from '../../functions/utils/logger';
+import { selectRegisterPerPage } from '../../functions/utils/pagination';
 import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 import { AttributeTestCase } from '../../interfaces/AttributeTestCase';
 
 test('should go to Analysis > Attributes page with ds admin user', async ({ page }) => {
     await loginAndGoToAttributesPage(page, USER_DS_ADMIN);
 
-    let attributeLocator = getByAttribute(page, 'class', 'attribute-name');
+    let attributeLocator = page.getByRole('row');
     let qtyAttributes = (await attributeLocator.all()).length;
-
     logger.info('  1.Attributes.spec.ts qtyRows: ', qtyAttributes);
 });
 
 test('should go to the Analysis > Attributes page and delete all if exists', async ({ page }) => {
     await loginAndGoToAttributesPage(page, USER_DS_ADMIN);
 
-    let attributeLocator = getByAttribute(page, 'class', 'attribute-name');
+    let attributeLocator = page.getByRole('row');
     let qtyAttributes = (await attributeLocator.all()).length;
-
-    logger.info('  1.Attributes.spec.ts qtyRows: ', qtyAttributes);
+    const rowText = await attributeLocator.allInnerTexts();
+    logger.info('  1.Attributes.spec.ts ', { qtyAttributes, rowText });
 
     test.slow();
 
@@ -67,7 +66,22 @@ test('should go to the Analysis > Attributes page and delete all if exists', asy
 
     // Clean
     for (let index = qtyAttributes; index > 0; index--) {
-        await attributeLocator.first().click();
+        attributeLocator = page.getByRole('row');
+        qtyAttributes = (await attributeLocator.all()).length;
+        logger.info('  1.Attributes.spec.ts qtyRows: ', qtyAttributes);
+
+        const rowLocator: Locator = attributeLocator.nth(1);
+        const rowTexts: string[] = await rowLocator.allInnerTexts();
+
+        const skipThisRow: boolean = rowTexts.reduce((prev, text) => {
+            return text === 'filter_alt\nName' || text === 'No results found';
+        }, false);
+
+        if (skipThisRow) {
+            continue;
+        }
+
+        await rowLocator.click();
         await waitForTimeout(page);
         await attributeDetailAssertions(page);
 
@@ -141,15 +155,13 @@ test('should go to Analysis > Attributes page with ds admin user and watch all c
 }) => {
     await loginAndGoToAttributesPage(page, USER_DS_ADMIN);
 
-    let attributeLocator = getByAttribute(page, 'class', 'attribute-name');
+    let attributeLocator = page.getByRole('row');
     let qtyAttributes = (await attributeLocator.all()).length;
+    logger.info('  1.Attributes.spec.ts qtyRows: ', qtyAttributes);
 
-    logger.info('  1.Attributes.spec.ts qtyAttributes: ', qtyAttributes);
+    await selectRegisterPerPage(page);
 
-    await clickOnText(page, 'Show more');
-    await waitForTimeout(page);
-
-    for (let index = 0; index < attributeTests.length; index++) {
+    for (let index = 0; index < qtyAttributes - 2; index++) {
         const attributeTest = attributeTests[index];
 
         await assertByText(page, attributeTest.name);

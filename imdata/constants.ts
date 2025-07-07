@@ -36,4 +36,4 @@ export const USER_IMATIA_ADMIN: User = {
 
 export const baserUrl: string = process.env.BASE_URL!;
 
-export const TIMEOUT = process.env.ENVIRONMENT === 'dev' ? 900 : 1400;
+export const TIMEOUT = process.env.ENVIRONMENT === 'dev' ? 1000 : 1400;

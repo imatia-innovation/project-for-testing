@@ -11,33 +11,29 @@ import {
 import assertByText from '../../functions/utils/assertByText';
 import assertList from '../../functions/utils/assertList';
 import { clickOnText, clickOnTextNth } from '../../functions/utils/clickOnText';
-import { getByAttribute } from '../../functions/utils/getByAttribute';
 import logger from '../../functions/utils/logger';
 import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 import { EntityTestCase } from '../../interfaces/EntityTestCase';
 
-test.skip('should go to Analysis > Entities page ds admin user', async ({ page }) => {
+test('should go to Analysis > Entities page ds admin user', async ({ page }) => {
     await loginAndGoToEntitiesPage(page, USER_DS_ADMIN);
-
-    let entityCardLocator = getByAttribute(page, 'class', 'entity-data');
+    let entityCardLocator = page.getByRole('row');
     let qtyEntities = (await entityCardLocator.all()).length;
-
     logger.info('  1.Attributes.spec.ts qtyRows: ', qtyEntities);
 });
 
-test.skip('should go to Analysis > Entities and delete all if exists', async ({ page }) => {
+test('should go to Analysis > Entities and delete all if exists', async ({ page }) => {
     await loginAndGoToEntitiesPage(page, USER_DS_ADMIN);
 
-    let entityCardLocator = getByAttribute(page, 'class', 'entity-data');
+    let entityCardLocator = page.getByRole('row');
     let qtyEntities = (await entityCardLocator.all()).length;
-
     logger.info('  1.Attributes.spec.ts qtyRows: ', qtyEntities);
 
     test.slow();
 
     // Clean
-    for (let index = qtyEntities; index > 0; index--) {
-        await entityCardLocator.first().click();
+    for (let index = qtyEntities - 2; index > 0; index--) {
+        await entityCardLocator.nth(1).click();
         await waitForTimeout(page);
         await entityDetailAssertions(page);
 
@@ -59,7 +55,7 @@ const entityTests: EntityTestCase[] = [entityAccount, entityAddress, entityCusto
 entityTests.forEach((entityTest) => {
     const testDescription = entityTest.title.replace('{{name}}', entityTest.name);
 
-    test.skip(testDescription, async ({ page }) => {
+    test(testDescription, async ({ page }) => {
         await loginAndGoToEntitiesPage(page, USER_DS_ADMIN);
 
         test.slow();

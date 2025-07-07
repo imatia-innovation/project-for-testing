@@ -8,6 +8,7 @@ import assertList from '../../utils/assertList';
 import { clickOnText, clickOnTextNth } from '../../utils/clickOnText';
 import { getById } from '../../utils/getById';
 import logger from '../../utils/logger';
+import { selectRegisterPerPage } from '../../utils/pagination';
 import { waitForTimeout } from '../../utils/waitforTimeout';
 import { homeAssertions } from '../home';
 import { login } from '../login';
@@ -95,7 +96,7 @@ export async function createAttribute(page: Page, attTest: AttributeTestCase) {
         if (errorMessageCount === 0) {
             const attrNameCount = await page.getByText(attTest.name).count();
             if (attrNameCount === 0) {
-                await clickOnText(page, 'Show more');
+                await selectRegisterPerPage(page);
             }
             await waitForTimeout(page);
 

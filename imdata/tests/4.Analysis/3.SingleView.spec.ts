@@ -40,7 +40,7 @@ singleViewTestCases.forEach((singleViewTestCase) => {
         await assertList(page, ['Export Single View', ...getAllEntitiesNames()]);
 
         await clickOnTextLast(page, singleViewTestCase.name);
-        await waitForTimeout(page);
+        await waitForTimeout(page, 2);
 
         await assertList(page, [
             singleViewTestCase.name,
