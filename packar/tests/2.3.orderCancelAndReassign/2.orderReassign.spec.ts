@@ -1,5 +1,12 @@
 import test, { Page } from '@playwright/test';
-import { courierFixedPrice, courierNOFixedPrice, DESTINATION_FAVORITE, PICKUP_LOCATION } from '../../constants';
+import {
+    courierFixedPrice,
+    courierNOFixedPrice,
+    DEFAULT_NO_TRADITIONAL_COURIER,
+    DESTINATION_FAVORITE,
+    PICKUP_LOCATION,
+    TEST_NEW_SHIPPER,
+} from '../../constants';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import { ORDER_STATUS } from '../../constants/orderStatus';
 import logout from '../../functions/steps/logout';
@@ -21,7 +28,7 @@ import {
     cancelOrderSuccessfully,
     createOrderWithAssignedStatus,
     reassignOrderSuccessfully,
-} from '../../functions/steps/orderCancelAndReassingSteps';
+} from '../../functions/steps/orderCancelAndReassignSteps';
 import { waitForTimeout } from '../../functions/utils/waitforTimeout';
 import Provider from '../../interfaces/Provider';
 
@@ -103,7 +110,10 @@ test("should go to an order with status 'Pte. asignación' detail page and try t
     await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ASSIGNMENT);
 
     const orderId = await getOrderId(page, reference);
-    const provider: Provider = { name: 'CORREOS', service: 'PAQUETE ESTÁNDAR DOMICILIO' };
+    const provider: Provider = {
+        name: DEFAULT_NO_TRADITIONAL_COURIER.provider,
+        service: DEFAULT_NO_TRADITIONAL_COURIER.service,
+    };
     const orderIdRef: OfferTestResult = { orderId, reference };
     test.slow();
 
@@ -124,7 +134,10 @@ test("should go to an order with status 'Pte. cotización' detail page and try t
 
     const orderId = await getOrderId(page, reference);
 
-    const provider: Provider = { name: 'CORREOS', service: 'PAQUETE ESTÁNDAR DOMICILIO' };
+    const provider: Provider = {
+        name: DEFAULT_NO_TRADITIONAL_COURIER.provider,
+        service: DEFAULT_NO_TRADITIONAL_COURIER.service,
+    };
     const orderIdRef: OfferTestResult = { orderId, reference };
     test.slow();
 
@@ -146,7 +159,10 @@ test("should go to an order with status 'Pte. aceptación' detail page and reass
     await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ACCEPT);
 
     const orderId = await getOrderId(page, reference);
-    const provider: Provider = { name: 'CORREOS', service: 'PAQUETE ESTÁNDAR DOMICILIO' };
+    const provider: Provider = {
+        name: DEFAULT_NO_TRADITIONAL_COURIER.provider,
+        service: DEFAULT_NO_TRADITIONAL_COURIER.service,
+    };
     const orderIdRef: OfferTestResult = { orderId, reference };
     const orderStatusExpected = ORDER_STATUS.ASSIGNED;
     test.slow();
@@ -168,7 +184,10 @@ test("should go to an order with status 'Pte. aceptación' detail page, reassign
     await assertTextInRow(page, reference, ORDER_STATUS.PENDING_ACCEPT);
 
     const orderId = await getOrderId(page, reference);
-    const provider: Provider = { name: 'CORREOS', service: 'PAQUETE ESTÁNDAR DOMICILIO' };
+    const provider: Provider = {
+        name: DEFAULT_NO_TRADITIONAL_COURIER.provider,
+        service: DEFAULT_NO_TRADITIONAL_COURIER.service,
+    };
     const orderIdRef: OfferTestResult = { orderId, reference };
     const orderStatusExpected = ORDER_STATUS.ASSIGNED;
     test.slow();
@@ -189,7 +208,10 @@ test("should go to an order with status 'Asignado' detail page and reassign to o
 
     test.slow();
 
-    const provider: Provider = { name: 'CORREOS', service: 'PAQUETE ESTÁNDAR DOMICILIO' };
+    const provider: Provider = {
+        name: DEFAULT_NO_TRADITIONAL_COURIER.provider,
+        service: DEFAULT_NO_TRADITIONAL_COURIER.service,
+    };
     const orderIdRef: OfferTestResult = { orderId, reference };
     const orderStatusExpected = ORDER_STATUS.ASSIGNED;
     const orderId2: string = await reassignOrderSuccessfully(page, provider, orderIdRef, orderStatusExpected);
@@ -206,31 +228,38 @@ test('should reassign an order by second time', async ({ page }) => {
 
     test.slow();
 
-    const provider: Provider = { name: courierFixedPrice.providerName!, service: 'Standard' };
-    const orderIdRef: OfferTestResult = { orderId, reference };
-    const orderStatusExpected = ORDER_STATUS.PENDING_ACCEPT;
-    const orderId2 = await reassignOrderSuccessfully(page, provider, orderIdRef, orderStatusExpected, true);
+    let orderId2 = orderId;
 
-    await navigateToOrderDetailPage(page, orderId);
-    await assertOrderDetailPageData(page, ORDER_STATUS.CANCELLED);
+    if (!TEST_NEW_SHIPPER) {
+        const provider: Provider = { name: courierFixedPrice.providerName!, service: 'Standard' };
 
-    await navigateToOrderDetailPage(page, orderId2);
-    await assertOrderDetailPageData(page, ORDER_STATUS.PENDING_ACCEPT);
+        const orderIdRef: OfferTestResult = { orderId, reference };
+        const orderStatusExpected = ORDER_STATUS.PENDING_ACCEPT;
+        orderId2 = await reassignOrderSuccessfully(page, provider, orderIdRef, orderStatusExpected, true);
 
-    await logout(page);
-    await waitForTimeout(page);
+        await navigateToOrderDetailPage(page, orderId);
+        await assertOrderDetailPageData(page, ORDER_STATUS.CANCELLED);
 
-    await goToOfferDetailPage(page, courierFixedPrice, orderId2);
-    await acceptOfferAndLogout(page, orderId2, true, order3.setPrice);
+        await navigateToOrderDetailPage(page, orderId2);
+        await assertOrderDetailPageData(page, ORDER_STATUS.PENDING_ACCEPT);
 
-    test.slow();
+        await logout(page);
+        await waitForTimeout(page);
+
+        await goToOfferDetailPage(page, courierFixedPrice, orderId2);
+        await acceptOfferAndLogout(page, orderId2, true, order3.setPrice);
+        test.slow();
+    }
 
     await navigateToOrdersPageRoutine(page);
     await assertTextInRow(page, reference, ORDER_STATUS.ASSIGNED);
 
     await navigateToOrderDetailPage(page, orderId2);
 
-    const provider2: Provider = { name: 'CORREOS', service: 'PAQUETE ESTÁNDAR DOMICILIO' };
+    const provider2: Provider = {
+        name: DEFAULT_NO_TRADITIONAL_COURIER.provider,
+        service: DEFAULT_NO_TRADITIONAL_COURIER.service,
+    };
     const orderIdRef2: OfferTestResult = { orderId: orderId2, reference };
     const orderId3 = await reassignOrderSuccessfully(page, provider2, orderIdRef2, ORDER_STATUS.ASSIGNED);
 

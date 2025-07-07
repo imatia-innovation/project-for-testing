@@ -5,7 +5,7 @@ export interface Condition {
 }
 
 export default interface CreateNewRuleOrderTest {
-    name: string;
+    testTitle: string;
     provider: string;
     service: number;
     priority: string;

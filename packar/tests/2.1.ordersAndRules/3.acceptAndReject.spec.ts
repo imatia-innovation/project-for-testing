@@ -3,8 +3,10 @@ import {
     courierFixedPrice,
     courierNOFixedPrice,
     courierOther,
+    DEFAULT_NO_TRADITIONAL_COURIER,
     DESTINATION_FAVORITE,
     PICKUP_LOCATION,
+    TEST_NEW_SHIPPER,
 } from '../../constants';
 import { ORDER_STATUS } from '../../constants/orderStatus';
 import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../../constants/rulesPropertiesAndOperations';
@@ -27,7 +29,7 @@ import AccRejAssignByRulesTest, { CourierResponseOffer } from '../../interfaces/
 import CreateNewRuleOrderTest from '../../interfaces/CreateNewRuleOrderTest';
 
 const rule1: CreateNewRuleOrderTest = {
-    name: `Si el alto es igual que 100, asignar a ${courierNOFixedPrice.providerName!}`,
+    testTitle: `Si el alto es igual que 100, asignar a ${courierNOFixedPrice.providerName!}`,
     provider: courierNOFixedPrice.providerName!,
     service: 0,
     priority: '1',
@@ -41,7 +43,7 @@ const rule1: CreateNewRuleOrderTest = {
 };
 
 const rule2: CreateNewRuleOrderTest = {
-    name: `Si el alto es menor que 100, asignar a ${courierFixedPrice.providerName!}`,
+    testTitle: `Si el alto es menor que 100, asignar a ${courierFixedPrice.providerName!}`,
     provider: courierFixedPrice.providerName!,
     service: 0,
     priority: '2',
@@ -55,7 +57,7 @@ const rule2: CreateNewRuleOrderTest = {
 };
 
 const rule3: CreateNewRuleOrderTest = {
-    name: 'Si el alto es mayor que 100, asignar a BAJO COTIZACIÓN',
+    testTitle: 'Si el alto es mayor que 100, asignar a BAJO COTIZACIÓN',
     provider: 'BAJO COTIZACIÓN',
     service: 0,
     priority: '3',
@@ -70,7 +72,7 @@ const rule3: CreateNewRuleOrderTest = {
 
 const rule4: CreateNewRuleOrderTest = {
     // Genera incidencia en el pedido
-    name: `Si el ancho es igual que 98, asignar a ${courierOther.providerName!}`,
+    testTitle: `Si el ancho es igual que 98, asignar a ${courierOther.providerName!}`,
     provider: courierOther.providerName!,
     service: 0,
     priority: '4',
@@ -85,8 +87,8 @@ const rule4: CreateNewRuleOrderTest = {
 
 const rule5: CreateNewRuleOrderTest = {
     // Generates incidence
-    name: 'Si el ancho menor que 100, asignar a GLS Estándar 24H',
-    provider: 'GLS',
+    testTitle: 'Si el ancho menor que 100, asignar a STEF',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     priority: '5',
     conditions: [
@@ -105,7 +107,7 @@ test('Delete rules again ', async ({ page }) => {
 });
 
 newRuleTests.forEach((rule, index) => {
-    test(`Create rule${index + 1} "${rule.name}" `, async ({ page }) => {
+    test(`Create rule${index + 1} "${rule.testTitle}" `, async ({ page }) => {
         await navigateToRulesPageRoutine(page);
 
         test.slow();
@@ -190,7 +192,8 @@ const order3: AccRejAssignByRulesTest = {
         {
             courier: courierFixedPrice,
             sendResponse: 'ACCEPT',
-            hasFixedPrice: true,
+            hasFixedPrice: !TEST_NEW_SHIPPER,
+            setPrice: '33.55',
             expectedRowValues: {
                 expectedStatus: ORDER_STATUS.ASSIGNED,
                 courier: rule2.provider,
@@ -200,7 +203,7 @@ const order3: AccRejAssignByRulesTest = {
 };
 
 const order4: AccRejAssignByRulesTest = {
-    title: 'should create an order that reaches rule2 to Reject, and ends with INCIDENCE or ASSIGNED status for GLS courier',
+    title: 'should create an order that reaches rule2 to Reject, and ends with INCIDENCE or ASSIGNED status for STEF courier',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
 
@@ -218,16 +221,17 @@ const order4: AccRejAssignByRulesTest = {
         {
             courier: courierFixedPrice,
             sendResponse: 'REJECT',
-            hasFixedPrice: true,
+            hasFixedPrice: false,
+            setPrice: '33.55',
             expectedRowValues: {
                 //expectedStatus: ORDER_STATUS.INCIDENCE,
-                courier: 'GLS',
+                courier: DEFAULT_NO_TRADITIONAL_COURIER.provider,
             },
         },
     ],
 };
 
-const order5: AccRejAssignByRulesTest = {
+let order5: AccRejAssignByRulesTest = {
     title: 'should create an order that reaches rule3 to Accept and Reject Bajo Cotización',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
@@ -260,7 +264,7 @@ const order5: AccRejAssignByRulesTest = {
     },
 };
 
-const order6: AccRejAssignByRulesTest = {
+let order6: AccRejAssignByRulesTest = {
     title: 'should create an order that reaches rule3 to Reject with all providers Bajo Cotización',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
@@ -296,8 +300,8 @@ const order6: AccRejAssignByRulesTest = {
     },
 };
 
-const order7: AccRejAssignByRulesTest = {
-    title: 'should create an order that reaches rule1 to Reject, jumps to rule4, and ends with INCIDENCE or ASSIGNED status for GLS couriers',
+let order7: AccRejAssignByRulesTest = {
+    title: 'should create an order that reaches rule1 to Reject, jumps to rule4, and ends with INCIDENCE or ASSIGNED status for STEF couriers',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
 
@@ -327,13 +331,13 @@ const order7: AccRejAssignByRulesTest = {
             hasFixedPrice: true,
             expectedRowValues: {
                 //expectedStatus: ORDER_STATUS.INCIDENCE,
-                courier: 'GLS',
+                courier: DEFAULT_NO_TRADITIONAL_COURIER.provider,
             },
         },
     ],
 };
 
-const order8: AccRejAssignByRulesTest = {
+let order8: AccRejAssignByRulesTest = {
     title: 'should create an order that reaches rule1 to Reject, jumps to rule4 and ends with ASSIGNED status',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
@@ -372,7 +376,7 @@ const order8: AccRejAssignByRulesTest = {
     ],
 };
 
-const order9: AccRejAssignByRulesTest = {
+let order9: AccRejAssignByRulesTest = {
     title: 'should create an order that reaches rule1 to Reject, jumps to rule4 to Reject, jumps to rule 5 and ends with INCIDENCE or ASSIGNED status',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
@@ -409,17 +413,62 @@ const order9: AccRejAssignByRulesTest = {
     ],
 };
 
-const ordersPendingToAssignment = [
-    order1,
-    order2,
-    order3,
-    order4,
-    order5,
-    order6, // Maybe the final status changes in the future with a fixture
-    order7,
-    order8,
-    order9,
-];
+if (TEST_NEW_SHIPPER) {
+    order5.couriersResponses = [
+        {
+            courier: courierFixedPrice,
+            sendResponse: 'ACCEPT',
+            hasFixedPrice: false,
+            setPrice: '19.15',
+        },
+    ];
+    order6.couriersResponses = [
+        {
+            courier: courierFixedPrice,
+            sendResponse: 'REJECT',
+            hasFixedPrice: false,
+        },
+    ];
+    order7.couriersResponses = [
+        {
+            courier: courierFixedPrice,
+            sendResponse: 'REJECT',
+            hasFixedPrice: false,
+        },
+    ];
+    order9.couriersResponses = [
+        {
+            courier: courierFixedPrice,
+            sendResponse: 'REJECT',
+            hasFixedPrice: false,
+        },
+    ];
+}
+
+const ordersPendingToAssignment = TEST_NEW_SHIPPER
+    ? [
+          order1,
+          order2,
+          order3,
+          order4,
+          order5,
+          order6, // Maybe the final status changes in the future with a fixture
+          order7,
+          order9,
+      ]
+    : process.env.ENVIRONMENT === 'pre'
+      ? [order1, order2, order3, order4, order5, order7, order8, order9]
+      : [
+            order1,
+            order2,
+            order3,
+            order4,
+            order5,
+            order6, // Maybe the final status changes in the future with a fixture
+            order7,
+            order8,
+            order9,
+        ];
 
 ordersPendingToAssignment.forEach((orderTest, testIndex) => {
     test(orderTest.title, async ({ page }) => {
@@ -441,12 +490,16 @@ ordersPendingToAssignment.forEach((orderTest, testIndex) => {
         await logout(page);
         await waitForTimeout(page, 2);
 
+        test.slow();
+
         if (orderTest.relatedRule.provider === 'BAJO COTIZACIÓN') {
             for (let index = 0; index < orderTest.couriersResponses.length; index++) {
                 const courierResponse: CourierResponseOffer = orderTest.couriersResponses[index];
                 await acceptOrReject(page, courierResponse, orderId);
                 await waitForTimeout(page);
             }
+
+            test.slow();
 
             await navigateToOrdersPageRoutine(page);
             await waitForTimeout(page);

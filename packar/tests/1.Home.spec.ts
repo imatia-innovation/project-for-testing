@@ -1,18 +1,11 @@
 import { expect, test } from '@playwright/test';
-import { admin, courierOther, demo } from '../constants';
+import { admin, courierOther, demo, TEST_NEW_SHIPPER } from '../constants';
 import login from '../functions/steps/login';
 import logger from '../functions/utils/logger';
 
-const ITEM_LIST_ADMIN = [
-    'Envíos',
-    'Análisis',
-    'Devoluciones',
-    'Destinos',
-    'Expediciones',
-    'Mis expediciones',
-    'Informes',
-    'Reglas',
-];
+const ITEM_LIST_ADMIN = TEST_NEW_SHIPPER
+    ? ['Envíos', 'Análisis', 'Devoluciones', 'Destinos', 'Informes', 'Reglas']
+    : ['Envíos', 'Análisis', 'Devoluciones', 'Destinos', 'Expediciones', 'Mis expediciones', 'Informes', 'Reglas'];
 
 const ITEM_LIST_DEMO = ['Envíos', 'Análisis', 'Devoluciones', 'Destinos', 'Expediciones', 'Informes', 'Reglas'];
 

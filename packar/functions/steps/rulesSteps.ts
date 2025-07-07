@@ -227,14 +227,14 @@ export async function deleteRules(page: Page) {
 
 export async function createRule(page: Page, rule: CreateNewRuleOrderTest) {
     logger.info(
-        `1.couriersAssignedByRules.spec.ts parameters: ${rule.name}, ${rule.conditions} provider: ${rule.provider}, priority: ${rule.priority}`
+        `1.couriersAssignedByRules.spec.ts parameters: ${rule.testTitle}, ${rule.conditions} provider: ${rule.provider}, priority: ${rule.priority}`
     );
 
     await openNewRuleForm(page);
 
     // Start fill form
 
-    await getByIdAndFill(page, 'name', rule.name);
+    await getByIdAndFill(page, 'name', rule.testTitle);
 
     await selectProvider(page, getProviderService(rule.provider, rule.service, PROVIDER_SERVICES)!);
 
@@ -252,7 +252,7 @@ export async function createRule(page: Page, rule: CreateNewRuleOrderTest) {
         waitUntil: 'load',
     });
 
-    await assertRuleCreated(page, rule.name);
+    await assertRuleCreated(page, rule.testTitle);
 }
 
 export async function selectAnotherCondition(

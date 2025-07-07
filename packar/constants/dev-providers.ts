@@ -1,6 +1,5 @@
+import { PROVIDER_SERVICES } from '../constants';
 import Provider from '../interfaces/Provider';
-
-export const OPEN_PRICING_SERVICE_NAME_STANDARD = process.env.ENVIRONMENT === 'dev' ? 'Estándar' : 'Standard';
 export interface ProviderServices {
     name: string;
     services: string[];
@@ -53,7 +52,7 @@ export const DEV_PROVIDER_SERVICES: ProviderServices[] = [
     },
     {
         name: 'BAJO COTIZACIÓN', // 7
-        services: [OPEN_PRICING_SERVICE_NAME_STANDARD],
+        services: ['Estándar'],
     },
     {
         name: 'ENVIOS PEPITO', // 8
@@ -91,4 +90,10 @@ export function getProviderService(
             service: providerService.services[index],
         };
     }
+}
+
+export function getServiceNameByProvider(providerName: string, serviceIndex: number): string | undefined {
+    return PROVIDER_SERVICES.find((providerServices) => {
+        return providerServices.name === providerName;
+    })?.services[serviceIndex];
 }

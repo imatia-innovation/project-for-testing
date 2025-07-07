@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import Calculator from '../classes/Calculator';
 import { RuleProviderMapper } from '../classes/RuleProviderMapper';
-import { PROVIDER_SERVICES } from '../constants';
+import { DEFAULT_NO_TRADITIONAL_COURIER, PROVIDER_SERVICES } from '../constants';
 import { getProviderService } from '../constants/dev-providers';
 import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../constants/rulesPropertiesAndOperations';
 import RuleService from '../core/RuleService';
@@ -37,7 +37,7 @@ let lastPriorityValue = '1';
 
 const rule1: CreateNewRuleTest = {
     name: 'Regla auto test 1',
-    provider: 'GLS',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     combinationMain: combinationsFor100,
     combination: { i: 0, j: 0 },
@@ -46,7 +46,7 @@ const rule1: CreateNewRuleTest = {
 };
 const rule2: CreateNewRuleTest = {
     name: 'Regla auto test 2',
-    provider: 'GLS',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 1,
     combinationMain: combinationsFor2000,
     combination: { i: 0, j: 0 },
@@ -100,7 +100,7 @@ const rule7: CreateNewRuleTest = {
 };
 const rule8: CreateNewRuleTest = {
     name: 'Regla auto test 8',
-    provider: 'STEF',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     combinationMain: combinationsFor2000,
     combination: { i: 6, j: 6 },
@@ -109,7 +109,7 @@ const rule8: CreateNewRuleTest = {
 };
 const rule9: CreateNewRuleTest = {
     name: 'Regla auto test 9',
-    provider: 'STEF',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 1,
     combinationMain: combinationsFor2000,
     combination: { i: 6, j: 6 },
@@ -118,7 +118,7 @@ const rule9: CreateNewRuleTest = {
 };
 const rule10: CreateNewRuleTest = {
     name: 'Regla auto test 10',
-    provider: 'STEF',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     combinationMain: combinationsFor2000,
     combination: { i: 6, j: 6 },
@@ -137,7 +137,7 @@ const rule11: CreateNewRuleTest = {
 
 const ruleThatFails: CreateNewRuleTest = {
     name: 'Debería Fallar',
-    provider: 'STEF',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     combinationMain: combinationsFor2000,
     combination: { i: 6, j: 6 },
@@ -187,7 +187,10 @@ test('should see an error when try to use the same last priority value', async (
     await name.click();
     await name.fill(uniqueRuleName);
 
-    await selectProvider(page, { name: 'GLS', service: 'Estándar 24H' });
+    await selectProvider(page, {
+        name: DEFAULT_NO_TRADITIONAL_COURIER.provider,
+        service: DEFAULT_NO_TRADITIONAL_COURIER.service,
+    });
 
     await selectAnotherCondition(page, PROPERTY_OPTIONS, OPERATOR_OPTIONS, combinationsFor100);
 

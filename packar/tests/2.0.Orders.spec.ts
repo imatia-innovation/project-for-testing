@@ -1,6 +1,6 @@
 import test, { Page } from '@playwright/test';
 import { OrderProviderMapper } from '../classes/OrderProviderMapper';
-import { DESTINATION_FAVORITE, PICKUP_LOCATION } from '../constants';
+import { DEFAULT_NO_TRADITIONAL_COURIER, DESTINATION_FAVORITE, PICKUP_LOCATION } from '../constants';
 import {
     assertOrderDetailPageData,
     createNewOrder,
@@ -23,7 +23,7 @@ const order1: CreateNewOrderTest = {
     title: 'should fill the create new order form with the minimum fields selecting Partial Order',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: 'GLS',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 5, width: 20, height: 30, weight: 50 });
@@ -38,7 +38,7 @@ const order2: CreateNewOrderTest = {
     title: 'should fill the create new order form with the minimum fields selecting Complete Order',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: 'NARVAL',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectCompleteOrder(page, { boxQty: 2, weight: 36 });
@@ -59,7 +59,7 @@ const order3: CreateNewOrderTest = {
     title: 'should fill the create new order form with box, complete order, pallet and envelope',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: 'SEUR',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
@@ -80,7 +80,7 @@ const order4: CreateNewOrderTest = {
     title: 'should fill the create new order form with box, pallet and envelope, with date for 1-2 days',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: 'STEF',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
         const now = new Date();
@@ -109,7 +109,7 @@ const order5: CreateNewOrderTest = {
     title: 'should fill the create new order with various pallets',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: 'CORREOS',
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectPallet(page, 'Europalet', { length: 5, width: 20, height: 30, weight: 50 }, 3);
@@ -128,8 +128,8 @@ const order6: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with email',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: 'GLS',
-    service: 1,
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
+    service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 15, width: 25, height: 35, weight: 55 });
     },
@@ -149,8 +149,8 @@ const order7: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with phone number',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: 'NARVAL',
-    service: 1,
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
+    service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 11, width: 22, height: 33, weight: 44 });
     },
@@ -171,8 +171,8 @@ const order8: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with email and select other country',
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
-    provider: 'SEUR',
-    service: 1,
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
+    service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 100, width: 200, height: 300, weight: 500 });
     },
@@ -195,51 +195,6 @@ const order9: CreateNewOrderTest = {
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 100, width: 200, height: 300, weight: 500 });
-    },
-    destination: {
-        favorite: DESTINATION_FAVORITE,
-        saveAsNew: false,
-        remarks: 'This is an automatic test',
-    },
-};
-const order10: CreateNewOrderTest = {
-    title: 'should fill the create new order form with provider Paco Stardard',
-    pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
-    provider: 'TRANSPORTES PACO',
-    service: 0,
-    selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
-    },
-    destination: {
-        favorite: DESTINATION_FAVORITE,
-        saveAsNew: false,
-        remarks: 'This is an automatic test',
-    },
-};
-const order11: CreateNewOrderTest = {
-    title: 'should fill the create new order form with provider Emilio Stardard',
-    pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
-    provider: 'EMILIO SL',
-    service: 0,
-    selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
-    },
-    destination: {
-        favorite: DESTINATION_FAVORITE,
-        saveAsNew: false,
-        remarks: 'This is an automatic test',
-    },
-};
-const order12: CreateNewOrderTest = {
-    title: 'should fill the create new order form with provider STEF Congelado',
-    pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
-    provider: 'STEF',
-    service: 1,
-    selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -273,9 +228,6 @@ let createOrdersTests: CreateNewOrderTest[] = [
     order7,
     order8,
     order9,
-    order10,
-    order11,
-    order12,
     order13,
 ];
 

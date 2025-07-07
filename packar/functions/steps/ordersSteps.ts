@@ -12,9 +12,8 @@ import User from '../../interfaces/User';
 import assertByText from '../utils/assertByText';
 import assertList from '../utils/assertList';
 import { assertTextInRow, locateRow } from '../utils/assertTextInRow';
-import { clickOnButton, clickOnElementById, clickOnText, clickOnTextNth } from '../utils/clickOnText';
+import { clickOnButton, clickOnElementById, clickOnText, clickOnTextLast, clickOnTextNth } from '../utils/clickOnText';
 import { formatDate } from '../utils/formatDate';
-import { getByAttribute } from '../utils/getByAttribute';
 import { getById } from '../utils/getById';
 import { getByIdAndFill } from '../utils/getByIdAndFill';
 import { getByLabelAndFill } from '../utils/getByLabelAndFill';
@@ -24,7 +23,7 @@ import { markCheckboxRow } from '../utils/markCheckboxRow';
 import { waitForTimeout } from '../utils/waitforTimeout';
 import { waitUntilUrlLoads } from '../utils/waitUntilUrlLoads';
 import login from './login';
-import { acceptOfferAndLogout } from './orderCancelAndReassingSteps';
+import { acceptOfferAndLogout } from './orderCancelAndReassignSteps';
 import { goToOfferDetailPage, rejectOfferAndLogout } from './orderTracking/courierAcceptRejectOfferSteps';
 
 const LABELS_AND_COLUMNS: string[] = [
@@ -182,9 +181,7 @@ async function setLimitPrice(page: Page, orderLimitPrice: number) {
 async function selectPickUpLocation(page: Page, pickUpLocation: string) {
     logger.info(' Start ordersSteps.ts selectPickUpLocation: ', pickUpLocation);
     await clickOnElementById(page, 'pickup_location');
-    process.env.ENVIRONMENT === 'dev'
-        ? await clickOnText(page, pickUpLocation)
-        : await clickOnTextNth(page, pickUpLocation, 1);
+    await clickOnTextLast(page, pickUpLocation);
     logger.info(' Finish ordersSteps.ts selectPickUpLocation');
 }
 
@@ -259,13 +256,14 @@ export async function fillDateInput(page: Page, order: number, id: string, date:
 }
 
 export async function selectProvider(page: Page, provider: Provider) {
-    const providerLabel = getByAttribute(page, 'key', 'courier_id');
+    const providerLabel = getById(page, 'courier');
     await providerLabel.click();
+    await waitForTimeout(page);
 
     const providerLocators = page.getByText(provider.name);
     await providerLocators.last().click();
 
-    const service = getByAttribute(page, 'service', 'courierShipmentTypeUser').nth(1);
+    const service = getById(page, 'service_type');
     await service.click();
 
     const serviceLocators = page.getByText(provider.service);
@@ -470,7 +468,7 @@ export async function assertTextIsNotInRow(page: Page, reference: string, text: 
     expect(rowText!.includes(text)).not.toBeTruthy();
 }
 
-export async function gotToOrderDetailPage(page: Page, user: User, orderId: string): Promise<void> {
+export async function goToOrderDetailPage(page: Page, user: User, orderId: string): Promise<void> {
     await login(page, user);
 
     await waitForTimeout(page);
@@ -490,8 +488,6 @@ export async function gotToOrderDetailPage(page: Page, user: User, orderId: stri
 }
 
 export async function orderDetailPageAssertions(page: Page, order: CreateNewOrderTest, orderStatus: string) {
-    await waitForTimeout(page, 2);
-
     await assertList(page, COLUMNS_AND_LABELS_DETAIL_PAGE);
 
     await assertList(page, [orderStatus, order.pickUpLocation, order.reference]);

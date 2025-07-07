@@ -7,7 +7,7 @@ import {
     cancelOrderSuccessfully,
     changeOfferStatusAndLogout,
     createOrderWithAssignedStatus,
-} from '../../functions/steps/orderCancelAndReassingSteps';
+} from '../../functions/steps/orderCancelAndReassignSteps';
 import {
     assertOrderDetailPageData,
     createNewOrder,

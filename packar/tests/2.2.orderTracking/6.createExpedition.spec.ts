@@ -10,7 +10,7 @@ import { selectBox } from '../../functions/steps/ordersSteps';
 import ExpeditionTest from '../../interfaces/ExpeditionTest';
 
 const expedition1: ExpeditionTest = {
-    title: 'should create an Expedition for courier No fixed price',
+    title: `should create automatically an Expedition courierNOFixedPrice ${courierNOFixedPrice.providerName} `,
     courier: courierNOFixedPrice,
     order: {
         title: 'generic order for expedition',
@@ -19,7 +19,7 @@ const expedition1: ExpeditionTest = {
         provider: courierNOFixedPrice.providerName,
         service: 0,
         selectPackage: async (page: Page) => {
-            await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
+            await selectBox(page, { length: 50, width: 50, height: 50, weight: 50 });
         },
         destination: {
             favorite: DESTINATION_FAVORITE,
@@ -34,7 +34,7 @@ const expedition1: ExpeditionTest = {
 };
 
 const expedition2: ExpeditionTest = {
-    title: 'should create an Expedition for courier Fixed Price',
+    title: `should create automatically an Expedition courierFixedPrice ${courierFixedPrice.providerName} `,
     courier: courierFixedPrice,
     order: {
         title: 'generic order for expedition',
@@ -43,7 +43,7 @@ const expedition2: ExpeditionTest = {
         provider: courierFixedPrice.providerName,
         service: 0,
         selectPackage: async (page: Page) => {
-            await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
+            await selectBox(page, { length: 500, width: 500, height: 500, weight: 500 });
         },
         destination: {
             favorite: DESTINATION_FAVORITE,

@@ -55,7 +55,7 @@ const LABELS_AND_COLUMNS: string[] = [
 
 const LABELS_AND_COLUMNS_DRIVER: string[] = [
     //'Datos del transporte',
-    'Conductor',
+    //'Conductor',
     'Añadir otro conductor',
     'Conductor',
     'Matricula',
@@ -283,7 +283,7 @@ export async function rejectedOfferDetailPageAssertions(page: Page): Promise<voi
 
     await assertListExcluded(page, LABELS_AND_COLUMNS_REJECTED_EXCLUDED);
 
-    if (process.env.ENVIRONMENT === 'dev') await assertListExcluded(page, LABELS_AND_COLUMNS_REJECTED_EXCLUDED_2);
+    await assertListExcluded(page, LABELS_AND_COLUMNS_REJECTED_EXCLUDED_2);
     logger.info(' Finish courierAcceptRejectOfferSteps.ts rejectedOfferDetailPageAssertions');
 }
 

@@ -1,4 +1,4 @@
-import { OPEN_PRICING_SERVICE_NAME_STANDARD, ProviderServices } from './dev-providers';
+import { ProviderServices } from './dev-providers';
 
 export const PRE_PROVIDER_SERVICES: ProviderServices[] = [
     // ----------------------------------- NO TRAD --------------------------------
@@ -55,7 +55,7 @@ export const PRE_PROVIDER_SERVICES: ProviderServices[] = [
     },
     {
         name: 'BAJO COTIZACIÓN', // 9
-        services: [OPEN_PRICING_SERVICE_NAME_STANDARD],
+        services: ['Estándar'],
     },
     {
         name: 'DANIEL IGLESIA', // 10

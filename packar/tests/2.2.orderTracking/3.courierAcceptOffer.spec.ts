@@ -42,7 +42,7 @@ const order1: OfferTest = {
 };
 
 const order2: OfferTest = {
-    title: `Accept Order with Traditional Courier No fixed price ${courierNOFixedPrice.providerName} First Offer with Limit Price 9.99`,
+    title: `Accept Order with Traditional Courier No fixed price ${courierNOFixedPrice.providerName} First Offer with Limit Price 79.99`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierNOFixedPrice.providerName,
@@ -55,7 +55,7 @@ const order2: OfferTest = {
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
-    limitPrice: 9.99,
+    limitPrice: 79.99,
     assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
     courier: courierNOFixedPrice,
     setPrice: '9.99',
@@ -81,7 +81,7 @@ const order3: OfferTest = {
 };
 
 const order4: OfferTest = {
-    title: `Accept Order with Traditional Courier No fixed price ${courierNOFixedPrice.providerName} Manual Assignment with Limit Price 9.99`,
+    title: `Accept Order with Traditional Courier No fixed price ${courierNOFixedPrice.providerName} Manual Assignment with Limit Price 79.99`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierNOFixedPrice.providerName,
@@ -94,7 +94,7 @@ const order4: OfferTest = {
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
-    limitPrice: 9.99,
+    limitPrice: 79.99,
     assignmentMethod: ASSIGNMENT_METHOD.MANUAL_ASSIGNMENT,
     courier: courierNOFixedPrice,
     setPrice: '9.99',
@@ -120,7 +120,7 @@ const order5: OfferTest = {
 };
 
 const order6: OfferTest = {
-    title: `Accept Order with Traditional Courier Fixed price ${courierFixedPrice.providerName} First Offer with Limit Price 9.99`,
+    title: `Accept Order with Traditional Courier Fixed price ${courierFixedPrice.providerName} First Offer with Limit Price 79.99`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierFixedPrice.providerName,
@@ -133,7 +133,7 @@ const order6: OfferTest = {
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
-    limitPrice: 9.99,
+    limitPrice: 79.99,
     assignmentMethod: ASSIGNMENT_METHOD.FIRST_OFFER,
     courier: courierFixedPrice,
     courierHasFixedPrice: true,
@@ -159,7 +159,7 @@ const order7: OfferTest = {
 };
 
 const order8: OfferTest = {
-    title: `Accept Order with Traditional Courier Fixed price ${courierFixedPrice.providerName} Manual Assignment with Limit Price 9.99`,
+    title: `Accept Order with Traditional Courier Fixed price ${courierFixedPrice.providerName} Manual Assignment with Limit Price 79.99`,
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     provider: courierFixedPrice.providerName,
@@ -172,7 +172,7 @@ const order8: OfferTest = {
         saveAsNew: false,
         remarks: 'This is an automatic test',
     },
-    limitPrice: 9.99,
+    limitPrice: 79.99,
     assignmentMethod: ASSIGNMENT_METHOD.MANUAL_ASSIGNMENT,
     courier: courierFixedPrice,
     courierHasFixedPrice: true,

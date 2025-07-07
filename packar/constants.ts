@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { DEV_PROVIDER_SERVICES } from './constants/dev-providers';
+import { DEV_PROVIDER_SERVICES_NEW_SHIPPER } from './constants/dev-providersNewShipper';
 import { PRE_PROVIDER_SERVICES } from './constants/pre-providers';
 import User, { CourierDrivers } from './interfaces/User';
 
@@ -44,8 +45,20 @@ export const PICKUP_LOCATION_SECONDARY: string = process.env.PICKUP_LOCATION_SEC
 
 export const TIMEOUT = process.env.ENVIRONMENT === 'dev' ? 800 : 1600;
 
-export const PROVIDER_SERVICES = process.env.ENVIRONMENT === 'pre' ? PRE_PROVIDER_SERVICES : DEV_PROVIDER_SERVICES;
+export const TEST_NEW_SHIPPER = Boolean(process.env.TEST_NEW_SHIPPER);
+
+export let PROVIDER_SERVICES =
+    process.env.ENVIRONMENT === 'pre'
+        ? PRE_PROVIDER_SERVICES
+        : TEST_NEW_SHIPPER
+          ? DEV_PROVIDER_SERVICES_NEW_SHIPPER
+          : DEV_PROVIDER_SERVICES;
 
 export const courierOtherDrivers: CourierDrivers = JSON.parse(process.env.USER_COURIER_DRIVERS!);
 export const courierNOFixedPriceDrivers: CourierDrivers = JSON.parse(process.env.USER_COURIER_NO_FIXED_PRICE_DRIVERS!);
 export const courierFixedPriceDrivers: CourierDrivers = JSON.parse(process.env.USER_COURIER_FIXED_PRICE_DRIVERS!);
+
+export const DEFAULT_NO_TRADITIONAL_COURIER = {
+    provider: process.env.DEFAULT_NO_TRADITIONAL_COURIER!,
+    service: process.env.DEFAULT_NO_TRADITIONAL_SERVICE!,
+};

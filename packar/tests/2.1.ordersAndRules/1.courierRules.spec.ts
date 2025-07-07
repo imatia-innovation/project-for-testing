@@ -4,14 +4,20 @@
 // Assign a provider following the assignment rules
 
 import test from '@playwright/test';
-import { courierFixedPrice, courierNOFixedPrice } from '../../constants';
+import {
+    courierFixedPrice,
+    courierNOFixedPrice,
+    DEFAULT_NO_TRADITIONAL_COURIER,
+    TEST_NEW_SHIPPER,
+} from '../../constants';
+import { getServiceNameByProvider } from '../../constants/dev-providers';
 import { OPERATOR_OPTIONS, PROPERTY_OPTIONS } from '../../constants/rulesPropertiesAndOperations';
 import { createRule, deleteRules, navigateToRulesPageRoutine } from '../../functions/steps/rulesSteps';
 import CreateNewRuleOrderTest from '../../interfaces/CreateNewRuleOrderTest';
 
 const rule1: CreateNewRuleOrderTest = {
-    name: 'Si el alto es igual que 100, asignar a GLS Estándar 24H',
-    provider: 'GLS',
+    testTitle: 'Si {{property}} es {{operation}} {{value}} asignar a {{providerName}} {{serviceName}}', //`Si el alto es igual que 100, asignar a STEF`,
+    provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     priority: '1',
     conditions: [
@@ -24,7 +30,7 @@ const rule1: CreateNewRuleOrderTest = {
 };
 
 const rule2: CreateNewRuleOrderTest = {
-    name: 'Si el ancho es menor que 50, asignar a CORREOS Standar Oficina',
+    testTitle: 'Si {{property}} es {{operation}} {{value}} asignar a {{providerName}} {{serviceName}}', // `Si el ancho es menor que 50, asignar a CORREOS Standar Oficina`,
     provider: 'CORREOS',
     service: 1,
     priority: '2',
@@ -38,7 +44,7 @@ const rule2: CreateNewRuleOrderTest = {
 };
 
 const rule3: CreateNewRuleOrderTest = {
-    name: 'Si el largo es mayor o igual que 100, asignar a ' + courierFixedPrice.providerName!,
+    testTitle: 'Si {{property}} es {{operation}} {{value}} asignar a {{providerName}} {{serviceName}}', //`Si el largo es mayor o igual que 100, asignar a ${courierFixedPrice.providerName!}`,
     provider: courierFixedPrice.providerName!,
     service: 0,
     priority: '3',
@@ -52,7 +58,7 @@ const rule3: CreateNewRuleOrderTest = {
 };
 
 const rule4: CreateNewRuleOrderTest = {
-    name: 'Si el Nro de bultos es menor o igual que 50, asignar a ' + courierNOFixedPrice.providerName!,
+    testTitle: 'Si {{property}} es {{operation}} {{value}} asignar a {{providerName}} {{serviceName}}', //`Si el Nro de bultos es menor o igual que 50, asignar a ${courierNOFixedPrice.providerName!}`,
     provider: courierNOFixedPrice.providerName!,
     service: 0,
     priority: '4',
@@ -66,7 +72,7 @@ const rule4: CreateNewRuleOrderTest = {
 };
 
 const rule5: CreateNewRuleOrderTest = {
-    name: 'Si el Peso contiene 51, asignar a NARVAL',
+    testTitle: 'Si {{property}} es {{operation}} {{value}} asignar a {{providerName}} {{serviceName}}', //`Si el Peso contiene 51, asignar a NARVAL`,
     provider: 'NARVAL',
     service: 0,
     priority: '5',
@@ -80,7 +86,7 @@ const rule5: CreateNewRuleOrderTest = {
 };
 
 const rule6: CreateNewRuleOrderTest = {
-    name: 'Si el CP Origen distinto de 32900, asignar a SEUR',
+    testTitle: 'Si {{property}} es {{operation}} {{value}} asignar a {{providerName}} {{serviceName}}', //`Si el CP Origen distinto de 32900, asignar a SEUR`,
     provider: 'SEUR',
     service: 0,
     priority: '6',
@@ -94,7 +100,7 @@ const rule6: CreateNewRuleOrderTest = {
 };
 
 const rule7: CreateNewRuleOrderTest = {
-    name: 'Si el CP Destino mayor que 15000 y Peso mayor o igual que 200, asignar a NARVAL Congelado',
+    testTitle: 'Si {{property}} es {{operation}} {{value}} asignar a {{providerName}} {{serviceName}}', //`Si el CP Destino mayor que 15000 y Peso mayor o igual que 200, asignar a NARVAL Congelado`,
     provider: 'NARVAL',
     service: 1,
     priority: '7',
@@ -113,7 +119,7 @@ const rule7: CreateNewRuleOrderTest = {
 };
 
 const rule8: CreateNewRuleOrderTest = {
-    name: 'Si la Empresa contiene aaa123aaa, asignar a NARVAL Mixto',
+    testTitle: 'Si {{property}} es {{operation}} {{value}} asignar a {{providerName}} {{serviceName}}', //`Si la Empresa contiene aaa123aaa, asignar a NARVAL Mixto`,
     provider: 'NARVAL',
     service: 2,
     priority: '8',
@@ -127,21 +133,37 @@ const rule8: CreateNewRuleOrderTest = {
 };
 
 const rule9: CreateNewRuleOrderTest = {
-    name: 'Si no cumple con las condiciones anteriores, asignar a BAJO COTIZACIÓN',
+    testTitle: 'Si {{property}} es {{operation}} {{value}} asignar a {{providerName}} {{serviceName}}', //`Si no cumple con las condiciones anteriores, asignar a BAJO COTIZACIÓN`,
     provider: 'BAJO COTIZACIÓN',
     service: 0,
     priority: '9',
     conditions: [], // --
 };
 
-let newRuleTests: CreateNewRuleOrderTest[] = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9];
+let newRuleTests: CreateNewRuleOrderTest[] = TEST_NEW_SHIPPER
+    ? [rule1, rule3, rule4, rule9]
+    : [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9];
 
 test('Delete all rules test', async ({ page }) => {
     await deleteRules(page);
 });
 
 newRuleTests.forEach((rule) => {
-    test(`Create rule "${rule.name}" `, async ({ page }) => {
+    if (rule.conditions.length > 0) {
+        rule.testTitle = rule.testTitle
+            .replace('{{property}}', rule.conditions[0].property)
+            .replace('{{operation}}', rule.conditions[0].operation)
+            .replace('{{value}}', rule.conditions[0].value)
+            .replace('{{providerName}}', rule.provider)
+            .replace('{{serviceName}}', getServiceNameByProvider(rule.provider, rule.service)!);
+    } else {
+        rule.testTitle = rule.testTitle
+            .replace('{{property}} es {{operation}} {{value}}', 'no tiene condiciones')
+            .replace('{{providerName}}', rule.provider)
+            .replace('{{serviceName}}', getServiceNameByProvider(rule.provider, rule.service)!);
+    }
+
+    test(`Create rule "${rule.testTitle}" `, async ({ page }) => {
         await navigateToRulesPageRoutine(page);
 
         test.slow();
