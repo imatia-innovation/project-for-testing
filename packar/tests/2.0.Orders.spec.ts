@@ -22,7 +22,7 @@ const ORDER_ID = '140';
 const order1: CreateNewOrderTest = {
     title: 'should fill the create new order form with the minimum fields selecting Partial Order',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'partial-' + new Date().getTime().toString(),
     provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -37,7 +37,7 @@ const order1: CreateNewOrderTest = {
 const order2: CreateNewOrderTest = {
     title: 'should fill the create new order form with the minimum fields selecting Complete Order',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'complete-' + new Date().getTime().toString(),
     provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -58,7 +58,7 @@ const order2: CreateNewOrderTest = {
 const order3: CreateNewOrderTest = {
     title: 'should fill the create new order form with box, complete order, pallet and envelope',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'box-complete-pallet-' + new Date().getTime().toString(),
     provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -79,7 +79,7 @@ const order3: CreateNewOrderTest = {
 const order4: CreateNewOrderTest = {
     title: 'should fill the create new order form with box, pallet and envelope, with date for 1-2 days',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'box-pallet-envelope-' + new Date().getTime().toString(),
     provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -108,7 +108,7 @@ const order4: CreateNewOrderTest = {
 const order5: CreateNewOrderTest = {
     title: 'should fill the create new order with various pallets',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'pallets-' + new Date().getTime().toString(),
     provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -127,7 +127,7 @@ const order5: CreateNewOrderTest = {
 const order6: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with email',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'destination-email-' + new Date().getTime().toString(),
     provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -148,7 +148,7 @@ const order6: CreateNewOrderTest = {
 const order7: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with phone number',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'destination-phone-' + new Date().getTime().toString(),
     provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -170,7 +170,7 @@ const order7: CreateNewOrderTest = {
 const order8: CreateNewOrderTest = {
     title: 'should fill the create new order using dynamic destination with email and select other country',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'other-country-' + new Date().getTime().toString(),
     provider: DEFAULT_NO_TRADITIONAL_COURIER.provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -191,7 +191,7 @@ const order8: CreateNewOrderTest = {
 const order9: CreateNewOrderTest = {
     title: 'should create an order without provider',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'no-courier-' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 100, width: 200, height: 300, weight: 500 });
@@ -205,7 +205,7 @@ const order9: CreateNewOrderTest = {
 const order13: CreateNewOrderTest = {
     title: 'should fill the create new order form with provider Bajo Cotización Stardard',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'open-pricing-' + new Date().getTime().toString(),
     provider: 'BAJO COTIZACIÓN',
     service: 0,
     selectPackage: async (page: Page) => {

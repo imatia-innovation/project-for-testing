@@ -13,7 +13,7 @@ const provider: string = 'BAJO COTIZACIÓN';
 const order1: CreateNewOrderTest = {
     title: 'create Order with Open Pricing Courier First Offer without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'primera-oferta-' + new Date().getTime().toString(),
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -30,7 +30,7 @@ const order1: CreateNewOrderTest = {
 const order2: CreateNewOrderTest = {
     title: 'create Order with Open Pricing Courier First Offer with Limit Price 99.99',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'primera-oferta-limit99-' + new Date().getTime().toString(),
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -48,7 +48,7 @@ const order2: CreateNewOrderTest = {
 const order3: CreateNewOrderTest = {
     title: 'create Order with Open Pricing Courier Manual Assignment without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'assing-manual-' + new Date().getTime().toString(),
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -65,7 +65,7 @@ const order3: CreateNewOrderTest = {
 const order4: CreateNewOrderTest = {
     title: 'create Order with Open Pricing Courier Manual Assignment with Limit Price 59.99',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'assing-manual-limit59-' + new Date().getTime().toString(),
     provider,
     service: 0,
     selectPackage: async (page: Page) => {

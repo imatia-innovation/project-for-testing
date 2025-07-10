@@ -17,7 +17,7 @@ export default defineConfig({
             use: {
                 browserName: 'chromium',
                 launchOptions: {
-                    headless: false,
+                    headless: true,
                     executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
                 },
             },

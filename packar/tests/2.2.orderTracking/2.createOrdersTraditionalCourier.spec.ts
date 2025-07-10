@@ -15,7 +15,7 @@ const provider: string = courierNOFixedPrice.providerName!;
 const order1: CreateNewOrderTest = {
     title: 'create Order with Traditional Courier First Offer without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'tradic-primera-oferta-' + new Date().getTime().toString(),
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -32,7 +32,7 @@ const order1: CreateNewOrderTest = {
 const order2: CreateNewOrderTest = {
     title: 'create Order with Traditional Courier First Offer with Limit Price 99.99',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'tradic-primera-oferta-limit99' + new Date().getTime().toString(),
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -50,7 +50,7 @@ const order2: CreateNewOrderTest = {
 const order3: CreateNewOrderTest = {
     title: 'create Order with Traditional Courier Manual Assignment without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'tradic-manual-' + +new Date().getTime().toString(),
     provider,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -67,7 +67,7 @@ const order3: CreateNewOrderTest = {
 const order4: CreateNewOrderTest = {
     title: 'create Order with Traditional Courier Manual Assignment with Limit Price 59.99',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'tradic-manual-limit59' + new Date().getTime().toString(),
     provider,
     service: 0,
     selectPackage: async (page: Page) => {

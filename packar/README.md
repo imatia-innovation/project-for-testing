@@ -85,3 +85,10 @@ npm run test:ui tests/home.spec.ts
 ### There is not need to run tests in order
 
 Some tests inside a directory are named with prefixes 1. , 2. , 3. , etc… This means the order of the process logic of the whole functionality for the directory, but test are independent of each other.
+
+### TO DO…
+
+#### There's some more tests to add in the future:
+
+*   Test upload order files with the shipper
+*   Test upload order files with the courier

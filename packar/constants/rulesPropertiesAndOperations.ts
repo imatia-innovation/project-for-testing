@@ -12,11 +12,11 @@ export const PROPERTY_OPTIONS: string[] = [
 
 // j
 export const OPERATOR_OPTIONS: string[] = [
-    'Contiene',
-    'Distinto de',
-    'Igual a',
-    'Mayor e igual que',
-    'Mayor que',
-    'Menor e igual que',
-    'Menor que',
+    'contiene',
+    'distinto de',
+    'igual a',
+    'mayor igual que',
+    'mayor que',
+    'menor igual que',
+    'menor que',
 ];

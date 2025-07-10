@@ -1,7 +1,8 @@
 import 'dotenv/config';
-import { DEV_PROVIDER_SERVICES } from './constants/dev-providers';
+import { DEV_PROVIDER_SERVICES, ProviderServices } from './constants/dev-providers';
 import { DEV_PROVIDER_SERVICES_NEW_SHIPPER } from './constants/dev-providersNewShipper';
 import { PRE_PROVIDER_SERVICES } from './constants/pre-providers';
+import { PRE_PROVIDER_SERVICES_NEW_SHIPPER } from './constants/pre-providersNewShipper';
 import User, { CourierDrivers } from './interfaces/User';
 
 export const admin: User = {
@@ -43,16 +44,27 @@ export const PICKUP_LOCATION: string = process.env.PICKUP_LOCATION!;
 export const DESTINATION_FAVORITE: string = process.env.DESTINATION_FAVORITE!;
 export const PICKUP_LOCATION_SECONDARY: string = process.env.PICKUP_LOCATION_SECONDARY!;
 
-export const TIMEOUT = process.env.ENVIRONMENT === 'dev' ? 800 : 1600;
+export const TIMEOUT = process.env.TIMEOUT ? Number(process.env.TIMEOUT) : 1000;
 
 export const TEST_NEW_SHIPPER = Boolean(process.env.TEST_NEW_SHIPPER);
 
-export let PROVIDER_SERVICES =
-    process.env.ENVIRONMENT === 'pre'
-        ? PRE_PROVIDER_SERVICES
-        : TEST_NEW_SHIPPER
-          ? DEV_PROVIDER_SERVICES_NEW_SHIPPER
-          : DEV_PROVIDER_SERVICES;
+function setProviderServices(): ProviderServices[] {
+    if (TEST_NEW_SHIPPER) {
+        if (process.env.ENVIRONMENT === 'pre') {
+            return PRE_PROVIDER_SERVICES_NEW_SHIPPER;
+        } else {
+            return DEV_PROVIDER_SERVICES_NEW_SHIPPER;
+        }
+    } else {
+        if (process.env.ENVIRONMENT === 'pre') {
+            return PRE_PROVIDER_SERVICES;
+        } else {
+            return DEV_PROVIDER_SERVICES;
+        }
+    }
+}
+
+export let PROVIDER_SERVICES: ProviderServices[] = setProviderServices();
 
 export const courierOtherDrivers: CourierDrivers = JSON.parse(process.env.USER_COURIER_DRIVERS!);
 export const courierNOFixedPriceDrivers: CourierDrivers = JSON.parse(process.env.USER_COURIER_NO_FIXED_PRICE_DRIVERS!);

@@ -236,7 +236,7 @@ let order5: AccRejAssignByRulesTest = {
     pickUpLocation: PICKUP_LOCATION,
     reference: 'atest' + new Date().getTime().toString(),
     selectPackage: async (page: Page) => {
-        await selectBox(page, { length: 101, width: 101, height: 101, weight: 101 });
+        await selectBox(page, { length: 21, width: 21, height: 101, weight: 21 });
     },
     destination: {
         favorite: DESTINATION_FAVORITE,
@@ -456,19 +456,17 @@ const ordersPendingToAssignment = TEST_NEW_SHIPPER
           order7,
           order9,
       ]
-    : process.env.ENVIRONMENT === 'pre'
-      ? [order1, order2, order3, order4, order5, order7, order8, order9]
-      : [
-            order1,
-            order2,
-            order3,
-            order4,
-            order5,
-            order6, // Maybe the final status changes in the future with a fixture
-            order7,
-            order8,
-            order9,
-        ];
+    : [
+          order1,
+          order2,
+          order3,
+          order4,
+          order5,
+          order6, // Maybe the final status changes in the future with a fixture
+          order7,
+          order8,
+          order9,
+      ];
 
 ordersPendingToAssignment.forEach((orderTest, testIndex) => {
     test(orderTest.title, async ({ page }) => {

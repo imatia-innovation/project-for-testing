@@ -1,5 +1,5 @@
 import test, { Page } from '@playwright/test';
-import { DESTINATION_FAVORITE, PICKUP_LOCATION, courierNOFixedPrice } from '../../constants';
+import { DESTINATION_FAVORITE, PICKUP_LOCATION, courierFixedPrice, courierNOFixedPrice } from '../../constants';
 import { ASSIGNMENT_METHOD } from '../../constants/assignmentMethod';
 import { ORDER_STATUS } from '../../constants/orderStatus';
 import logout from '../../functions/steps/logout';
@@ -28,12 +28,10 @@ import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 import OfferTest from '../../interfaces/OfferTest';
 import OfferTestResult from '../../interfaces/OfferTestResult';
 
-const provider: string = courierNOFixedPrice.providerName!;
-
 const order1: CreateNewOrderTest = {
     title: 'should create an order without provider',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'open-price-' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 99, width: 99, height: 99, weight: 99 });
@@ -46,10 +44,10 @@ const order1: CreateNewOrderTest = {
 };
 
 const order2: CreateNewOrderTest = {
-    title: 'create Order with Traditional Courier First Offer without Limit Price',
+    title: 'create Order with provider First Offer without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
-    provider,
+    reference: 'atest-' + 'tradic-fixedprice-primera-oferta-' + new Date().getTime().toString(),
+    provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 100, width: 100, height: 100, weight: 100 });
@@ -65,7 +63,7 @@ const order2: CreateNewOrderTest = {
 const order3: OfferTest = {
     title: 'Accept Order with Traditional Courier First Offer without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'tradic-nofixedprice-primera-oferta-' + new Date().getTime().toString(),
     provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -84,7 +82,7 @@ const order3: OfferTest = {
 const order4: CreateNewOrderTest = {
     title: 'create Order with Open Pricing Courier Manual Assignment with Limit Price 59.99',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'open-price-assign-manual-limit59' + new Date().getTime().toString(),
     provider: 'BAJO COTIZACIÓN',
     service: 0,
     selectPackage: async (page: Page) => {

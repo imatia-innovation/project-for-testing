@@ -230,6 +230,8 @@ export async function createRule(page: Page, rule: CreateNewRuleOrderTest) {
         `1.couriersAssignedByRules.spec.ts parameters: ${rule.testTitle}, ${rule.conditions} provider: ${rule.provider}, priority: ${rule.priority}`
     );
 
+    rule.testTitle = rule.testTitle.slice(0, 70);
+
     await openNewRuleForm(page);
 
     // Start fill form

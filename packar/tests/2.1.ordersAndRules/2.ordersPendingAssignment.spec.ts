@@ -19,7 +19,7 @@ import CreateNewOrderTest from '../../interfaces/CreateNewOrderTest';
 const order1: CreateNewOrderTest = {
     title: 'should create an order height: 100',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'height100-' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 99, width: 99, height: 100, weight: 99 });
@@ -33,7 +33,7 @@ const order1: CreateNewOrderTest = {
 const order2: CreateNewOrderTest = {
     title: 'should create an order width: 10',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'width10-' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 100, width: 10, height: 100, weight: 100 });
@@ -47,7 +47,7 @@ const order2: CreateNewOrderTest = {
 const order3: CreateNewOrderTest = {
     title: 'should create an order length: 101',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'length101-' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 101, width: 101, height: 101, weight: 101 });
@@ -62,7 +62,7 @@ const order3: CreateNewOrderTest = {
 const order4: CreateNewOrderTest = {
     title: 'order with weight: 50',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'weight50-' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectCompleteOrder(page, { boxQty: 50, weight: 50 });
@@ -83,7 +83,7 @@ const order4: CreateNewOrderTest = {
 const order5: CreateNewOrderTest = {
     title: 'order with weight: 51',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'weight51-' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectCompleteOrder(page, { boxQty: 51, weight: 51 });
@@ -104,7 +104,7 @@ const order5: CreateNewOrderTest = {
 const order6: CreateNewOrderTest = {
     title: 'should create an order with CPO no equal to 32900',
     pickUpLocation: PICKUP_LOCATION_SECONDARY, // Here this is a warehouse created by API with CP 32500
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'CPO32500-' + new Date().getTime().toString(),
     selectPackage: async (page: Page) => {
         await selectBox(page, {
             length: 99,
@@ -123,7 +123,7 @@ const order6: CreateNewOrderTest = {
 const order7: CreateNewOrderTest = {
     title: 'should create an order with CPD greater than 15000, weight: 250, length: 99',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'CPD15008-' + new Date().getTime().toString(),
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 99, width: 222, height: 222, weight: 200 });
         await selectCompleteOrder(page, { boxQty: 50, weight: 50 });
@@ -138,7 +138,7 @@ const order7: CreateNewOrderTest = {
 const order8: CreateNewOrderTest = {
     title: 'order with destination name containing aaa123aaa',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'name-aaa123aaa-' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectCompleteOrder(page, { boxQty: 100, weight: 100 });
@@ -159,7 +159,7 @@ const order8: CreateNewOrderTest = {
 const order9: CreateNewOrderTest = {
     title: 'order with destination name containing AAA and width 500',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'name-AAA-' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 500, width: 500, height: 500, weight: 500 });
@@ -178,9 +178,9 @@ const order9: CreateNewOrderTest = {
 };
 
 const order10: CreateNewOrderTest = {
-    title: 'order with destination name containing aaa123aaa, CPD less than 15000, weight: 250, length: 99',
+    title: 'order with destination name containing aaa123aaa, CPD less than 15000, weight: 200, length: 99',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'weight200-length99-' + new Date().getTime().toString(),
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 99, width: 222, height: 222, weight: 200 });
         await selectCompleteOrder(page, { boxQty: 50, weight: 50 });
@@ -198,9 +198,9 @@ const order10: CreateNewOrderTest = {
 };
 
 const order11: CreateNewOrderTest = {
-    title: 'order with CPD less than 15000, weight: 300, length: 99',
+    title: 'order with CPD less than 15000, weight: 250, length: 99',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest' + new Date().getTime().toString(),
+    reference: 'atest-' + 'weight250-length99-' + new Date().getTime().toString(),
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 99, width: 222, height: 200, weight: 250 });
         await selectCompleteOrder(page, { boxQty: 50, weight: 50 });

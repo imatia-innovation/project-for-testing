@@ -2,56 +2,56 @@ import { ProviderServices } from './dev-providers';
 
 export const PRE_PROVIDER_SERVICES: ProviderServices[] = [
     // ----------------------------------- NO TRAD --------------------------------
-    {
-        name: 'GLS', // 0
-        services: ['Estándar 24H', 'Estándar devoluciones en tienda'],
-    },
-    {
-        name: 'SEUR',
-        services: [
-            'SEUR FRIO 13:30',
-            'SEUR 48 Estándar (Baleares, Ceuta, Melilla, Madeira)',
-            'Entrega Particular Estándar',
-            'Entrega en Sábado',
-        ],
-    },
-    {
-        name: 'CORREOS',
-        services: [
-            ' PAQUETE ESTÁNDAR DOMICILIO ',
-            ' PAQUETE ESTÁNDAR OFICINA ',
-            ' PAQUETE ESTÁNDAR CITYPAQ ',
-            ' PAQUETE LIGERO ',
-            ' PAQUETE RETORNO ',
-            ' PAQUETE RETORNO PREMIUM ',
-            ' PAQUETE PREMIUM OFICINA ',
-            ' PAQUETE PREMIUM DOMICILIO ',
-        ],
-    },
-    {
-        name: 'TIPSA',
-        services: [' PICKUP '],
-    },
-    {
-        name: 'NARVAL',
-        services: ['REFRIGERADO', 'CONGELADO', 'MIXTO', 'SECO'],
-    },
-    {
-        name: 'STEF',
-        services: ['Fresco o Seco', 'Congelado'],
-    },
-    {
-        name: 'MRW', // 6
-        services: ['Urgente 10', 'Urgente 12', 'Urgente 14', 'Urgente 19'],
-    },
+    // {
+    //     name: 'GLS', // 0
+    //     services: ['Estándar 24H', 'Estándar devoluciones en tienda'],
+    // },
+    // {
+    //     name: 'SEUR',
+    //     services: [
+    //         'SEUR FRIO 13:30',
+    //         'SEUR 48 Estándar (Baleares, Ceuta, Melilla, Madeira)',
+    //         'Entrega Particular Estándar',
+    //         'Entrega en Sábado',
+    //     ],
+    // },
+    // {
+    //     name: 'CORREOS',
+    //     services: [
+    //         ' PAQUETE ESTÁNDAR DOMICILIO ',
+    //         ' PAQUETE ESTÁNDAR OFICINA ',
+    //         ' PAQUETE ESTÁNDAR CITYPAQ ',
+    //         ' PAQUETE LIGERO ',
+    //         ' PAQUETE RETORNO ',
+    //         ' PAQUETE RETORNO PREMIUM ',
+    //         ' PAQUETE PREMIUM OFICINA ',
+    //         ' PAQUETE PREMIUM DOMICILIO ',
+    //     ],
+    // },
+    // {
+    //     name: 'TIPSA',
+    //     services: [' PICKUP '],
+    // },
+    // {
+    //     name: 'NARVAL',
+    //     services: ['REFRIGERADO', 'CONGELADO', 'MIXTO', 'SECO'],
+    // },
+    // {
+    //     name: 'STEF',
+    //     services: ['Fresco o Seco', 'Congelado'],
+    // },
+    // {
+    //     name: 'MRW', // 6
+    //     services: ['Urgente 10', 'Urgente 12', 'Urgente 14', 'Urgente 19'],
+    // },
     // ------------------------------------ TRAD ---------------------------------
     {
         name: 'EMILIO SL', // 7
-        services: ['Standard'],
+        services: ['Estándar'],
     },
     {
         name: 'TRANSPORTES PACO', // 8
-        services: ['Standard'],
+        services: ['Estándar'],
     },
     {
         name: 'BAJO COTIZACIÓN', // 9
@@ -59,7 +59,7 @@ export const PRE_PROVIDER_SERVICES: ProviderServices[] = [
     },
     {
         name: 'DANIEL IGLESIA', // 10
-        services: ['Standard'],
+        services: ['Estándar'],
     },
     {
         name: 'LAPUENTE', // 11
