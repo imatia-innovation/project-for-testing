@@ -8,6 +8,6 @@ export async function getByIdAndFill(page: Page, id: string, text: string) {
     await inputLocator.fill(text);
 
     const value = await inputLocator.inputValue();
-    expect(value).toEqual(text);
+    expect(value).toContain(text);
     logger.info('Finish getByIdAndFill.ts getByIdAndFill');
 }

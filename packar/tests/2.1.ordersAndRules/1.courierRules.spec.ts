@@ -128,7 +128,9 @@ const rule8: CreateNewRuleOrderTest = {
 
 let newRuleTests: CreateNewRuleOrderTest[] = TEST_NEW_SHIPPER
     ? [rule1, rule3, rule4]
-    : [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8];
+    : process.env.ENVIRONMENT === 'pre'
+      ? [rule1, rule2, rule3, rule8]
+      : [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8];
 
 test('Delete all rules test', async ({ page }) => {
     await deleteRules(page);

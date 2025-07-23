@@ -133,7 +133,7 @@ export async function createNewOrder(page: Page, orderTest: CreateNewOrderTest, 
 
     const reference = orderTest.reference + '-' + testIndex;
 
-    await getByLabelAndFill(page, 'Ref Cliente', reference);
+    await getByIdAndFill(page, 'customer_ref', reference); //await getByLabelAndFill(page, 'Ref Cliente', reference);
 
     if (orderTest.assignmentMethod) {
         await selectAssignmentMethod(page, orderTest.assignmentMethod);

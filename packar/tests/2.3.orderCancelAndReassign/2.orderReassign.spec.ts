@@ -231,7 +231,7 @@ test('should reassign an order by second time', async ({ page }) => {
     let orderId2 = orderId;
 
     if (!TEST_NEW_SHIPPER) {
-        const provider: Provider = { name: courierFixedPrice.providerName!, service: 'Standard' };
+        const provider: Provider = { name: courierFixedPrice.providerName!, service: 'Estándar' };
 
         const orderIdRef: OfferTestResult = { orderId, reference };
         const orderStatusExpected = ORDER_STATUS.PENDING_ACCEPT;

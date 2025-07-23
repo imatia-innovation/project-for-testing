@@ -17,6 +17,6 @@ export const DEV_PROVIDER_SERVICES_NEW_SHIPPER: ProviderServices[] = [
     },
     {
         name: 'ENVIOS PEPITO', // 2
-        services: ['Standard'],
+        services: ['Estándar'],
     },
 ];

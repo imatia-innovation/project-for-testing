@@ -14,7 +14,7 @@ const MY_EXPEDITIONS_DETAIL_PAGE: string[] = ['Bultos', 'Destino', 'Incidencia',
 
 const INCIDENCE_MODAL: string[] = [
     'Incidencia',
-    'Por favor, revisa la información ingresada. Asegúrate de que todos los datos son correctos.',
+    'Por favor, indica el motivo de la incidencia.',
     'Motivo incidencia',
     'Cancelar',
     'Guardar',

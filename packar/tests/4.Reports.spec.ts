@@ -138,8 +138,6 @@ reportsTest.forEach((report) => {
 
         await navigateToReportsGeneratedPage(page);
 
-        await clickOnText(page, 'Fecha del informe');
-
         await waitForTimeout(page, 2);
 
         await assertList(page, [

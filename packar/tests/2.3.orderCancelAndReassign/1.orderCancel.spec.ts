@@ -31,7 +31,7 @@ import OfferTestResult from '../../interfaces/OfferTestResult';
 const order1: CreateNewOrderTest = {
     title: 'should create an order without provider',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest-' + 'open-price-' + new Date().getTime().toString(),
+    reference: 'atest-' + new Date().getTime().toString(),
 
     selectPackage: async (page: Page) => {
         await selectBox(page, { length: 99, width: 99, height: 99, weight: 99 });
@@ -46,7 +46,7 @@ const order1: CreateNewOrderTest = {
 const order2: CreateNewOrderTest = {
     title: 'create Order with provider First Offer without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest-' + 'tradic-fixedprice-primera-oferta-' + new Date().getTime().toString(),
+    reference: 'atest-' + new Date().getTime().toString(),
     provider: courierFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -63,7 +63,7 @@ const order2: CreateNewOrderTest = {
 const order3: OfferTest = {
     title: 'Accept Order with Traditional Courier First Offer without Limit Price',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest-' + 'tradic-nofixedprice-primera-oferta-' + new Date().getTime().toString(),
+    reference: 'atest-' + new Date().getTime().toString(),
     provider: courierNOFixedPrice.providerName,
     service: 0,
     selectPackage: async (page: Page) => {
@@ -82,7 +82,7 @@ const order3: OfferTest = {
 const order4: CreateNewOrderTest = {
     title: 'create Order with Open Pricing Courier Manual Assignment with Limit Price 59.99',
     pickUpLocation: PICKUP_LOCATION,
-    reference: 'atest-' + 'open-price-assign-manual-limit59' + new Date().getTime().toString(),
+    reference: 'atest-' + new Date().getTime().toString(),
     provider: 'BAJO COTIZACIÓN',
     service: 0,
     selectPackage: async (page: Page) => {

@@ -44,11 +44,11 @@ export const DEV_PROVIDER_SERVICES: ProviderServices[] = [
     // ------------------------------------ TRAD ---------------------------------
     {
         name: 'TRANSPORTES PACO', // 5
-        services: ['Standard'],
+        services: ['Estándar'],
     },
     {
         name: 'EMILIO SL', // 6
-        services: ['Standard'],
+        services: ['Estándar'],
     },
     {
         name: 'BAJO COTIZACIÓN', // 7
@@ -56,7 +56,7 @@ export const DEV_PROVIDER_SERVICES: ProviderServices[] = [
     },
     {
         name: 'ENVIOS PEPITO', // 8
-        services: ['Standard'],
+        services: ['Estándar'],
     },
 ];
 

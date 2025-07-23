@@ -63,7 +63,7 @@ export const PRE_PROVIDER_SERVICES: ProviderServices[] = [
     },
     {
         name: 'LAPUENTE', // 11
-        services: ['Standard'],
+        services: ['Estándar'],
     },
     {
         name: 'AUTOS BREA', // 12
@@ -71,6 +71,6 @@ export const PRE_PROVIDER_SERVICES: ProviderServices[] = [
     },
     {
         name: 'TRANSPORTES CORUÑA', // 13
-        services: ['Standar'],
+        services: ['Estándar'],
     },
 ];

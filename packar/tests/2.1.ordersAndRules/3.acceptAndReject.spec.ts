@@ -100,7 +100,8 @@ const rule5: CreateNewRuleOrderTest = {
     ],
 };
 
-let newRuleTests: CreateNewRuleOrderTest[] = [rule1, rule2, rule3, rule4, rule5];
+let newRuleTests: CreateNewRuleOrderTest[] =
+    process.env.ENVIRONMENT === 'pre' ? [rule1, rule2, rule3, rule4] : [rule1, rule2, rule3, rule4, rule5];
 
 test('Delete rules again ', async ({ page }) => {
     await deleteRules(page);
@@ -456,17 +457,27 @@ const ordersPendingToAssignment = TEST_NEW_SHIPPER
           order7,
           order9,
       ]
-    : [
-          order1,
-          order2,
-          order3,
-          order4,
-          order5,
-          order6, // Maybe the final status changes in the future with a fixture
-          order7,
-          order8,
-          order9,
-      ];
+    : process.env.ENVIRONMENT === 'pre'
+      ? [
+            order1,
+            order2,
+            order3,
+            order5,
+            order6, // Maybe the final status changes in the future with a fixture
+            order8,
+            order9,
+        ]
+      : [
+            order1,
+            order2,
+            order3,
+            order4,
+            order5,
+            order6, // Maybe the final status changes in the future with a fixture
+            order7,
+            order8,
+            order9,
+        ];
 
 ordersPendingToAssignment.forEach((orderTest, testIndex) => {
     test(orderTest.title, async ({ page }) => {

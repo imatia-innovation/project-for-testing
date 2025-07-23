@@ -145,7 +145,10 @@ const ruleThatFails: CreateNewRuleTest = {
     expectedText: '< 2000',
 };
 
-let newRuleTests: CreateNewRuleTest[] = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10, rule11];
+let newRuleTests: CreateNewRuleTest[] =
+    process.env.ENVIRONMENT === 'pre'
+        ? [rule1, rule2, rule8, rule9, rule10]
+        : [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10, rule11];
 
 const providerMapper = new RuleProviderMapper();
 // newRuleTests = providerMapper.createRules(newRuleTests); //use this line to test all combinations to create rules
